@@ -177,12 +177,12 @@ const loginData = reactive({
   }
 })
 
-const socialList = [
-  { icon: 'ant-design:wechat-filled', type: 30 },
-  { icon: 'ant-design:dingtalk-circle-filled', type: 20 },
-  { icon: 'ant-design:github-filled', type: 0 },
-  { icon: 'ant-design:alipay-circle-filled', type: 0 }
-]
+// const socialList = [
+//   { icon: 'ant-design:wechat-filled', type: 30 },
+//   { icon: 'ant-design:dingtalk-circle-filled', type: 20 },
+//   { icon: 'ant-design:github-filled', type: 0 },
+//   { icon: 'ant-design:alipay-circle-filled', type: 0 }
+// ]
 
 // 获取验证码
 const getCode = async () => {
@@ -218,6 +218,7 @@ const getCookie = () => {
 // 根据域名，获得租户信息
 const getTenantByWebsite = async () => {
   const website = location.host
+  console.log(website)
   const res = await LoginApi.getTenantByWebsite(website)
   if (res) {
     loginData.loginForm.tenantName = res.name
@@ -266,35 +267,35 @@ const handleLogin = async (params) => {
 }
 
 // 社交登录
-const doSocialLogin = async (type: number) => {
-  if (type === 0) {
-    message.error('此方式未配置')
-  } else {
-    loginLoading.value = true
-    if (loginData.tenantEnable === 'true') {
-      // 尝试先通过 tenantName 获取租户
-      await getTenantId()
-      // 如果获取不到，则需要弹出提示，进行处理
-      if (!authUtil.getTenantId()) {
-        await message.prompt('请输入租户名称', t('common.reminder')).then(async ({ value }) => {
-          const res = await LoginApi.getTenantIdByName(value)
-          authUtil.setTenantId(res)
-        })
-      }
-    }
-    // 计算 redirectUri
-    // tricky: type、redirect需要先encode一次，否则钉钉回调会丢失。
-    // 配合 Login/SocialLogin.vue#getUrlValue() 使用
-    const redirectUri =
-      location.origin +
-      '/social-login?' +
-      encodeURIComponent(`type=${type}&redirect=${redirect.value || '/'}`)
+// const doSocialLogin = async (type: number) => {
+//   if (type === 0) {
+//     message.error('此方式未配置')
+//   } else {
+//     loginLoading.value = true
+//     if (loginData.tenantEnable === 'true') {
+//       // 尝试先通过 tenantName 获取租户
+//       await getTenantId()
+//       // 如果获取不到，则需要弹出提示，进行处理
+//       if (!authUtil.getTenantId()) {
+//         await message.prompt('请输入租户名称', t('common.reminder')).then(async ({ value }) => {
+//           const res = await LoginApi.getTenantIdByName(value)
+//           authUtil.setTenantId(res)
+//         })
+//       }
+//     }
+//     // 计算 redirectUri
+//     // tricky: type、redirect需要先encode一次，否则钉钉回调会丢失。
+//     // 配合 Login/SocialLogin.vue#getUrlValue() 使用
+//     const redirectUri =
+//       location.origin +
+//       '/social-login?' +
+//       encodeURIComponent(`type=${type}&redirect=${redirect.value || '/'}`)
 
-    // 进行跳转
-    const res = await LoginApi.socialAuthRedirect(type, encodeURIComponent(redirectUri))
-    window.location.href = res
-  }
-}
+//     // 进行跳转
+//     const res = await LoginApi.socialAuthRedirect(type, encodeURIComponent(redirectUri))
+//     window.location.href = res
+//   }
+// }
 watch(
   () => currentRoute.value,
   (route: RouteLocationNormalizedLoaded) => {
@@ -306,7 +307,7 @@ watch(
 )
 onMounted(() => {
   getCookie()
-  getTenantByWebsite()
+  // getTenantByWebsite()
 })
 </script>
 
