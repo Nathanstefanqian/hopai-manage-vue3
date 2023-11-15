@@ -1,0 +1,1 @@
+import{ao as r,__tla as e}from"./index-438cb142.js";let a,l=Promise.all([(()=>{try{return e}catch{}})()]).then(async()=>{a=async t=>await r.get({url:"/member/point/record/page",params:t})});export{l as __tla,a as g};

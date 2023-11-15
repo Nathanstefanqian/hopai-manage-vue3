@@ -1,1 +1,0 @@
-import{_ as t,__tla as a}from"./ActivityOrdersSort.vue_vue_type_script_setup_true_lang-0d2b1856.js";import{__tla as _}from"./index-75dbf65e.js";let r=Promise.all([(()=>{try{return a}catch{}})(),(()=>{try{return _}catch{}})()]).then(async()=>{});export{r as __tla,t as default};
