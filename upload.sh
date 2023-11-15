@@ -1,0 +1,2 @@
+pnpm build:pro
+scp 
