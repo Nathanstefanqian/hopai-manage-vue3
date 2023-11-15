@@ -505,6 +505,24 @@ const remainingRouter: AppRouteRecordRaw[] = [
         component: () => import('@/views/crm/customer/detail/index.vue')
       }
     ]
+  },
+  {
+    path: '/product',
+    component: Layout,
+    name: 'Product',
+    meta: { hidden: true },
+    children: [
+      {
+        path: 'carousel',
+        name: 'Carousel',
+        meta: {
+          title: '轮播图',
+          noCache: true,
+          hidden: true
+        },
+        component: () => import('@/views/mall/product/carousel/index.vue')
+      }
+    ]
   }
 ]
 
