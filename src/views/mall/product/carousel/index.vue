@@ -8,7 +8,7 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label=" 轮播图的标题或名称" prop="title">
+      <el-form-item label="标题" prop="title">
         <el-input
           v-model="queryParams.title"
           placeholder="请输入 轮播图的标题或名称"
@@ -17,7 +17,7 @@
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label=" 轮播图的图片URL" prop="imageUrl">
+      <el-form-item label="图片URL" prop="imageUrl">
         <el-input
           v-model="queryParams.imageUrl"
           placeholder="请输入 轮播图的图片URL"
@@ -26,7 +26,7 @@
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label=" 轮播图点击后跳转的链接URL" prop="linkUrl">
+      <el-form-item label="URL" prop="linkUrl">
         <el-input
           v-model="queryParams.linkUrl"
           placeholder="请输入 轮播图点击后跳转的链接URL"
@@ -35,7 +35,7 @@
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label=" 轮播图的显示顺序" prop="sort">
+      <el-form-item label="显示顺序" prop="sort">
         <el-input
           v-model="queryParams.sort"
           placeholder="请输入 轮播图的显示顺序"
