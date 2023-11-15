@@ -4,10 +4,10 @@ NODE_ENV=production
 VITE_DEV=false
 
 # 请求路径
-VITE_BASE_URL='http://47.103.169.246:48080'
+VITE_BASE_URL='https://mp.api.hopai.cn'
 
 # 上传路径
-VITE_UPLOAD_URL='http://47.103.169.246:48080/admin-api/infra/file/upload'
+VITE_UPLOAD_URL='https://mp.api.hopai.cn/admin-api/infra/file/upload'
 
 # 接口前缀
 VITE_API_BASEPATH=

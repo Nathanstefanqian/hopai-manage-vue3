@@ -1,1 +1,0 @@
-import{ap as t,__tla as r}from"./index-16a04392.js";let e,l,s,p=Promise.all([(()=>{try{return r}catch{}})()]).then(async()=>{l=async a=>await t.post({url:"/bpm/oa/leave/create",data:a}),s=async a=>await t.get({url:"/bpm/oa/leave/get?id="+a}),e=async a=>await t.get({url:"/bpm/oa/leave/page",params:a})});export{p as __tla,e as a,l as c,s as g};

@@ -7,20 +7,20 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label=" 轮播图的标题或名称" prop="title">
-        <el-input v-model="formData.title" placeholder="请输入 轮播图的标题或名称" />
+      <el-form-item label="标题" prop="title">
+        <el-input v-model="formData.title" placeholder="请输入标题" />
       </el-form-item>
-      <el-form-item label=" 轮播图的图片URL" prop="imageUrl">
-        <el-input v-model="formData.imageUrl" placeholder="请输入 轮播图的图片URL" />
+      <el-form-item label="图片URL" prop="imageUrl">
+        <el-input v-model="formData.imageUrl" placeholder="请输入图片URL" />
       </el-form-item>
-      <el-form-item label=" 轮播图的描述或说明">
-        <Editor v-model="formData.description" height="150px" />
+      <el-form-item label="描述">
+        <el-input type="textarea" :rows="2" placeholder="请输入文本" v-model="textareaValue" />
       </el-form-item>
-      <el-form-item label=" 轮播图点击后跳转的链接URL" prop="linkUrl">
-        <el-input v-model="formData.linkUrl" placeholder="请输入 轮播图点击后跳转的链接URL" />
+      <el-form-item label="活动链接URL" prop="linkUrl">
+        <el-input v-model="formData.linkUrl" placeholder="请输入活动链接URL" />
       </el-form-item>
-      <el-form-item label=" 轮播图的显示顺序" prop="sort">
-        <el-input v-model="formData.sort" placeholder="请输入 轮播图的显示顺序" />
+      <el-form-item label="显示顺序" prop="sort">
+        <el-input v-model="formData.sort" placeholder="请输入显示顺序" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -31,8 +31,8 @@
 </template>
 <script setup lang="ts">
 import * as CarouselApi from '@/api/product/carousel'
-const { t } = useI18n() // 国际化
 
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -48,8 +48,9 @@ const formData = ref({
   sort: undefined
 })
 const formRules = reactive({
-  title: [{ required: true, message: ' 轮播图的标题或名称不能为空', trigger: 'blur' }],
-  imageUrl: [{ required: true, message: ' 轮播图的图片URL不能为空', trigger: 'blur' }]
+  title: [{ required: true, message: '标题不能为空', trigger: 'blur' }],
+  imageUrl: [{ required: true, message: '图片URL不能为空', trigger: 'blur' }],
+  sort: [{ required: true, message: '显示顺序不能为空', trigger: 'blur' }]
 })
 const formRef = ref() // 表单 Ref
 

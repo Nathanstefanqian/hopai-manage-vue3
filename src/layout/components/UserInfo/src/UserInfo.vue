@@ -25,6 +25,8 @@ const prefixCls = getPrefixCls('user-info')
 
 const user = wsCache.get(CACHE_KEY.USER)
 
+console.log('打印user', user)
+
 const avatar = user.user.avatar ? user.user.avatar : avatarImg
 
 const userName = user.user.nickname ? user.user.nickname : 'Admin'

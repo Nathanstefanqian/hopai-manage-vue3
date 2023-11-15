@@ -8,42 +8,6 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="标题" prop="title">
-        <el-input
-          v-model="queryParams.title"
-          placeholder="请输入 轮播图的标题或名称"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="图片URL" prop="imageUrl">
-        <el-input
-          v-model="queryParams.imageUrl"
-          placeholder="请输入 轮播图的图片URL"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="URL" prop="linkUrl">
-        <el-input
-          v-model="queryParams.linkUrl"
-          placeholder="请输入 轮播图点击后跳转的链接URL"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="显示顺序" prop="sort">
-        <el-input
-          v-model="queryParams.sort"
-          placeholder="请输入 轮播图的显示顺序"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
       <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
@@ -52,6 +16,42 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
+          class="!w-240px"
+        />
+      </el-form-item>
+      <el-form-item label="标题" prop="title">
+        <el-input
+          v-model="queryParams.title"
+          placeholder="请输入标题"
+          clearable
+          @keyup.enter="handleQuery"
+          class="!w-240px"
+        />
+      </el-form-item>
+      <el-form-item label="图片URL" prop="imageUrl">
+        <el-input
+          v-model="queryParams.imageUrl"
+          placeholder="请输入图片URL"
+          clearable
+          @keyup.enter="handleQuery"
+          class="!w-240px"
+        />
+      </el-form-item>
+      <el-form-item label="活动链接" prop="linkUrl">
+        <el-input
+          v-model="queryParams.linkUrl"
+          placeholder="请输入活动链接URL"
+          clearable
+          @keyup.enter="handleQuery"
+          class="!w-240px"
+        />
+      </el-form-item>
+      <el-form-item label="显示顺序" prop="sort">
+        <el-input
+          v-model="queryParams.sort"
+          placeholder="请输入显示顺序"
+          clearable
+          @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
@@ -82,22 +82,6 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label=" 轮播图记录的唯一标识符" align="center" prop="id" width="150px" />
-      <el-table-column label=" 轮播图的标题或名称" align="center" prop="title" width="150px" />
-      <el-table-column label=" 轮播图的图片URL" align="center" prop="imageUrl" width="150px" />
-      <el-table-column
-        label=" 轮播图的描述或说明"
-        align="center"
-        prop="description"
-        width="150px"
-      />
-      <el-table-column
-        label=" 轮播图点击后跳转的链接URL"
-        align="center"
-        prop="linkUrl"
-        width="150px"
-      />
-      <el-table-column label=" 轮播图的显示顺序" align="center" prop="sort" width="150px" />
       <el-table-column
         label="创建时间"
         align="center"
@@ -105,6 +89,12 @@
         :formatter="dateFormatter"
         width="150px"
       />
+      <el-table-column label="唯一标识符" align="center" prop="id" width="150px" />
+      <el-table-column label="标题" align="center" prop="title" width="150px" />
+      <el-table-column label="图片URL" align="center" prop="imageUrl" width="150px" />
+      <el-table-column label="描述" align="center" prop="description" width="150px" />
+      <el-table-column label="活动链接URL" align="center" prop="linkUrl" width="150px" />
+      <el-table-column label="显示顺序" align="center" prop="sort" width="150px" />
       <el-table-column label="操作" align="center" width="150px">
         <template #default="scope">
           <el-button
@@ -156,12 +146,12 @@ const list = ref([]) // 列表的数据
 const queryParams = reactive({
   pageNo: 1,
   pageSize: 10,
+  createTime: [],
   title: null,
   imageUrl: null,
   description: null,
   linkUrl: null,
-  sort: null,
-  createTime: []
+  sort: null
 })
 const queryFormRef = ref() // 搜索的表单
 const exportLoading = ref(false) // 导出的加载中
