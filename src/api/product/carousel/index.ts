@@ -38,3 +38,8 @@ export const deleteCarousel = async (id: number) => {
 export const exportCarousel = async (params) => {
   return await request.download({ url: `/product/carousel/export-excel`, params })
 }
+
+// 上传轮播图图片
+export const uploadCarousel = (data) => {
+  return request.upload({ url: '/system/user/profile/update-avatar', data: data })
+}

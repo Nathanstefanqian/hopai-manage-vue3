@@ -11,10 +11,29 @@
         <el-input v-model="formData.title" placeholder="请输入标题" />
       </el-form-item>
       <el-form-item label="图片URL" prop="imageUrl">
-        <el-input v-model="formData.imageUrl" placeholder="请输入图片URL" />
+        <!-- <el-input v-model="formData.imageUrl" placeholder="请输入图片URL" /> -->
+        <el-upload
+          class="upload-demo"
+          :on-success="handleSuccess"
+          :before-upload="customUpload"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :file-list="fileList"
+          :auto-upload="false"
+          :limit="3"
+          list-type="picture-card"
+        >
+          <i class="el-icon-plus"></i>
+          <div class="el-upload__text">Upload</div>
+        </el-upload>
       </el-form-item>
       <el-form-item label="描述">
-        <el-input type="textarea" :rows="2" placeholder="请输入文本" v-model="textareaValue" />
+        <el-input
+          type="textarea"
+          :rows="2"
+          placeholder="请输入文本"
+          v-model="formData.description"
+        />
       </el-form-item>
       <el-form-item label="活动链接URL" prop="linkUrl">
         <el-input v-model="formData.linkUrl" placeholder="请输入活动链接URL" />
@@ -109,5 +128,46 @@ const resetForm = () => {
     sort: undefined
   }
   formRef.value?.resetFields()
+}
+
+const fileList = ref([])
+const uploadUrl = 'https://mp.api.hopai.cn/admin-api/system/user/profile/update-avatar'
+const headers = {
+  Authorization: '6541ab5bdf3f4a8fa431feff9b17e142',
+  'tenant-id': '1'
+}
+const uploadData = {
+  key: 'value'
+}
+
+const customUpload = async ({ file }) => {
+  // 调用上传接口函数，传入文件对象 file
+  const response = await CarouselApi.uploadCarousel(file)
+  console.log(response)
+  // 处理上传成功的逻辑
+  // if (response && response.success) {
+  //   const uploadedFile = response.data
+  //   const fileInfo = {
+  //     name: uploadedFile.name,
+  //     url: uploadedFile.url,
+  //     size: uploadedFile.size
+  //     // 其他字段
+  //   }
+  //   fileList.value.push(fileInfo)
+}
+
+const handleSuccess = (response, file, fileList) => {
+  console.log(response)
+}
+
+const handlePreview = async (file) => {
+  const res = await CarouselApi.uploadCarousel(file.url)
+  console.log('打印', res)
+  previewImageUrl.value = file.url
+  previewVisible.value = true
+}
+
+const handleRemove = (file, fileList) => {
+  console.log(file)
 }
 </script>
