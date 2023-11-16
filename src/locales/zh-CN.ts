@@ -1,4 +1,5 @@
 export default {
+  'OAuth 2.0': 'OAuth 2.0',
   common: {
     inputText: '请输入',
     selectText: '请选择',

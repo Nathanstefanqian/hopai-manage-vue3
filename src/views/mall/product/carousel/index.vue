@@ -28,36 +28,9 @@
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="图片URL" prop="imageUrl">
-        <el-input
-          v-model="queryParams.imageUrl"
-          placeholder="请输入图片URL"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="活动链接" prop="linkUrl">
-        <el-input
-          v-model="queryParams.linkUrl"
-          placeholder="请输入活动链接URL"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="显示顺序" prop="sort">
-        <el-input
-          v-model="queryParams.sort"
-          placeholder="请输入显示顺序"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 刷新</el-button>
         <el-button
           type="primary"
           plain
@@ -92,7 +65,11 @@
       <el-table-column label="标题" align="center" prop="title" width="200px" />
       <el-table-column label="图片URL" align="center" prop="imageUrl" width="200px" />
       <el-table-column label="描述" align="center" prop="description" />
-      <el-table-column label="活动链接URL" align="center" prop="linkUrl" width="200px" />
+      <el-table-column label="活动链接URL" align="center" width="200px">
+        <template #default="scope">
+          <a :href="scope.row.linkUrl" target="_blank">{{ scope.row.linkUrl }}</a>
+        </template>
+      </el-table-column>
       <el-table-column label="显示顺序" align="center" prop="sort" width="200px" />
       <el-table-column label="操作" align="center" width="200px">
         <template #default="scope">
@@ -125,7 +102,7 @@
   </ContentWrap>
 
   <!-- 表单弹窗：添加/修改 -->
-  <CarouselForm ref="formRef" @success="getList" />
+  <CarouselForm ref="formRef" @success="getList" :sortList="sortList" />
 </template>
 
 <script setup lang="ts">
@@ -154,6 +131,7 @@ const queryParams = reactive({
 })
 const queryFormRef = ref() // 搜索的表单
 const exportLoading = ref(false) // 导出的加载中
+const sortList = ref([])
 
 /** 查询列表 */
 const getList = async () => {
@@ -162,6 +140,8 @@ const getList = async () => {
     const data = await CarouselApi.getCarouselPage(queryParams)
     list.value = data.list
     total.value = data.total
+    sortList.value = data.list.map((item) => item.sort)
+    return data
   } finally {
     loading.value = false
   }
@@ -214,7 +194,7 @@ const handleExport = async () => {
 }
 
 /** 初始化 **/
-onMounted(() => {
-  getList()
+onMounted(async () => {
+  const res = await getList()
 })
 </script>

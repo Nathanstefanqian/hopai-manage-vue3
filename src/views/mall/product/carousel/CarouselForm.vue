@@ -11,22 +11,32 @@
         <el-input v-model="formData.title" placeholder="请输入标题" />
       </el-form-item>
       <el-form-item label="图片URL" prop="imageUrl">
-        <el-input v-model="formData.imageUrl" placeholder="请输入图片URL" class="mb-20px" />
         <el-upload
-          class="upload-demo"
-          v-model="formData.imageUrl"
-          :on-success="handleSuccess"
-          :before-upload="customUpload"
+          accept=".jpg,.jpeg,.png"
+          :http-request="handleUpload"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
-          :file-list="fileList"
-          :auto-upload="false"
-          :limit="3"
+          :beforeUpload="beforeUpload"
+          v-model:file-list="fileList"
+          :auto-upload="true"
+          :limit="1"
           list-type="picture-card"
         >
           <i class="el-icon-plus"></i>
           <div class="el-upload__text">Upload</div>
         </el-upload>
+      </el-form-item>
+
+      <el-form-item label="活动链接" prop="linkUrl">
+        <el-input v-model="formData.linkUrl" placeholder="请输入活动链接URL" />
+      </el-form-item>
+      <el-form-item label="显示顺序" prop="sort">
+        <el-input-number
+          v-model="formData.sort"
+          @blur="formRules.checkSort(formRules.sort)"
+          :min="1"
+          :max="5"
+        />
       </el-form-item>
       <el-form-item label="描述">
         <el-input
@@ -36,12 +46,6 @@
           v-model="formData.description"
         />
       </el-form-item>
-      <el-form-item label="活动链接URL" prop="linkUrl">
-        <el-input v-model="formData.linkUrl" placeholder="请输入活动链接URL" />
-      </el-form-item>
-      <el-form-item label="显示顺序" prop="sort">
-        <el-input v-model="formData.sort" placeholder="请输入显示顺序" />
-      </el-form-item>
     </el-form>
     <template #footer>
       <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
@@ -50,8 +54,9 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+import { Delete, Edit, Search, Share, Upload, Plus } from '@element-plus/icons-vue'
 import * as CarouselApi from '@/api/product/carousel'
-
+import OSS from 'ali-oss'
 const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
@@ -65,14 +70,29 @@ const formData = ref({
   imageUrl: undefined,
   description: undefined,
   linkUrl: undefined,
-  sort: undefined
+  sort: 1
 })
+interface Props {
+  sortList?: object
+}
+const props = defineProps<Props>()
+const { sortList } = props
+const validateSort = (rule, value, callback) => {
+  if (props.sortList.includes(parseInt(value))) {
+    callback(new Error('该次序已被其他图片占用'))
+  } else {
+    callback()
+  }
+}
 const formRules = reactive({
   title: [{ required: true, message: '标题不能为空', trigger: 'blur' }],
-  imageUrl: [{ required: true, message: '图片URL不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '显示顺序不能为空', trigger: 'blur' }]
+  imageUrl: [{ required: true, message: '图片不能为空', trigger: 'blur' }],
+  sort: [{ validator: validateSort, trigger: 'blur' }],
+  linkUrl: [{ required: true, message: '外链URL不能为空', trigger: 'blur' }]
 })
 const formRef = ref() // 表单 Ref
+
+// 自定义校验函数
 
 /** 打开弹窗 */
 const open = async (type: string, id?: number) => {
@@ -126,49 +146,58 @@ const resetForm = () => {
     imageUrl: undefined,
     description: undefined,
     linkUrl: undefined,
-    sort: undefined
+    sort: 1
   }
   formRef.value?.resetFields()
 }
 
 const fileList = ref([])
-const uploadUrl = 'https://mp.api.hopai.cn/admin-api/system/user/profile/update-avatar'
-const headers = {
-  Authorization: '6541ab5bdf3f4a8fa431feff9b17e142',
-  'tenant-id': '1'
-}
-const uploadData = {
-  key: 'value'
-}
-
-const customUpload = async ({ file }) => {
-  // 调用上传接口函数，传入文件对象 file
-  const response = await CarouselApi.uploadCarousel(file)
-  console.log(response)
-  // 处理上传成功的逻辑
-  // if (response && response.success) {
-  //   const uploadedFile = response.data
-  //   const fileInfo = {
-  //     name: uploadedFile.name,
-  //     url: uploadedFile.url,
-  //     size: uploadedFile.size
-  //     // 其他字段
-  //   }
-  //   fileList.value.push(fileInfo)
-}
-
-const handleSuccess = (response, file, fileList) => {
-  console.log(response)
-}
 
 const handlePreview = async (file) => {
-  const res = await CarouselApi.uploadCarousel(file.url)
-  console.log('打印', res)
-  previewImageUrl.value = file.url
-  previewVisible.value = true
+  console.log(file)
 }
 
 const handleRemove = (file, fileList) => {
+  formData.value.imageUrl = ''
+}
+
+const beforeUpload = (file) => {
   console.log(file)
+}
+
+const handleUpload = async (option) => {
+  var obj = option.file.name
+  let res = await put(obj, option.file)
+  console.log('上传成功', res)
+  res = await signatrueUrl(obj)
+  formData.value.imageUrl = res
+  console.log('真实地址', res)
+}
+
+// oss配置
+let client = new OSS({
+  region: 'oss-cn-shanghai',
+  accessKeyId: 'LTAI5tCXL14qmP6tcMwhz2ft',
+  accessKeySecret: 'ZQsGHgjW0SFXR9ss6OqYrJVspjoDor',
+  bucket: 'hopai-user-portrait'
+})
+
+const put = async (ObjName, fileUrl) => {
+  try {
+    let res = await client.put(ObjName, fileUrl)
+    return res
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+// 获取真实的地址
+const signatrueUrl = async (ObjName) => {
+  try {
+    let res = await client.signatureUrl(`${ObjName}`)
+    return res
+  } catch (e) {
+    console.log(e)
+  }
 }
 </script>

@@ -4,6 +4,9 @@ import '@/plugins/unocss'
 // 导入全局的svg图标
 import '@/plugins/svgIcon'
 
+// Chrome 增加了新的事件捕获机制－Passive Event Listeners；
+import 'default-passive-events'
+
 // 初始化多语言
 import { setupI18n } from '@/plugins/vueI18n'
 
@@ -66,6 +69,7 @@ const setupAll = async () => {
 
   app.mount('#app')
 }
+
 
 setupAll()
 
