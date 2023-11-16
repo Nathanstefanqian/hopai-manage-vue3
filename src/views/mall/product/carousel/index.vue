@@ -87,15 +87,14 @@
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
-        width="150px"
       />
-      <el-table-column label="唯一标识符" align="center" prop="id" width="150px" />
-      <el-table-column label="标题" align="center" prop="title" width="150px" />
-      <el-table-column label="图片URL" align="center" prop="imageUrl" width="150px" />
-      <el-table-column label="描述" align="center" prop="description" width="150px" />
-      <el-table-column label="活动链接URL" align="center" prop="linkUrl" width="150px" />
-      <el-table-column label="显示顺序" align="center" prop="sort" width="150px" />
-      <el-table-column label="操作" align="center" width="150px">
+      <el-table-column label="唯一标识符" align="center" prop="id" width="200px" />
+      <el-table-column label="标题" align="center" prop="title" width="200px" />
+      <el-table-column label="图片URL" align="center" prop="imageUrl" width="200px" />
+      <el-table-column label="描述" align="center" prop="description" />
+      <el-table-column label="活动链接URL" align="center" prop="linkUrl" width="200px" />
+      <el-table-column label="显示顺序" align="center" prop="sort" width="200px" />
+      <el-table-column label="操作" align="center" width="200px">
         <template #default="scope">
           <el-button
             link

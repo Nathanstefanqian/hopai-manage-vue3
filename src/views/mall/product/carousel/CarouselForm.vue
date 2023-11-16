@@ -11,9 +11,10 @@
         <el-input v-model="formData.title" placeholder="请输入标题" />
       </el-form-item>
       <el-form-item label="图片URL" prop="imageUrl">
-        <!-- <el-input v-model="formData.imageUrl" placeholder="请输入图片URL" /> -->
+        <el-input v-model="formData.imageUrl" placeholder="请输入图片URL" class="mb-20px" />
         <el-upload
           class="upload-demo"
+          v-model="formData.imageUrl"
           :on-success="handleSuccess"
           :before-upload="customUpload"
           :on-preview="handlePreview"
