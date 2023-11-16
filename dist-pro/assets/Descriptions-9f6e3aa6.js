@@ -1,1 +1,0 @@
-import{_,__tla as a}from"./Descriptions.vue_vue_type_style_index_0_scoped_59d56eec_lang-c1c6f8e8.js";import{_ as e}from"./_plugin-vue_export-helper-1b428a4d.js";let t,r=Promise.all([(()=>{try{return a}catch{}})()]).then(async()=>{t=e(_,[["__scopeId","data-v-59d56eec"]])});export{t as _,r as __tla};
