@@ -1,1 +1,0 @@
-import{_ as t,__tla as a}from"./main.vue_vue_type_script_setup_true_lang-ce1f5f30.js";import{__tla as _}from"./index-c339bcb0.js";let r=Promise.all([(()=>{try{return a}catch{}})(),(()=>{try{return _}catch{}})()]).then(async()=>{});export{r as __tla,t as default};

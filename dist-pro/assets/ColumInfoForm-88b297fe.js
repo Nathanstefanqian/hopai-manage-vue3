@@ -1,0 +1,1 @@
+import{_ as t,__tla as a}from"./ColumInfoForm.vue_vue_type_script_setup_true_lang-96d47fe5.js";import{__tla as _}from"./index-12d626d1.js";import{__tla as r}from"./dict.type-fbaad1a0.js";let l=Promise.all([(()=>{try{return a}catch{}})(),(()=>{try{return _}catch{}})(),(()=>{try{return r}catch{}})()]).then(async()=>{});export{l as __tla,t as default};

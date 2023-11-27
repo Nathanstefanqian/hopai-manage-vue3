@@ -453,6 +453,24 @@ const remainingRouter: AppRouteRecordRaw[] = [
     ]
   },
   {
+    path: '/photographer',
+    component: Layout,
+    name: 'PhotographerCenter',
+    meta: { hidden: true },
+    children: [
+      {
+        path: 'user/detail/:id',
+        name: 'PhotographerUserDetail',
+        meta: {
+          title: '摄影师详情',
+          noCache: true,
+          hidden: true
+        },
+        component: () => import('@/views/photographer/user/detail/index.vue')
+      }
+    ]
+  },
+  {
     path: '/pay',
     component: Layout,
     name: 'pay',

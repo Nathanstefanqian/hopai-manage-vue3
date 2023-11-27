@@ -32,6 +32,14 @@ export interface CategoryVO {
    * 开启状态
    */
   status: number
+  /**
+   * 描述
+   */
+  description?: string
+  /**
+   * 价格信息
+   */
+  priceInfo?: string
 }
 
 // 创建商品分类
