@@ -1,1 +1,0 @@
-import{ao as a,__tla as n}from"./index-8d332a1f.js";let t,e,s,r=Promise.all([(()=>{try{return n}catch{}})()]).then(async()=>{t=async o=>a.delete({url:`/promotion/coupon/delete?id=${o}`}),e=async o=>a.get({url:"/promotion/coupon/page",params:o}),s=async o=>a.post({url:"/promotion/coupon/send",data:o})});export{r as __tla,t as d,e as g,s};

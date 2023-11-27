@@ -42,7 +42,6 @@
 </template>
 <script setup lang="ts">
 import * as CarouselApi from '@/api/product/carousel'
-import OSS from 'ali-oss'
 const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
@@ -58,12 +57,17 @@ const formData = ref({
   linkUrl: undefined,
   sort: 1
 })
+const sort = ref()
 interface Props {
   sortList?: object
 }
 const props = defineProps<Props>()
 const { sortList } = props
 const validateSort = (rule, value, callback) => {
+  console.log('打印', sort.value)
+  if (formType.value === 'update' && sort.value === value) {
+    callback()
+  }
   if (props.sortList.includes(parseInt(value))) {
     callback(new Error('该次序已被其他图片占用'))
   } else {
@@ -91,6 +95,7 @@ const open = async (type: string, id?: number) => {
     formLoading.value = true
     try {
       formData.value = await CarouselApi.getCarousel(id)
+      sort.value = formData.value.sort
     } finally {
       formLoading.value = false
     }
@@ -135,55 +140,5 @@ const resetForm = () => {
     sort: 1
   }
   formRef.value?.resetFields()
-}
-
-const fileList = ref([])
-
-const handlePreview = async (file) => {
-  console.log(file)
-}
-
-const handleRemove = (file, fileList) => {
-  formData.value.imageUrl = ''
-}
-
-const beforeUpload = (file) => {
-  console.log(file)
-}
-
-const handleUpload = async (option) => {
-  var obj = option.file.name
-  let res = await put(obj, option.file)
-  console.log('上传成功', res)
-  res = await signatrueUrl(obj)
-  formData.value.imageUrl = res
-  console.log('真实地址', res)
-}
-
-// oss配置
-let client = new OSS({
-  region: 'oss-cn-shanghai',
-  accessKeyId: 'LTAI5tCXL14qmP6tcMwhz2ft',
-  accessKeySecret: 'ZQsGHgjW0SFXR9ss6OqYrJVspjoDor',
-  bucket: 'hopai-user-portrait'
-})
-
-const put = async (ObjName, fileUrl) => {
-  try {
-    let res = await client.put(ObjName, fileUrl)
-    return res
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-// 获取真实的地址
-const signatrueUrl = async (ObjName) => {
-  try {
-    let res = await client.signatureUrl(`${ObjName}`)
-    return res
-  } catch (e) {
-    console.log(e)
-  }
 }
 </script>
