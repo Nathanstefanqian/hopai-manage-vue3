@@ -12,7 +12,6 @@
       <Editor v-model:modelValue="formData.description" />
     </el-form-item>
   </el-form>
-
   <!-- 情况二：详情 -->
   <Descriptions
     v-if="isDetail"

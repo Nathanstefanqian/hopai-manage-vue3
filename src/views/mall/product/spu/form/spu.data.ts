@@ -61,6 +61,12 @@ export const descriptionSchema = reactive<CrudSchema[]>([
     field: 'description'
   }
 ])
+export const serviceSchema = reactive<CrudSchema[]>([
+  {
+    label: '服务说明',
+    field: 'service'
+  }
+])
 export const otherSettingsSchema = reactive<CrudSchema[]>([
   {
     label: '商品排序',

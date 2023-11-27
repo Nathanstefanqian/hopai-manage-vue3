@@ -45,6 +45,7 @@ export interface Spu {
   subCommissionType?: boolean // 分销类型
   skus?: Sku[] // sku数组
   description?: string // 商品详情
+  service?: string // 服务说明
   sort?: number // 商品排序
   giveIntegral?: number // 赠送积分
   virtualSalesCount?: number // 虚拟销量

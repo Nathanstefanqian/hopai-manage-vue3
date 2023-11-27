@@ -276,7 +276,7 @@ const rules = reactive({
   introduction: [required],
   picUrl: [required],
   sliderPicUrls: [required],
-  deliveryTemplateId: [required],
+  deliveryTemplateId: [],
   brandId: [required],
   specType: [required],
   subCommissionType: [required]
@@ -370,6 +370,6 @@ onMounted(async () => {
   // 获取商品品牌列表
   brandList.value = await ProductBrandApi.getSimpleBrandList()
   // 获取运费模版
-  deliveryTemplateList.value = await ExpressTemplateApi.getSimpleTemplateList()
+  // deliveryTemplateList.value = await ExpressTemplateApi.getSimpleTemplateList()
 })
 </script>

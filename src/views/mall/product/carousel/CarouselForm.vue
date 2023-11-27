@@ -11,20 +11,7 @@
         <el-input v-model="formData.title" placeholder="请输入标题" />
       </el-form-item>
       <el-form-item label="图片URL" prop="imageUrl">
-        <el-upload
-          accept=".jpg,.jpeg,.png"
-          :http-request="handleUpload"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :beforeUpload="beforeUpload"
-          v-model:file-list="fileList"
-          :auto-upload="true"
-          :limit="1"
-          list-type="picture-card"
-        >
-          <i class="el-icon-plus"></i>
-          <div class="el-upload__text">Upload</div>
-        </el-upload>
+        <UploadImg v-model="formData.imageUrl" height="80px" />
       </el-form-item>
 
       <el-form-item label="活动链接" prop="linkUrl">
@@ -54,7 +41,6 @@
   </Dialog>
 </template>
 <script setup lang="ts">
-import { Delete, Edit, Search, Share, Upload, Plus } from '@element-plus/icons-vue'
 import * as CarouselApi from '@/api/product/carousel'
 import OSS from 'ali-oss'
 const { t } = useI18n() // 国际化

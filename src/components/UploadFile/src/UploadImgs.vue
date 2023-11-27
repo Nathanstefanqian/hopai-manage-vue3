@@ -3,7 +3,7 @@
     <el-upload
       v-model:file-list="fileList"
       :accept="fileType.join(',')"
-      :action="updateUrl"
+      :http-request="handleUpload"
       :before-upload="beforeUpload"
       :class="['upload', drag ? 'no-border' : '']"
       :drag="drag"
@@ -47,6 +47,7 @@
 </template>
 <script lang="ts" setup>
 import { PropType } from 'vue'
+import OSS from 'ali-oss'
 import type { UploadFile, UploadProps, UploadUserFile } from 'element-plus'
 import { ElNotification } from 'element-plus'
 
@@ -74,7 +75,7 @@ const props = defineProps({
     type: Array as PropType<UploadUserFile[]>,
     required: true
   },
-  updateUrl: propTypes.string.def(import.meta.env.VITE_UPLOAD_URL),
+  // updateUrl: propTypes.string.def(import.meta.env.VITE_UPLOAD_URL),
   drag: propTypes.bool.def(true), // 是否支持拖拽上传 ==> 非必传（默认为 true）
   disabled: propTypes.bool.def(false), // 是否禁用上传组件 ==> 非必传（默认为 false）
   limit: propTypes.number.def(5), // 最大图片上传数 ==> 非必传（默认为 5张）
@@ -163,6 +164,42 @@ const handleExceed = () => {
     message: `当前最多只能上传 ${props.limit} 张图片，请移除后上传！`,
     type: 'warning'
   })
+}
+
+const handleUpload = async (option) => {
+  let obj = option.file.name
+  let res = await put(obj, option.file)
+  res = await signatrueUrl(obj)
+  fileList.value[fileList.value.length - 1].url = res
+  emit('update:modelValue', fileList.value)
+  message.success('上传成功')
+}
+
+// oss配置
+let client = new OSS({
+  region: 'oss-cn-shanghai',
+  accessKeyId: 'LTAI5tCXL14qmP6tcMwhz2ft',
+  accessKeySecret: 'ZQsGHgjW0SFXR9ss6OqYrJVspjoDor',
+  bucket: 'hopai-user-portrait'
+})
+
+const put = async (ObjName, fileUrl) => {
+  try {
+    let res = await client.put(ObjName, fileUrl)
+    return res
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+// 获取真实的地址
+const signatrueUrl = async (ObjName) => {
+  try {
+    let res = await client.signatureUrl(`${ObjName}`)
+    return res
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 // 图片预览

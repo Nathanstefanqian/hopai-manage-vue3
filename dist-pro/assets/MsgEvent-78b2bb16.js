@@ -1,0 +1,1 @@
+import{_ as t,__tla as a}from"./MsgEvent.vue_vue_type_script_setup_true_lang-11d74e9f.js";import{__tla as _}from"./index-8d332a1f.js";let r=Promise.all([(()=>{try{return a}catch{}})(),(()=>{try{return _}catch{}})()]).then(async()=>{});export{r as __tla,t as default};

@@ -1,14 +1,13 @@
 <template>
   <div class="upload-box">
     <el-upload
-      :action="updateUrl"
       :id="uuid"
+      :http-request="handleUpload"
       :class="['upload', drag ? 'no-border' : '']"
       :multiple="false"
       :show-file-list="false"
       :headers="uploadHeaders"
       :before-upload="beforeUpload"
-      :on-success="uploadSuccess"
       :on-error="uploadError"
       :drag="drag"
       :accept="fileType.join(',')"
@@ -56,6 +55,7 @@ import type { UploadProps } from 'element-plus'
 import { generateUUID } from '@/utils'
 import { propTypes } from '@/utils/propTypes'
 import { getAccessToken, getTenantId } from '@/utils/auth'
+import OSS from 'ali-oss'
 
 defineOptions({ name: 'UploadImg' })
 
@@ -74,7 +74,7 @@ type FileTypes =
 // 接受父组件参数
 const props = defineProps({
   modelValue: propTypes.string.def(''),
-  updateUrl: propTypes.string.def(import.meta.env.VITE_UPLOAD_URL),
+  // updateUrl: propTypes.string.def(import.meta.env.VITE_UPLOAD_URL),
   drag: propTypes.bool.def(true), // 是否支持拖拽上传 ==> 非必传（默认为 true）
   disabled: propTypes.bool.def(false), // 是否禁用上传组件 ==> 非必传（默认为 false）
   fileSize: propTypes.number.def(5), // 图片大小限制 ==> 非必传（默认为 5M）
@@ -110,6 +110,41 @@ const editImg = () => {
   dom && dom.dispatchEvent(new MouseEvent('click'))
 }
 
+// 上传组件
+const handleUpload = async (option) => {
+  var obj = option.file.name
+  let res = await put(obj, option.file)
+  res = await signatrueUrl(obj)
+  emit('update:modelValue', res)
+  message.success('上传成功')
+}
+
+// oss配置
+let client = new OSS({
+  region: 'oss-cn-shanghai',
+  accessKeyId: 'LTAI5tCXL14qmP6tcMwhz2ft',
+  accessKeySecret: 'ZQsGHgjW0SFXR9ss6OqYrJVspjoDor',
+  bucket: 'hopai-user-portrait'
+})
+//上传方法
+const put = async (ObjName, fileUrl) => {
+  try {
+    let res = await client.put(ObjName, fileUrl)
+    return res
+  } catch (e) {
+    console.log(e)
+  }
+}
+// 上传后获取真实的地址
+const signatrueUrl = async (ObjName) => {
+  try {
+    let res = await client.signatureUrl(`${ObjName}`)
+    return res
+  } catch (e) {
+    console.log(e)
+  }
+}
+// 上传前处理
 const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
   const imgSize = rawFile.size / 1024 / 1024 < props.fileSize
   const imgType = props.fileType
@@ -120,10 +155,10 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
 }
 
 // 图片上传成功提示
-const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
-  message.success('上传成功')
-  emit('update:modelValue', res.data)
-}
+// const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
+//   message.success('上传成功')
+//   emit('update:modelValue', res.data)
+// }
 
 // 图片上传错误提示
 const uploadError = () => {

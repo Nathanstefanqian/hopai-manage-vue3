@@ -25,6 +25,14 @@
           :propFormData="formData"
         />
       </el-tab-pane>
+      <el-tab-pane label="服务说明" name="ServiceInfo">
+        <ServiceInfoForm
+          ref="ServiceInfoRef"
+          v-model:activeName="activeName"
+          :is-detail="isDetail"
+          :propFormData="formData"
+        />
+      </el-tab-pane>
     </el-tabs>
     <el-form>
       <el-form-item style="float: right">
@@ -43,6 +51,7 @@ import * as ProductSpuApi from '@/api/mall/product/spu'
 import BasicInfoForm from './BasicInfoForm.vue'
 import DescriptionForm from './DescriptionForm.vue'
 import OtherSettingsForm from './OtherSettingsForm.vue'
+import ServiceInfoForm from './ServiceInfoForm.vue'
 import { convertToInteger, floatToFixed2, formatToFraction } from '@/utils'
 
 defineOptions({ name: 'ProductSpuForm' })
@@ -59,6 +68,7 @@ const isDetail = ref(false) // 是否查看详情
 const basicInfoRef = ref() // 商品信息Ref
 const descriptionRef = ref() // 商品详情Ref
 const otherSettingsRef = ref() // 其他设置Ref
+const ServiceInfoRef = ref() // 服务说明Ref
 // spu 表单数据
 const formData = ref<ProductSpuApi.Spu>({
   name: '', // 商品名称
@@ -87,6 +97,7 @@ const formData = ref<ProductSpuApi.Spu>({
     }
   ],
   description: '', // 商品详情
+  service: '', // 服务说明
   sort: 0, // 商品排序
   giveIntegral: 0, // 赠送积分
   virtualSalesCount: 0, // 虚拟销量
@@ -141,6 +152,7 @@ const submitForm = async () => {
     await unref(basicInfoRef)?.validate()
     await unref(descriptionRef)?.validate()
     await unref(otherSettingsRef)?.validate()
+    await unref(ServiceInfoRef)?.validate()
     // 深拷贝一份, 这样最终 server 端不满足，不需要恢复，
     const deepCopyFormData = cloneDeep(unref(formData.value)) as ProductSpuApi.Spu
     deepCopyFormData.skus!.forEach((item) => {
