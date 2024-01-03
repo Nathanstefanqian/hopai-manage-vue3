@@ -195,6 +195,6 @@ const handleExport = async () => {
 
 /** 初始化 **/
 onMounted(async () => {
-  const res = await getList()
+  await getList()
 })
 </script>

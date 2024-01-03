@@ -170,7 +170,6 @@ import { useWatermark } from '@/hooks/web/useWatermark'
 import avatarImg from '@/assets/imgs/avatar.gif'
 import type { WorkplaceTotal, Project, Notice, Shortcut } from './types'
 import { pieOptions, barOptions } from './echarts-data'
-
 defineOptions({ name: 'Home' })
 
 const { t } = useI18n()

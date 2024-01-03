@@ -1,1 +1,0 @@
-import{ao as t,__tla as c}from"./index-12d626d1.js";let e,r,l,s=Promise.all([(()=>{try{return c}catch{}})()]).then(async()=>{r=(a,p)=>{const n={appId:a,code:p};return t.get({url:"/pay/channel/get",params:n})},e=a=>t.post({url:"/pay/channel/create",data:a}),l=a=>t.put({url:"/pay/channel/update",data:a})});export{s as __tla,e as c,r as g,l as u};

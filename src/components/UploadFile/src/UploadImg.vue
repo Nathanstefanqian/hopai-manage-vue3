@@ -56,6 +56,7 @@ import { generateUUID } from '@/utils'
 import { propTypes } from '@/utils/propTypes'
 import { getAccessToken, getTenantId } from '@/utils/auth'
 import OSS from 'ali-oss'
+import { getStsCommon } from '@/api/sts'
 
 defineOptions({ name: 'UploadImg' })
 
@@ -115,17 +116,38 @@ const handleUpload = async (option) => {
   var obj = option.file.name
   let res = await put(obj, option.file)
   res = await signatrueUrl(obj)
+  console.log('上传成功', res)
+  let index = res.indexOf('?')
+  res = res.substring(0, index)
   emit('update:modelValue', res)
   message.success('上传成功')
 }
+/**
+ * todo 上传重复的图片的处理
+ */
+// credentials
+let client
+const getStsToken = async () => {
+  let res = await getStsCommon()
+  client = new OSS({
+    region: 'oss-cn-shanghai',
+    accessKeyId: res.credentials.accessKeyId,
+    accessKeySecret: res.credentials.accessKeySecret,
+    stsToken: res.credentials.securityToken,
+    bucket: 'hopai-user-portrait',
+    refreshSTSToken: async () => {
+      res = await getStsCommon()
+      return {
+        accessKeyId: res.credentials.accessKeyId,
+        accessKeySecret: res.credentials.accessKeySecret,
+        stsToken: res.credentials.securityToken
+      }
+    }
+  })
+}
+getStsToken()
 
 // oss配置
-let client = new OSS({
-  region: 'oss-cn-shanghai',
-  accessKeyId: 'LTAI5tCXL14qmP6tcMwhz2ft',
-  accessKeySecret: 'ZQsGHgjW0SFXR9ss6OqYrJVspjoDor',
-  bucket: 'hopai-user-portrait'
-})
 //上传方法
 const put = async (ObjName, fileUrl) => {
   try {
@@ -157,7 +179,7 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
 // 图片上传成功提示
 // const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
 //   message.success('上传成功')
-//   emit('update:modelValue', res.data)
+//   emit('update:modelValue', res)
 // }
 
 // 图片上传错误提示

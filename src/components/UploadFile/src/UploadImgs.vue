@@ -53,6 +53,7 @@ import { ElNotification } from 'element-plus'
 
 import { propTypes } from '@/utils/propTypes'
 import { getAccessToken, getTenantId } from '@/utils/auth'
+import { getStsCommon } from '@/api/sts'
 
 defineOptions({ name: 'UploadImgs' })
 
@@ -176,12 +177,26 @@ const handleUpload = async (option) => {
 }
 
 // oss配置
-let client = new OSS({
-  region: 'oss-cn-shanghai',
-  accessKeyId: 'LTAI5tCXL14qmP6tcMwhz2ft',
-  accessKeySecret: 'ZQsGHgjW0SFXR9ss6OqYrJVspjoDor',
-  bucket: 'hopai-user-portrait'
-})
+let client
+const getStsToken = async () => {
+  let res = await getStsCommon()
+  client = new OSS({
+    region: 'oss-cn-shanghai',
+    accessKeyId: res.credentials.accessKeyId,
+    accessKeySecret: res.credentials.accessKeySecret,
+    stsToken: res.credentials.securityToken,
+    bucket: 'hopai-product',
+    refreshSTSToken: async () => {
+      res = await getStsCommon()
+      return {
+        accessKeyId: res.credentials.accessKeyId,
+        accessKeySecret: res.credentials.accessKeySecret,
+        stsToken: res.credentials.securityToken
+      }
+    }
+  })
+}
+getStsToken()
 
 const put = async (ObjName, fileUrl) => {
   try {
