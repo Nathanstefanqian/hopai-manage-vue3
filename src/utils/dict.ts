@@ -100,6 +100,7 @@ export enum DICT_TYPE {
   TERMINAL = 'terminal', // 终端
 
   // ========== SYSTEM 模块 ==========
+  SYSTEM_USER_ORDERTYPE = 'system_user_ordertype',
   SYSTEM_USER_SEX = 'system_user_sex',
   SYSTEM_MENU_TYPE = 'system_menu_type',
   SYSTEM_ROLE_TYPE = 'system_role_type',

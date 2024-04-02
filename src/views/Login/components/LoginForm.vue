@@ -12,10 +12,13 @@
     <el-row style="margin-right: -10px; margin-left: -10px">
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item>
-          <LoginFormTitle style="width: 100%" />
+          <img alt="" class="mx-auto h-100px w-100px" src="@/assets/imgs/hopai.png" />
+        </el-form-item>
+        <el-form-item>
+          <LoginFormTitle class="mx-auto" />
         </el-form-item>
       </el-col>
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
+      <!-- <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item v-if="loginData.tenantEnable === 'true'" prop="tenantName">
           <el-input
             v-model="loginData.loginForm.tenantName"
@@ -25,7 +28,7 @@
             type="primary"
           />
         </el-form-item>
-      </el-col>
+      </el-col> -->
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item prop="username">
           <el-input
@@ -70,7 +73,6 @@
             :loading="loginLoading"
             :title="t('login.login')"
             class="w-[100%]"
-            type="success"
             @click="getCode()"
           />
         </el-form-item>
@@ -188,7 +190,7 @@ const loginData = reactive({
 const getCode = async () => {
   // 情况一，未开启：则直接登录
   if (loginData.captchaEnable === 'false') {
-    await handleLogin({})
+    // await handleLogin({})
   } else {
     // 情况二，已开启：则展示验证码；只有完成验证码的情况，才进行登录
     // 弹出验证码
@@ -237,6 +239,7 @@ const handleLogin = async (params) => {
     }
     loginData.loginForm.captchaVerification = params.captchaVerification
     const res = await LoginApi.login(loginData.loginForm)
+    console.log('data里有啥', res)
     if (!res) {
       return
     }

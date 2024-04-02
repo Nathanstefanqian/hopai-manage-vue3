@@ -18,44 +18,27 @@
       <el-col :span="10" class="detail-info-item">
         <el-card shadow="never" class="h-full">
           <template #header>
-            <CardTitle title="账户信息" />
+            <CardTitle title="财务信息" />
           </template>
           <UserAccountInfo :user="user" />
         </el-card>
       </el-col>
       <!-- 下边：账户明细 -->
       <!-- TODO 芋艿：【订单管理】【售后管理】【收藏记录】-->
-      <el-card header="账户明细" style="width: 100%; margin-top: 20px" shadow="never">
+      <el-card header="其他明细" style="width: 100%; margin-top: 20px" shadow="never">
         <template #header>
-          <CardTitle title="账户明细" />
+          <CardTitle title="设备信息" />
         </template>
-        <el-tabs>
-          <el-tab-pane label="积分">
-            <UserPointList :user-id="id" />
-          </el-tab-pane>
-          <el-tab-pane label="签到" lazy>
-            <UserSignList :user-id="id" />
-          </el-tab-pane>
-          <el-tab-pane label="成长值" lazy>
-            <UserExperienceRecordList :user-id="id" />
-          </el-tab-pane>
-          <!-- TODO @jason：增加一个余额变化； -->
-          <el-tab-pane label="余额" lazy>余额(WIP)</el-tab-pane>
-          <el-tab-pane label="收货地址" lazy>
-            <UserAddressList :user-id="id" />
-          </el-tab-pane>
-          <el-tab-pane label="订单管理" lazy>
-            <UserOrderList :user-id="id" />
-          </el-tab-pane>
-          <el-tab-pane label="售后管理" lazy>售后管理(WIP)</el-tab-pane>
-          <el-tab-pane label="收藏记录" lazy>收藏记录(WIP)</el-tab-pane>
-          <el-tab-pane label="优惠劵" lazy>
-            <UserCouponList :user-id="id" />
-          </el-tab-pane>
-          <el-tab-pane label="推广用户" lazy>
-            <UserBrokerageList :bind-user-id="id" />
-          </el-tab-pane>
-        </el-tabs>
+      </el-card>
+      <el-card header="其他明细" style="width: 100%; margin-top: 20px" shadow="never">
+        <template #header>
+          <CardTitle title="拍照风格信息" />
+        </template>
+      </el-card>
+      <el-card header="其他明细" style="width: 100%; margin-top: 20px" shadow="never">
+        <template #header>
+          <CardTitle title="代表作信息" />
+        </template>
       </el-card>
     </el-row>
   </div>
@@ -65,13 +48,12 @@
 </template>
 <script setup lang="ts">
 import * as UserApi from '@/api/member/user'
+import * as PhotographerApi from '@/api/member/photographer'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import UserForm from '@/views/member/user/UserForm.vue'
 import UserAccountInfo from './UserAccountInfo.vue'
 import UserAddressList from './UserAddressList.vue'
 import UserBasicInfo from './UserBasicInfo.vue'
-import UserBrokerageList from './UserBrokerageList.vue'
-import UserCouponList from './UserCouponList.vue'
 import UserExperienceRecordList from './UserExperienceRecordList.vue'
 import UserOrderList from './UserOrderList.vue'
 import UserPointList from './UserPointList.vue'
@@ -94,7 +76,7 @@ const openForm = (type: string) => {
 const getUserData = async (id: number) => {
   loading.value = true
   try {
-    user.value = await UserApi.getUser(id)
+    user.value = await PhotographerApi.getUserDetailInfo(id)
   } finally {
     loading.value = false
   }

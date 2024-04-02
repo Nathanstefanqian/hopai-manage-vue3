@@ -459,6 +459,16 @@ const remainingRouter: AppRouteRecordRaw[] = [
     meta: { hidden: true },
     children: [
       {
+        path: 'user',
+        name: 'PhotographerUser',
+        meta: {
+          title: '摄影师管理',
+          noCache: true,
+          hidden: true
+        },
+        component: () => import('@/views/photographer/user/index.vue')
+      },
+      {
         path: 'user/detail/:id',
         name: 'PhotographerUserDetail',
         meta: {
@@ -467,6 +477,26 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true
         },
         component: () => import('@/views/photographer/user/detail/index.vue')
+      },
+      {
+        path: 'verify',
+        name: 'PhotographerUserVerify',
+        meta: {
+          title: '摄影师审核',
+          noCache: true,
+          hidden: true
+        },
+        component: () => import('@/views/photographer/verify/index.vue')
+      },
+      {
+        path: 'verify/detail/:id',
+        name: 'PhotographerUserVerifyDetail',
+        meta: {
+          title: '摄影师审核详情',
+          noCache: true,
+          hidden: true
+        },
+        component: () => import('@/views/photographer/verify/detail/index.vue')
       }
     ]
   },

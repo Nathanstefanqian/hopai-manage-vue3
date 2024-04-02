@@ -5,7 +5,7 @@
     </template>
     <el-row>
       <el-col :span="4">
-        <ElAvatar shape="square" :size="140" :src="user.avatar || undefined" />
+        <ElAvatar shape="square" :size="100" :src="user.avatar || undefined" />
       </el-col>
       <el-col :span="20">
         <el-descriptions :column="2">

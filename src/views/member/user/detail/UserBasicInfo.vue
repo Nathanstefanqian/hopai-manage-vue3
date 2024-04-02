@@ -5,7 +5,7 @@
     </template>
     <el-row>
       <el-col :span="4">
-        <ElAvatar shape="square" :size="140" :src="user.avatar || undefined" />
+        <ElAvatar shape="square" :size="100" :src="user.avatar || undefined" />
       </el-col>
       <el-col :span="20">
         <el-descriptions :column="2">
@@ -31,7 +31,7 @@
             <template #label>
               <descriptions-item-label label="性别" icon="fa:mars-double" />
             </template>
-            <dict-tag :type="DICT_TYPE.SYSTEM_USER_SEX" :value="user.sex" />
+            {{ user.sex ? '男' : '女' }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>

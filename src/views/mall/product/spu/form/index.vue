@@ -173,7 +173,7 @@ const submitForm = async () => {
     })
     deepCopyFormData.sliderPicUrls = newSliderPicUrls
     // 校验都通过后提交表单
-    const data = deepCopyFormData as ProductSpuApi.Spu
+    let data = deepCopyFormData as ProductSpuApi.Spu
     const id = params.id as unknown as number
     if (!id) {
       await ProductSpuApi.createSpu(data)

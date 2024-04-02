@@ -1,0 +1,1 @@
+import{l as o,dz as c,dA as l,__tla as i}from"./index-0d81347e.js";let r,_=Promise.all([(()=>{try{return i}catch{}})()]).then(async()=>{const{t:m}=o();r=function(t){if(t&&t instanceof Array&&t.length>0){const{wsCache:n}=c(),a=t,s="*:*:*";return!!n.get(l.USER).permissions.some(e=>s===e||a.includes(e))}return!1}});export{_ as __tla,r as c};

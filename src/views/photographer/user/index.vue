@@ -51,9 +51,9 @@
       <el-form-item label="用户标签" prop="tagIds">
         <MemberTagSelect v-model="queryParams.tagIds" />
       </el-form-item>
-      <el-form-item label="用户等级" prop="levelId">
+      <!-- <el-form-item label="用户等级" prop="levelId">
         <MemberLevelSelect v-model="queryParams.levelId" />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="用户分组" prop="groupId">
         <MemberGroupSelect v-model="queryParams.groupId" />
       </el-form-item>
@@ -66,7 +66,6 @@
           <Icon class="mr-5px" icon="ep:refresh" />
           重置
         </el-button>
-        <el-button v-hasPermi="['promotion:coupon:send']" @click="openCoupon">发送优惠券</el-button>
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -84,12 +83,12 @@
       <el-table-column align="center" label="用户编号" prop="id" width="120px" />
       <el-table-column align="center" label="头像" prop="avatar" width="80px">
         <template #default="scope">
-          <img :src="scope.row.avatar" style="width: 40px" />
+          <img :src="scope.row.avatar" class="w-40px" />
         </template>
       </el-table-column>
       <el-table-column align="center" label="手机号" prop="mobile" width="120px" />
       <el-table-column align="center" label="昵称" prop="nickname" width="80px" />
-      <el-table-column align="center" label="等级" prop="levelName" width="100px" />
+      <!-- <el-table-column align="center" label="等级" prop="levelName" width="100px" /> -->
       <el-table-column align="center" label="分组" prop="groupName" width="100px" />
       <el-table-column
         :show-overflow-tooltip="false"
@@ -103,7 +102,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="积分" prop="point" width="100px" />
+      <!-- <el-table-column align="center" label="积分" prop="point" width="100px" /> -->
       <el-table-column align="center" label="状态" prop="status" width="100px">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
@@ -160,18 +159,7 @@
                   >
                     修改等级
                   </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="checkPermi(['member:user:update-point'])"
-                    command="handleUpdatePoint"
-                  >
-                    修改积分
-                  </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="checkPermi(['member:user:update-balance'])"
-                    command="handleUpdateBlance"
-                  >
-                    修改余额(WIP)
-                  </el-dropdown-item>
+                  <el-dropdown-item command="handleDisabled"> 禁用摄影师 </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -200,6 +188,7 @@
 <script lang="ts" setup>
 import { dateFormatter } from '@/utils/formatTime'
 import * as UserApi from '@/api/member/user'
+import * as PhotographerApi from '@/api/member/photographer'
 import { DICT_TYPE } from '@/utils/dict'
 import UserForm from './UserForm.vue'
 import MemberTagSelect from '@/views/member/tag/components/MemberTagSelect.vue'
@@ -226,7 +215,8 @@ const queryParams = reactive({
   createTime: [],
   tagIds: [],
   levelId: null,
-  groupId: null
+  groupId: null,
+  userType: 3
 })
 const queryFormRef = ref() // 搜索的表单
 const updateLevelFormRef = ref() // 修改会员等级表单
@@ -260,7 +250,7 @@ const resetQuery = () => {
 /** 打开会员详情 */
 const { push } = useRouter()
 const openDetail = (id: number) => {
-  push({ name: 'MemberUserDetail', params: { id } })
+  push({ name: 'PhotographerUserDetail', params: { id } })
 }
 
 /** 添加/修改操作 */
@@ -296,6 +286,8 @@ const handleCommand = (command: string, row: UserApi.UserVO) => {
     case 'handleUpdatePoint':
       updatePointFormRef.value.open(row.id)
       break
+    case 'handleDisabled':
+      handleDisabled(row.id)
     case 'handleUpdateBlance':
       // todo @jason：增加一个【修改余额】
       break
@@ -303,7 +295,10 @@ const handleCommand = (command: string, row: UserApi.UserVO) => {
       break
   }
 }
-
+const handleDisabled = async (id) => {
+  const res = await PhotographerApi.disablePhotographer(id)
+  console.log(res)
+}
 /** 初始化 **/
 onMounted(() => {
   getList()

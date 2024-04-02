@@ -88,7 +88,7 @@ const editorConfig = computed((): IEditorConfig => {
       scroll: true,
       MENU_CONF: {
         ['uploadImage']: {
-          server: import.meta.env.VITE_UPLOAD_URL,
+          server: '1',
           // 单个文件的最大体积限制，默认为 2M
           maxFileSize: 5 * 1024 * 1024,
           // 最多可上传几个文件，默认为 100
@@ -120,6 +120,8 @@ const editorConfig = computed((): IEditorConfig => {
           // 上传之前触发
           onBeforeUpload(file: File) {
             console.log(file)
+            // 这里可以请求sts来上传文件 todo
+
             return file
           },
           // 上传进度的回调函数
@@ -130,16 +132,18 @@ const editorConfig = computed((): IEditorConfig => {
           onSuccess(file: File, res: any) {
             console.log('onSuccess', file, res)
           },
-          onFailed(file: File, res: any) {
-            alert(res.message)
-            console.log('onFailed', file, res)
-          },
-          onError(file: File, err: any, res: any) {
-            alert(err.message)
-            console.error('onError', file, err, res)
-          },
+          // onFailed(file: File, res: any) {
+          //   alert(res.message)
+          //   console.log('onFailed', file, res)
+          // },
+          // onError(file: File, err: any, res: any) {
+          //   // alert(err.message)
+          //   // console.error('onError', file, err, res)
+          // },
           // 自定义插入图片
-          customInsert(res: any, insertFn: InsertFnType) {
+          async customInsert(res: any, insertFn: InsertFnType) {
+            await handleUpload(res)
+            console.log('回传事件', res)
             insertFn(res.data, 'image', res.data)
           }
         }
@@ -172,6 +176,10 @@ onBeforeUnmount(() => {
 const getEditorRef = async (): Promise<IDomEditor> => {
   await nextTick()
   return unref(editorRef.value) as IDomEditor
+}
+
+const handleUpload = async (res: any) => {
+  console.log(res)
 }
 
 defineExpose({

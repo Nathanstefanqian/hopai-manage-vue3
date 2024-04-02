@@ -15,14 +15,14 @@
         </UserBasicInfo>
       </el-col>
       <!-- 右上角：账户信息 -->
-      <el-col :span="10" class="detail-info-item">
+      <!-- <el-col :span="10" class="detail-info-item">
         <el-card shadow="never" class="h-full">
           <template #header>
             <CardTitle title="账户信息" />
           </template>
           <UserAccountInfo :user="user" />
         </el-card>
-      </el-col>
+      </el-col> -->
       <!-- 下边：账户明细 -->
       <!-- TODO 芋艿：【订单管理】【售后管理】【收藏记录】-->
       <el-card header="账户明细" style="width: 100%; margin-top: 20px" shadow="never">
@@ -30,7 +30,7 @@
           <CardTitle title="账户明细" />
         </template>
         <el-tabs>
-          <el-tab-pane label="积分">
+          <!-- <el-tab-pane label="积分">
             <UserPointList :user-id="id" />
           </el-tab-pane>
           <el-tab-pane label="签到" lazy>
@@ -38,13 +38,13 @@
           </el-tab-pane>
           <el-tab-pane label="成长值" lazy>
             <UserExperienceRecordList :user-id="id" />
-          </el-tab-pane>
+          </el-tab-pane> -->
           <!-- TODO @jason：增加一个余额变化； -->
-          <el-tab-pane label="余额" lazy>余额(WIP)</el-tab-pane>
-          <el-tab-pane label="收货地址" lazy>
+          <!-- <el-tab-pane label="余额" lazy>余额(WIP)</el-tab-pane> -->
+          <!-- <el-tab-pane label="收货地址" lazy>
             <UserAddressList :user-id="id" />
-          </el-tab-pane>
-          <el-tab-pane label="订单管理" lazy>
+          </el-tab-pane> -->
+          <!-- <el-tab-pane label="订单管理" lazy>
             <UserOrderList :user-id="id" />
           </el-tab-pane>
           <el-tab-pane label="售后管理" lazy>售后管理(WIP)</el-tab-pane>
@@ -54,7 +54,7 @@
           </el-tab-pane>
           <el-tab-pane label="推广用户" lazy>
             <UserBrokerageList :bind-user-id="id" />
-          </el-tab-pane>
+          </el-tab-pane> -->
         </el-tabs>
       </el-card>
     </el-row>
