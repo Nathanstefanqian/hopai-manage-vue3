@@ -51,12 +51,10 @@
 
 <script lang="ts" setup>
 import type { UploadProps } from 'element-plus'
-
 import { generateUUID } from '@/utils'
 import { propTypes } from '@/utils/propTypes'
 import { getAccessToken, getTenantId } from '@/utils/auth'
-import OSS from 'ali-oss'
-import { getStsCommon } from '@/api/sts'
+import { useUpload } from '@/hooks/web/useUpload'
 
 defineOptions({ name: 'UploadImg' })
 
@@ -86,7 +84,8 @@ const props = defineProps({
   // 是否显示删除按钮
   showDelete: propTypes.bool.def(true),
   // 是否显示按钮文字
-  showBtnText: propTypes.bool.def(true)
+  showBtnText: propTypes.bool.def(true),
+  bucket: propTypes.string.def('')
 })
 const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
@@ -94,6 +93,7 @@ const message = useMessage() // 消息弹窗
 const uuid = ref('id-' + generateUUID())
 // 查看图片
 const imgViewVisible = ref(false)
+const { signatureUrl, getStsToken, put } = useUpload()
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -113,59 +113,16 @@ const editImg = () => {
 
 // 上传组件
 const handleUpload = async (option) => {
-  let obj = option.file.name
-  let res = await put(obj, option.file)
-  res = await signatrueUrl(obj)
-  console.log('上传成功', res)
-  let index = res.indexOf('?')
-  res = res.substring(0, index)
+  const { bucket } = props
+  await getStsToken()
+  const { name } = option.file
+  await put(name, option.file)
+  let res = await signatureUrl(name)
+  res = res.substring(0, res.indexOf('?'))
   emit('update:modelValue', res)
   message.success('上传成功')
 }
-/**
- * todo 上传重复的图片的处理
- */
-// credentials
-let client
-const getStsToken = async () => {
-  let res = await getStsCommon()
-  client = new OSS({
-    region: 'oss-cn-shanghai',
-    accessKeyId: res.credentials.accessKeyId,
-    accessKeySecret: res.credentials.accessKeySecret,
-    stsToken: res.credentials.securityToken,
-    bucket: 'hopai-user-portrait',
-    refreshSTSToken: async () => {
-      res = await getStsCommon()
-      return {
-        accessKeyId: res.credentials.accessKeyId,
-        accessKeySecret: res.credentials.accessKeySecret,
-        stsToken: res.credentials.securityToken
-      }
-    }
-  })
-}
-getStsToken()
 
-// oss配置
-//上传方法
-const put = async (ObjName, fileUrl) => {
-  try {
-    let res = await client.put(ObjName, fileUrl)
-    return res
-  } catch (e) {
-    console.log(e)
-  }
-}
-// 上传后获取真实的地址
-const signatrueUrl = async (ObjName) => {
-  try {
-    let res = await client.signatureUrl(`${ObjName}`)
-    return res
-  } catch (e) {
-    console.log(e)
-  }
-}
 // 上传前处理
 const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
   const imgSize = rawFile.size / 1024 / 1024 < props.fileSize

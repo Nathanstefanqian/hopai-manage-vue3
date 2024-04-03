@@ -1,6 +1,8 @@
 import { ref } from 'vue'
 import * as stsApi from '@/api/sts'
-export const useUpload = (id: string) => {
+import OSS from 'ali-oss'
+
+export const useUpload = () => {
   const client = ref<any>(null)
   const getStsToken = async () => {
     const res = await stsApi.getStsCommon()
@@ -9,9 +11,9 @@ export const useUpload = (id: string) => {
       accessKeyId: res.credentials.accessKeyId,
       accessKeySecret: res.credentials.accessKeySecret,
       stsToken: res.credentials.securityToken,
-      bucket: 'hopai-system',
+      bucket: 'hopai-product',
       refreshSTSToken: async () => {
-        res = await uploadApi.getStsUpload(id)
+        res = await stsApi.getStsCommon()
         return {
           accessKeyId: res.credentials.accessKeyId,
           accessKeySecret: res.credentials.accessKeySecret,
@@ -20,7 +22,23 @@ export const useUpload = (id: string) => {
       }
     })
   }
+  const put = async (ObjName, fileUrl) => {
+    try {
+      return await client.value.put(ObjName, fileUrl)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  const signatureUrl = async (ObjName) => {
+    try {
+      return await client.value.signatureUrl(`${ObjName}`)
+    } catch (e) {
+      console.error(e)
+    }
+  }
   return {
+    put,
+    signatureUrl,
     getStsToken,
     client
   }

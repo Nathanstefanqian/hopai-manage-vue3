@@ -56,8 +56,8 @@
       <el-col :span="12">
         <el-form-item label="商品封面图" prop="picUrl">
           <UploadImg v-model="formData.picUrl" height="80px" />
-        </el-form-item>
-      </el-col>
+        </el-form-item> </el-col
+      >``
       <el-col :span="24">
         <el-form-item label="商品轮播图" prop="sliderPicUrls">
           <UploadImgs v-model:modelValue="formData.sliderPicUrls" />

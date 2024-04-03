@@ -172,6 +172,14 @@ const submitForm = async () => {
       typeof item === 'object' ? newSliderPicUrls.push(item.url) : newSliderPicUrls.push(item)
     })
     deepCopyFormData.sliderPicUrls = newSliderPicUrls
+    // 处理详情图列表
+    const newDescription: any[] = []
+    deepCopyFormData.sliderPicUrls!.forEach((item: any) => {
+      // 如果是前端选的图
+      typeof item === 'object' ? newDescription.push(item.url) : newDescription.push(item)
+    })
+    deepCopyFormData.description = newDescription
+
     // 校验都通过后提交表单
     let data = deepCopyFormData as ProductSpuApi.Spu
     const id = params.id as unknown as number

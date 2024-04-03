@@ -8,7 +8,11 @@ import { ElMessage } from 'element-plus'
 import { useLocaleStore } from '@/store/modules/locale'
 import { getAccessToken, getTenantId } from '@/utils/auth'
 
+import { useUpload } from '@/hooks/web/useUpload'
+
 defineOptions({ name: 'Editor' })
+
+const { getStsToken, put, signatureUrl } = useUpload()
 
 type InsertFnType = (url: string, alt: string, href: string) => void
 
@@ -118,10 +122,15 @@ const editorConfig = computed((): IEditorConfig => {
           fieldName: 'file',
 
           // 上传之前触发
-          onBeforeUpload(file: File) {
+          async onBeforeUpload(file: File) {
             console.log(file)
-            // 这里可以请求sts来上传文件 todo
-
+            await getStsToken() //这一步来激活client
+            let name = file.name
+            await put(name, file) // 上传
+            let url = await signatureUrl(name)
+            let index = url.indexOf('?')
+            url = url.substring(0, index)
+            ElMessage.success(url)
             return file
           },
           // 上传进度的回调函数

@@ -47,17 +47,17 @@
 </template>
 <script lang="ts" setup>
 import { PropType } from 'vue'
-import OSS from 'ali-oss'
 import type { UploadFile, UploadProps, UploadUserFile } from 'element-plus'
 import { ElNotification } from 'element-plus'
 
 import { propTypes } from '@/utils/propTypes'
 import { getAccessToken, getTenantId } from '@/utils/auth'
-import { getStsCommon } from '@/api/sts'
+import { useUpload } from '@/hooks/web/useUpload'
 
 defineOptions({ name: 'UploadImgs' })
 
 const message = useMessage() // 消息弹窗
+const { signatureUrl, put, getStsToken } = useUpload()
 
 type FileTypes =
   | 'image/apng'
@@ -167,56 +167,16 @@ const handleExceed = () => {
   })
 }
 
+// 主要调用的上传方法
 const handleUpload = async (option) => {
-  let obj = option.file.name
-  let res = await put(obj, option.file)
-  res = await signatrueUrl(obj)
-  let index = res.indexOf('?')
-  res = res.substring(0, index)
+  await getStsToken()
+  const { name } = option.file
+  await put(name, option.file)
+  let res = await signatureUrl(name)
+  res = res.substring(0, res.indexOf('?'))
   fileList.value[fileList.value.length - 1].url = res
   emit('update:modelValue', fileList.value)
   message.success('上传成功')
-}
-
-// oss配置
-let client
-const getStsToken = async () => {
-  let res = await getStsCommon()
-  client = new OSS({
-    region: 'oss-cn-shanghai',
-    accessKeyId: res.credentials.accessKeyId,
-    accessKeySecret: res.credentials.accessKeySecret,
-    stsToken: res.credentials.securityToken,
-    bucket: 'hopai-product',
-    refreshSTSToken: async () => {
-      res = await getStsCommon()
-      return {
-        accessKeyId: res.credentials.accessKeyId,
-        accessKeySecret: res.credentials.accessKeySecret,
-        stsToken: res.credentials.securityToken
-      }
-    }
-  })
-}
-getStsToken()
-
-const put = async (ObjName, fileUrl) => {
-  try {
-    let res = await client.put(ObjName, fileUrl)
-    return res
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-// 获取真实的地址
-const signatrueUrl = async (ObjName) => {
-  try {
-    let res = await client.signatureUrl(`${ObjName}`)
-    return res
-  } catch (e) {
-    console.log(e)
-  }
 }
 
 // 图片预览

@@ -44,7 +44,7 @@ export interface Spu {
   specType?: boolean // 商品规格
   subCommissionType?: boolean // 分销类型
   skus?: Sku[] // sku数组
-  description?: string // 商品详情
+  description?: any // 商品详情
   service?: string // 服务说明
   sort?: number // 商品排序
   giveIntegral?: number // 赠送积分
@@ -61,7 +61,7 @@ export interface Spu {
   stock?: number // 商品库存
   createTime?: Date // 商品创建时间
   status?: number // 商品状态
-  activityOrders: number[] // 活动排序
+  activityOrders?: number[] // 活动排序
 }
 
 // 获得 Spu 列表
