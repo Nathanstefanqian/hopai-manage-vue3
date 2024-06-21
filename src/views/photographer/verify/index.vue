@@ -39,7 +39,6 @@
     </el-form>
   </ContentWrap>
 
-  <!-- 列表 -->
   <ContentWrap>
     <el-table
       v-loading="loading"
@@ -49,79 +48,21 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55" />
-      <el-table-column align="center" label="用户编号" prop="userId" width="120px" />
-      <el-table-column align="center" label="头像" prop="avatar" width="80px">
-        <template #default="scope">
-          <img :src="scope.row.avatar" class="w-40px" />
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="用户编号" prop="userId" width="180px" />
       <el-table-column align="center" label="手机号" prop="phone" width="120px" />
-      <el-table-column align="center" label="姓名" prop="name" width="80px" />
-      <el-table-column align="center" label="身份证号" prop="" width="100px" />
-      <el-table-column align="center" label="银行卡号" prop="" width="100px" />
-      <el-table-column align="center" label="审核状态" prop="registerStatus" width="100px">
+      <el-table-column align="center" label="姓名" prop="idCardName" width="80px" />
+      <el-table-column align="center" label="接单形式" prop="orderType" width="100px">
         <template #default="scope">
-          <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.registerStatus" />
+          <span>{{ scope.row.orderType ? '全职' : '兼职' }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="接单形式" prop="" width="100px" />
-      <el-table-column align="center" label="设备信息" prop="" width="100px" />
-      <el-table-column align="center" label="所在地" prop="" width="100px" />
+      <el-table-column align="center" label="设备信息" prop="camera" width="100px" />
+      <el-table-column align="center" label="所在地" prop="areaName" />
+      <el-table-column align="center" label="注册时间" prop="createTime" />
       <el-table-column :show-overflow-tooltip="false" align="center" fixed="right" label="操作">
         <template #default="scope">
           <div class="flex items-center justify-center">
-            <el-button link type="primary" @click="openDetail(scope.row.userId)">详情</el-button>
-            <el-dropdown
-              v-hasPermi="[
-                'member:user:update',
-                'member:user:update-level',
-                'member:user:update-point',
-                'member:user:update-balance'
-              ]"
-              @command="(command) => handleCommand(command, scope.row)"
-            >
-              <el-button link type="primary">
-                <Icon icon="ep:d-arrow-right" />
-                更多
-              </el-button>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item
-                    v-if="checkPermi(['member:user:update'])"
-                    command="handleUpdate"
-                  >
-                    编辑
-                  </el-dropdown-item>
-                  <el-dropdown-item @click="verify(scope.row.userId, 4)">
-                    审核可接单
-                  </el-dropdown-item>
-                  <el-dropdown-item @click="verify(scope.row.userId, 3)">
-                    审核通过已注册
-                  </el-dropdown-item>
-                  <el-dropdown-item @click="verify(scope.row.userId, 1)">
-                    审核不通过
-                  </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="checkPermi(['member:user:update-level'])"
-                    command="handleUpdateLevel"
-                  >
-                    修改等级
-                  </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="checkPermi(['member:user:update-point'])"
-                    command="handleUpdatePoint"
-                  >
-                    修改积分
-                  </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="checkPermi(['member:user:update-balance'])"
-                    command="handleUpdateBlance"
-                  >
-                    修改余额(WIP)
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
+            <el-button link type="primary" @click="openDetail(scope.row.userId)">审核</el-button>
           </div>
         </template>
       </el-table-column>
@@ -145,15 +86,14 @@
   <CouponSendForm ref="couponSendFormRef" />
 </template>
 <script lang="ts" setup>
-import { dateFormatter } from '@/utils/formatTime'
 import * as UserApi from '@/api/member/user'
 import * as PhotographerApi from '@/api/member/photographer'
-import { DICT_TYPE } from '@/utils/dict'
 import UserForm from './UserForm.vue'
 import UserLevelUpdateForm from './UserLevelUpdateForm.vue'
 import UserPointUpdateForm from './UserPointUpdateForm.vue'
 import { CouponSendForm } from '@/views/mall/promotion/coupon/components'
-import { checkPermi } from '@/utils/permission'
+import { formatDate } from '@/utils/formatTime'
+import { format } from 'path'
 
 defineOptions({ name: 'MemberUser' })
 
@@ -180,11 +120,14 @@ const selectedIds = ref<number[]>([]) // 表格的选中 ID 数组
 
 /** 查询列表 */
 const getList = async () => {
-  const params = { pageNo: queryParams.pageNo, pageSize: queryParams.pageSize } // 1. 会员 2. 管理员 3. 摄影师
+  const params = { pageNo: queryParams.pageNo, pageSize: queryParams.pageSize, registerStatus: 2 } // 1. 会员 2. 管理员 3. 摄影师
   loading.value = true
   try {
     const data = await PhotographerApi.getUserVerify(params)
     list.value = data.list
+    list.value.map((item: any) => {
+      item.createTime = formatDate(item.createTime)
+    })
     total.value = data.total
   } finally {
     loading.value = false
@@ -235,15 +178,15 @@ const verify = async (id: any, status: number) => {
 const handleCommand = (command: string, row: UserApi.UserVO) => {
   switch (command) {
     case 'handleUpdate':
-      openForm('update', row.id)
+      openForm('update', row.userId)
       break
     case 'handleUpdateLevel':
-      updateLevelFormRef.value.open(row.id)
+      updateLevelFormRef.value.open(row.userId)
       break
     case 'handleVerify':
       verify()
     case 'handleUpdatePoint':
-      updatePointFormRef.value.open(row.id)
+      updatePointFormRef.value.open(row.userId)
       break
     case 'handleUpdateBlance':
       // todo @jason：增加一个【修改余额】

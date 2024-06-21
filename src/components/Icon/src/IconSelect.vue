@@ -92,6 +92,10 @@ function onCurrentChange(page) {
   currentPage.value = page
 }
 
+const clear = () => {
+  emit('update:modelValue', 'clear') // 将输入框的值设置为空字符串
+}
+
 watch(
   () => {
     return props.modelValue
@@ -177,6 +181,7 @@ watch(
         </ElPopover>
       </template>
     </ElInput>
+    <el-button @click="clear">清空</el-button>
   </div>
 </template>
 

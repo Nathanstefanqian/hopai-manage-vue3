@@ -76,7 +76,7 @@ const formData = ref<ProductSpuApi.Spu>({
   keyword: '', // 关键字
   unit: undefined, // 单位
   picUrl: '', // 商品封面图
-  sliderPicUrls: [], // 商品轮播图
+  sliderPicUrls: '', // 商品轮播图
   introduction: '', // 商品简介
   deliveryTemplateId: undefined, // 运费模版
   brandId: undefined, // 商品品牌
@@ -119,6 +119,13 @@ const getDetail = async () => {
     formLoading.value = true
     try {
       const res = (await ProductSpuApi.getSpu(id)) as ProductSpuApi.Spu
+      try {
+        res.description = JSON.parse(res.description) // 将json反序列化
+        res.service = JSON.parse(res.service)
+      } catch (error) {
+        res.description = []
+        res.service = []
+      }
       res.skus?.forEach((item) => {
         if (isDetail.value) {
           item.price = floatToFixed2(item.price)
@@ -174,11 +181,19 @@ const submitForm = async () => {
     deepCopyFormData.sliderPicUrls = newSliderPicUrls
     // 处理详情图列表
     const newDescription: any[] = []
-    deepCopyFormData.sliderPicUrls!.forEach((item: any) => {
+    deepCopyFormData.description!.forEach((item: any) => {
       // 如果是前端选的图
       typeof item === 'object' ? newDescription.push(item.url) : newDescription.push(item)
     })
-    deepCopyFormData.description = newDescription
+    // 处理服务说明
+    const newService: any[] = []
+    deepCopyFormData.service!.forEach((item: any) => {
+      typeof item === 'object' ? newService.push(item.url) : newService.push(item)
+    })
+
+    // json数组序列化
+    deepCopyFormData.description = JSON.stringify(newDescription)
+    deepCopyFormData.service = JSON.stringify(newService)
 
     // 校验都通过后提交表单
     let data = deepCopyFormData as ProductSpuApi.Spu

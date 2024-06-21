@@ -66,7 +66,6 @@
           <Icon class="mr-5px" icon="ep:refresh" />
           重置
         </el-button>
-        <el-button v-hasPermi="['promotion:coupon:send']" @click="openCoupon">发送优惠券</el-button>
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -103,7 +102,6 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="积分" prop="point" width="100px" />
       <el-table-column align="center" label="状态" prop="status" width="100px">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />

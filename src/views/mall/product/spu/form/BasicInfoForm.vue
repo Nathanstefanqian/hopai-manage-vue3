@@ -56,8 +56,8 @@
       <el-col :span="12">
         <el-form-item label="商品封面图" prop="picUrl">
           <UploadImg v-model="formData.picUrl" height="80px" />
-        </el-form-item> </el-col
-      >``
+        </el-form-item>
+      </el-col>
       <el-col :span="24">
         <el-form-item label="商品轮播图" prop="sliderPicUrls">
           <UploadImgs v-model:modelValue="formData.sliderPicUrls" />
@@ -266,8 +266,10 @@ const formData = reactive<Spu>({
   brandId: null, // 商品品牌
   specType: false, // 商品规格
   subCommissionType: false, // 分销类型
-  skus: []
+  skus: [],
+  description: []
 })
+
 const rules = reactive({
   name: [required],
   categoryId: [required],
@@ -292,9 +294,11 @@ watch(
       return
     }
     copyValueToTarget(formData, data)
-    formData.sliderPicUrls = data['sliderPicUrls']?.map((item) => ({
-      url: item
-    }))
+    if (data['sliderPicUrls'].length) {
+      formData.sliderPicUrls = data['sliderPicUrls']?.map((item) => ({
+        url: item
+      }))
+    }
     propertyList.value = getPropertyList(data)
   },
   {
@@ -306,6 +310,32 @@ watch(
  * 表单校验
  */
 const emit = defineEmits(['update:activeName'])
+
+const deepCopy = (obj: any) => {
+  if (obj === null || typeof obj !== 'object') {
+    return obj
+  }
+
+  if (obj instanceof Array) {
+    let copy: any = []
+    for (let i = 0; i < obj.length; i++) {
+      copy[i] = deepCopy(obj[i])
+    }
+    return copy
+  }
+
+  if (obj instanceof Object) {
+    let copy = {}
+    for (let attr in obj) {
+      if (obj.hasOwnProperty(attr)) {
+        copy[attr] = deepCopy(obj[attr])
+      }
+    }
+    return copy
+  }
+
+  throw new Error("Unable to copy obj! Its type isn't supported.")
+}
 const validate = async () => {
   // 校验 sku
   skuListRef.value.validateSku()
@@ -318,7 +348,6 @@ const validate = async () => {
       // 目的截断之后的校验
       throw new Error('商品信息未完善！！')
     } else {
-      // 校验通过更新数据
       Object.assign(props.propFormData, formData)
     }
   })

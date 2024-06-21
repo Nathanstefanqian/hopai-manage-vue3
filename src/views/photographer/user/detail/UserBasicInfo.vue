@@ -39,30 +39,6 @@
             </template>
             {{ user.areaName }}
           </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
-              <descriptions-item-label label="注册 IP" icon="ep:position" />
-            </template>
-            {{ user.registerIp }}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
-              <descriptions-item-label label="生日" icon="fa:birthday-cake" />
-            </template>
-            {{ user.birthday ? formatDate(user.birthday) : '空' }}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
-              <descriptions-item-label label="注册时间" icon="ep:calendar" />
-            </template>
-            {{ user.createTime ? formatDate(user.createTime) : '空' }}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
-              <descriptions-item-label label="最后登录时间" icon="ep:calendar" />
-            </template>
-            {{ user.loginDate ? formatDate(user.loginDate) : '空' }}
-          </el-descriptions-item>
         </el-descriptions>
       </el-col>
     </el-row>

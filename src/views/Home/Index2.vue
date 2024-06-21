@@ -176,11 +176,8 @@ const getCount = async () => {
 // 用户来源
 const getUserAccessSource = async () => {
   const data = [
-    { value: 335, name: 'analysis.directAccess' },
-    { value: 310, name: 'analysis.mailMarketing' },
-    { value: 234, name: 'analysis.allianceAdvertising' },
-    { value: 135, name: 'analysis.videoAdvertising' },
-    { value: 1548, name: 'analysis.searchEngines' }
+    { value: 335, name: '待处理' },
+    { value: 310, name: '已处理' }
   ]
   set(
     pieOptionsData,

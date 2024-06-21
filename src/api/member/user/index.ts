@@ -1,6 +1,19 @@
 import request from '@/config/axios'
 
+interface appPhotographerInfoBaseVO {
+  littleRedBookId: string
+  wechatId: string
+  douYinId: string
+  lightingEquipment: string
+  camera: string
+  zoomLens: string
+  backgroundImageUrl: string
+  userId: string
+  orderType: boolean
+}
 export interface UserVO {
+  appPhotographerInfoBaseVO: appPhotographerInfoBaseVO
+  userId: number
   id: number
   avatar: string | undefined
   birthday: number | undefined
@@ -16,6 +29,7 @@ export interface UserVO {
   status: number
   areaId: number | undefined
   areaName: string | undefined
+  areaNames: string | undefined
   levelName: string | null
   point: number | undefined | null
   totalPoint: number | undefined | null
@@ -29,7 +43,7 @@ export const getUserPage = async (params) => {
 
 // 查询会员用户详情
 export const getUser = async (id: number) => {
-  return await request.get({ url: `/member/use r/get?id=` + id })
+  return await request.get({ url: `/member/user/get?id=` + id })
 }
 
 // 修改会员用户

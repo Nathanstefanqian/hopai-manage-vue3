@@ -1,184 +1,138 @@
 <template>
-  <div>
-    <el-card shadow="never">
-      <el-skeleton :loading="loading" animated>
-        <el-row :gutter="20" justify="space-between">
-          <el-col :xl="12" :lg="12" :md="12" :sm="24" :xs="24">
-            <div class="flex items-center">
-              <img :src="avatar" alt="" class="mr-20px h-70px w-70px rounded-[50%]" />
-              <div>
-                <div class="text-20px">
-                  {{ t('workplace.welcome') }} {{ username }} {{ t('workplace.happyDay') }}
-                </div>
-                <div class="mt-10px text-14px text-gray-500">
-                  {{ t('workplace.toady') }}，20℃ - 32℃！
-                </div>
-              </div>
+  <div class="dashboard-layout">
+    <div class="dashboard-layout-flex">
+      <div class="dashboard-box">
+        <div class="dashboard-box-first-top">
+          <div class="dashboard-box-first-top-title">摄影师数目</div>
+          <div class="dashboard-box-first-top-block-layout">
+            <div class="dashboard-box-first-top-block">
+              <span>总摄影师</span>
+              <CountTo class="text-20px c-#ba2636" :start-val="0" :end-val="123" :duration="2600" />
             </div>
-          </el-col>
-          <el-col :xl="12" :lg="12" :md="12" :sm="24" :xs="24">
-            <div class="h-70px flex items-center justify-end lt-sm:mt-10px">
-              <div class="px-8px text-right">
-                <div class="mb-20px text-14px text-gray-400">{{ t('workplace.project') }}</div>
-                <CountTo
-                  class="text-20px"
-                  :start-val="0"
-                  :end-val="totalSate.project"
-                  :duration="2600"
-                />
-              </div>
-              <el-divider direction="vertical" />
-              <div class="px-8px text-right">
-                <div class="mb-20px text-14px text-gray-400">{{ t('workplace.toDo') }}</div>
-                <CountTo
-                  class="text-20px"
-                  :start-val="0"
-                  :end-val="totalSate.todo"
-                  :duration="2600"
-                />
-              </div>
-              <el-divider direction="vertical" border-style="dashed" />
-              <div class="px-8px text-right">
-                <div class="mb-20px text-14px text-gray-400">{{ t('workplace.access') }}</div>
-                <CountTo
-                  class="text-20px"
-                  :start-val="0"
-                  :end-val="totalSate.access"
-                  :duration="2600"
-                />
-              </div>
+            <div class="dashboard-box-first-top-block">
+              <span>可摄影师</span>
+              <CountTo class="text-20px c-#ba2636" :start-val="0" :end-val="234" :duration="2600" />
             </div>
-          </el-col>
-        </el-row>
-      </el-skeleton>
-    </el-card>
-  </div>
-
-  <el-row class="mt-5px" :gutter="20" justify="space-between">
-    <el-col :xl="16" :lg="16" :md="24" :sm="24" :xs="24" class="mb-10px">
-      <el-card shadow="never">
-        <template #header>
-          <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.project') }}</span>
-            <el-link type="primary" :underline="false">{{ t('action.more') }}</el-link>
+            <div class="dashboard-box-first-top-block">
+              <span>待审核摄影师</span>
+              <CountTo class="text-20px c-#ba2636" :start-val="0" :end-val="234" :duration="2600" />
+            </div>
+            <div class="dashboard-box-first-top-block">
+              <span>黑名单</span>
+              <CountTo class="text-20px c-#ba2636" :start-val="0" :end-val="234" :duration="2600" />
+            </div>
           </div>
-        </template>
-        <el-skeleton :loading="loading" animated>
-          <el-row>
-            <el-col
-              v-for="(item, index) in projects"
-              :key="`card-${index}`"
-              :xl="8"
-              :lg="8"
-              :md="8"
-              :sm="24"
-              :xs="24"
+        </div>
+        <div class="dashboard-box-first-picture">
+          <div class="dashboard-box-first-picture-title">摄影画像</div>
+          <div class="dashboard-box-first-picture-btn">
+            <button
+              @click="() => (picBtn = 1)"
+              :class="picBtn == 1 ? 'dashboard-box-first-picture-btn-active' : ''"
+              >按地区</button
             >
-              <el-card shadow="hover">
-                <div class="flex items-center">
-                  <Icon :icon="item.icon" :size="25" class="mr-10px" />
-                  <span class="text-16px">{{ item.name }}</span>
-                </div>
-                <div class="mt-15px text-14px text-gray-400">{{ t(item.message) }}</div>
-                <div class="mt-20px flex justify-between text-12px text-gray-400">
-                  <span>{{ item.personal }}</span>
-                  <span>{{ formatTime(item.time, 'yyyy-MM-dd') }}</span>
-                </div>
-              </el-card>
-            </el-col>
-          </el-row>
-        </el-skeleton>
-      </el-card>
-
-      <el-card shadow="never" class="mt-5px">
-        <el-skeleton :loading="loading" animated>
-          <el-row :gutter="20" justify="space-between">
-            <el-col :xl="10" :lg="10" :md="24" :sm="24" :xs="24">
-              <el-card shadow="hover" class="mb-10px">
-                <el-skeleton :loading="loading" animated>
-                  <Echart :options="pieOptionsData" :height="280" />
-                </el-skeleton>
-              </el-card>
-            </el-col>
-            <el-col :xl="14" :lg="14" :md="24" :sm="24" :xs="24">
-              <el-card shadow="hover" class="mb-10px">
-                <el-skeleton :loading="loading" animated>
-                  <Echart :options="barOptionsData" :height="280" />
-                </el-skeleton>
-              </el-card>
-            </el-col>
-          </el-row>
-        </el-skeleton>
-      </el-card>
-    </el-col>
-    <el-col :xl="8" :lg="8" :md="24" :sm="24" :xs="24" class="mb-10px">
-      <el-card shadow="never">
-        <template #header>
-          <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.shortcutOperation') }}</span>
+            <button
+              @click="() => (picBtn = 2)"
+              :class="picBtn == 2 ? 'dashboard-box-first-picture-btn-active' : ''"
+              >按性别</button
+            >
+            <button
+              @click="() => (picBtn = 3)"
+              :class="picBtn == 3 ? 'dashboard-box-first-picture-btn-active' : ''"
+              >按年龄</button
+            >
+            <button
+              @click="() => (picBtn = 4)"
+              :class="picBtn == 4 ? 'dashboard-box-first-picture-btn-active' : ''"
+              >按等级</button
+            >
+            <button
+              @click="() => (picBtn = 5)"
+              :class="picBtn == 5 ? 'dashboard-box-first-picture-btn-active' : ''"
+              >按设备</button
+            >
           </div>
-        </template>
-        <el-skeleton :loading="loading" animated>
-          <el-row>
-            <el-col v-for="item in shortcut" :key="`team-${item.name}`" :span="8" class="mb-10px">
-              <div class="flex items-center">
-                <Icon :icon="item.icon" class="mr-10px" />
-                <el-link type="default" :underline="false" @click="setWatermark(item.name)">
-                  {{ item.name }}
-                </el-link>
-              </div>
-            </el-col>
-          </el-row>
-        </el-skeleton>
-      </el-card>
-      <el-card shadow="never" class="mt-10px">
-        <template #header>
-          <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.notice') }}</span>
-            <el-link type="primary" :underline="false">{{ t('action.more') }}</el-link>
+        </div>
+        <div class="dashboard-box-first-top-echart mt-5">
+          <Echart :options="barOptionsData" :height="280" />
+        </div>
+      </div>
+      <div class="dashboard-box ml-40px">
+        <div class="dashboard-box-second-total mb-10">
+          <div style="font-size: 18px">订单总量</div>
+          <CountTo class="text-20px c-#ba2636" :start-val="0" :end-val="123" :duration="2600" />
+        </div>
+        <div class="dashboard-box-second-count">
+          <div class="dashboard-box-second-count-block">
+            <div class="mb-5px">已完成</div>
+            <CountTo class="text-20px c-#ba2636" :start-val="0" :end-val="123" :duration="2600" />
           </div>
-        </template>
-        <el-skeleton :loading="loading" animated>
-          <div v-for="(item, index) in notice" :key="`dynamics-${index}`">
-            <div class="flex items-center">
-              <img :src="avatar" alt="" class="mr-20px h-35px w-35px rounded-[50%]" />
-              <div>
-                <div class="text-14px">
-                  <Highlight :keys="item.keys.map((v) => t(v))">
-                    {{ item.type }} : {{ item.title }}
-                  </Highlight>
-                </div>
-                <div class="mt-15px text-12px text-gray-400">
-                  {{ formatTime(item.date, 'yyyy-MM-dd') }}
-                </div>
-              </div>
-            </div>
-            <el-divider />
+          <div class="dashboard-box-second-count-block">
+            <div class="mb-5px">进行中</div>
+            <CountTo class="text-20px c-#ba2636" :start-val="0" :end-val="123" :duration="2600" />
           </div>
-        </el-skeleton>
-      </el-card>
-    </el-col>
-  </el-row>
+          <div class="dashboard-box-second-count-block">
+            <div class="mb-5px">待支付</div>
+            <CountTo class="text-20px c-#ba2636" :start-val="0" :end-val="123" :duration="2600" />
+          </div>
+          <div class="dashboard-box-second-count-block">
+            <div class="mb-5px">异常订单</div>
+            <CountTo class="text-20px c-#ba2636" :start-val="0" :end-val="123" :duration="2600" />
+          </div>
+        </div>
+        <div class="dashboard-box-second-divider mb-10 mt-20"></div>
+        <div class="dashboard-box-second-picture-echart">
+          <Echart :options="pieOptions" class="dashboard-box-second-picture-echart-small" />
+        </div>
+      </div>
+    </div>
+    <div class="dashboard-layout-flex">
+      <div class="dashboard-box !mt-10 !h-100">
+        <div class="dashboard-box-third-picture-title"> 营业额 （单位：万元） </div>
+        <div class="dashboard-box-third-picture-btn">
+          <button
+            @click="() => (picNumBtn = 1)"
+            :class="picNumBtn == 1 ? 'dashboard-box-third-picture-btn-active' : ''"
+            >按年</button
+          >
+          <button
+            @click="() => (picNumBtn = 2)"
+            :class="picNumBtn == 2 ? 'dashboard-box-third-picture-btn-active' : ''"
+            >按月</button
+          >
+          <button
+            @click="() => (picNumBtn = 3)"
+            :class="picNumBtn == 3 ? 'dashboard-box-third-picture-btn-active' : ''"
+            >按周</button
+          >
+          <button
+            @click="() => (picNumBtn = 4)"
+            :class="picNumBtn == 4 ? 'dashboard-box-third-picture-btn-active' : ''"
+            >按日</button
+          >
+        </div>
+        <div class="dashboard-box-third-picture-echart mt-10">
+          <Echart :options="lineOptions" :height="280" />
+        </div>
+      </div>
+      <div class="dashboard-box dashboard-box-border ml-40px"></div>
+    </div>
+  </div>
 </template>
 <script lang="ts" setup>
 import { set } from 'lodash-es'
 import { EChartsOption } from 'echarts'
-import { formatTime } from '@/utils'
 
-import { useUserStore } from '@/store/modules/user'
-import { useWatermark } from '@/hooks/web/useWatermark'
-import avatarImg from '@/assets/imgs/avatar.gif'
-import type { WorkplaceTotal, Project, Notice, Shortcut } from './types'
 import { pieOptions, barOptions } from './echarts-data'
+import { PieChart } from 'echarts/charts'
 defineOptions({ name: 'Home' })
 
 const { t } = useI18n()
-const userStore = useUserStore()
-const { setWatermark } = useWatermark()
 const loading = ref(true)
-const avatar = userStore.getUser.avatar ? userStore.getUser.avatar : avatarImg
-const username = userStore.getUser.nickname
 const pieOptionsData = reactive<EChartsOption>(pieOptions) as EChartsOption
+
+const picBtn = ref(1)
+const picNumBtn = ref(1)
 // 获取统计数
 let totalSate = reactive<WorkplaceTotal>({
   project: 0,
@@ -196,7 +150,6 @@ const getCount = async () => {
 }
 
 // 获取项目数
-let projects = reactive<Project[]>([])
 const getProject = async () => {
   const data = [
     {
@@ -245,41 +198,6 @@ const getProject = async () => {
   projects = Object.assign(projects, data)
 }
 
-// 获取通知公告
-let notice = reactive<Notice[]>([])
-const getNotice = async () => {
-  const data = [
-    {
-      title: '系统升级版本',
-      type: '通知',
-      keys: ['通知', '升级'],
-      date: new Date()
-    },
-    {
-      title: '系统凌晨维护',
-      type: '公告',
-      keys: ['公告', '维护'],
-      date: new Date()
-    },
-    {
-      title: '系统升级版本',
-      type: '通知',
-      keys: ['通知', '升级'],
-      date: new Date()
-    },
-    {
-      title: '系统凌晨维护',
-      type: '公告',
-      keys: ['公告', '维护'],
-      date: new Date()
-    }
-  ]
-  notice = Object.assign(notice, data)
-}
-
-// 获取快捷入口
-let shortcut = reactive<Shortcut[]>([])
-
 const getShortcut = async () => {
   const data = [
     {
@@ -319,11 +237,8 @@ const getShortcut = async () => {
 // 用户来源
 const getUserAccessSource = async () => {
   const data = [
-    { value: 335, name: 'analysis.directAccess' },
-    { value: 310, name: 'analysis.mailMarketing' },
-    { value: 234, name: 'analysis.allianceAdvertising' },
-    { value: 135, name: 'analysis.videoAdvertising' },
-    { value: 1548, name: 'analysis.searchEngines' }
+    { value: 335, name: '未解决' },
+    { value: 310, name: '已解决' }
   ]
   set(
     pieOptionsData,
@@ -342,13 +257,14 @@ const barOptionsData = reactive<EChartsOption>(barOptions) as EChartsOption
 // 周活跃量
 const getWeeklyUserActivity = async () => {
   const data = [
-    { value: 13253, name: 'analysis.monday' },
-    { value: 34235, name: 'analysis.tuesday' },
-    { value: 26321, name: 'analysis.wednesday' },
-    { value: 12340, name: 'analysis.thursday' },
-    { value: 24643, name: 'analysis.friday' },
-    { value: 1322, name: 'analysis.saturday' },
-    { value: 1324, name: 'analysis.sunday' }
+    { value: 13253, name: '南京' },
+    { value: 34235, name: '北京' },
+    { value: 26321, name: '上海' },
+    { value: 12340, name: '深圳' },
+    { value: 24643, name: '广州' },
+    { value: 1322, name: '杭州' },
+    { value: 1324, name: '贵阳' },
+    { value: 1234, name: '桂林' }
   ]
   set(
     barOptionsData,
@@ -357,18 +273,40 @@ const getWeeklyUserActivity = async () => {
   )
   set(barOptionsData, 'series', [
     {
-      name: t('analysis.activeQuantity'),
+      name: '',
       data: data.map((v) => v.value),
       type: 'bar'
     }
   ])
 }
 
+const lineOptions = ref({
+  title: {
+    text: '每年营业额',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'axis'
+  },
+  xAxis: {
+    type: 'category',
+    data: ['2022', '2023', '2024', '2025'] // 时间数据
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      data: [100, 200, 300, 150], // 数值数据
+      type: 'line'
+    }
+  ]
+})
+
 const getAllApi = async () => {
   await Promise.all([
     getCount(),
     getProject(),
-    getNotice(),
     getShortcut(),
     getUserAccessSource(),
     getWeeklyUserActivity()
@@ -378,3 +316,124 @@ const getAllApi = async () => {
 
 getAllApi()
 </script>
+<style lang="scss">
+.dashboard-layout {
+  width: 100%;
+  padding: 20px;
+  background-color: #fff;
+  box-sizing: border-box;
+
+  &-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .dashboard-box {
+    width: 50%;
+    height: 520px;
+    padding: 20px;
+    border: 2px solid #e0e0e0;
+    box-sizing: border-box;
+
+    &-border {
+      border: 0;
+    }
+
+    &-first-top {
+      width: 100%;
+      margin-bottom: 20px;
+
+      &-title {
+        height: 40px;
+        font-size: 18px;
+      }
+
+      &-block-layout {
+        display: flex;
+        flex-direction: row;
+      }
+
+      &-block {
+        display: flex;
+        width: 25%;
+        flex-direction: column;
+        margin-right: 20px;
+        align-items: center;
+      }
+    }
+
+    &-first-picture-title {
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    &-first-picture-btn button {
+      padding: 5px 20px;
+      margin: 0;
+      cursor: pointer;
+      background-color: #fff;
+      border: 1px solid #e0e0e6;
+      transition: all ease 0.5s;
+
+      &:hover {
+        color: #ba2636;
+        border: 1px solid #ba2636;
+        transition: all ease 0.5s;
+      }
+    }
+
+    &-first-picture-btn-active {
+      color: #ba2636;
+      border: 1px solid #ba2636 !important;
+    }
+
+    &-second-total {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &-second-count {
+      display: flex;
+      width: 100%;
+
+      .dashboard-box-second-count-block {
+        display: flex;
+        width: 250px;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    &-second-divider {
+      width: 100%;
+      border: 1px dashed #e0e0e0;
+    }
+
+    &-third-picture-title {
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    &-third-picture-btn button {
+      padding: 5px 20px;
+      margin: 0;
+      cursor: pointer;
+      background-color: #fff;
+      border: 1px solid #e0e0e6;
+      transition: all ease 0.5s;
+
+      &:hover {
+        color: #ba2636;
+        border: 1px solid #ba2636;
+        transition: all ease 0.5s;
+      }
+    }
+
+    &-third-picture-btn-active {
+      color: #ba2636;
+      border: 1px solid #ba2636 !important;
+    }
+  }
+}
+</style>

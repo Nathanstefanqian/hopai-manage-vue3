@@ -4,13 +4,13 @@
       <template #label>
         <descriptions-item-label label=" 小红书号 " icon="svg-icon:member_level" />
       </template>
-      {{ user.appPhotographerInfoBaseVO.littleRedBookId || '无' }}
+      {{ user.appPhotographerInfoBaseVO ? user.appPhotographerInfoBaseVO.littleRedBookId : '无' }}
     </el-descriptions-item>
     <el-descriptions-item>
       <template #label>
         <descriptions-item-label label=" 抖音号 " icon="ep:suitcase" />
       </template>
-      {{ user.appPhotographerInfoBaseVO.douyinId || '无' }}
+      {{ user.appPhotographerInfoBaseVO ? user.appPhotographerInfoBaseVO.douYinId : '无' }}
     </el-descriptions-item>
   </el-descriptions>
 </template>

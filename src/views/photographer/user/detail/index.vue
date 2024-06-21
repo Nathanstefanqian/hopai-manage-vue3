@@ -18,7 +18,7 @@
       <el-col :span="10" class="detail-info-item">
         <el-card shadow="never" class="h-full">
           <template #header>
-            <CardTitle title="财务信息" />
+            <CardTitle title="财务与服务信息" />
           </template>
           <UserAccountInfo :user="user" />
         </el-card>
@@ -27,12 +27,12 @@
       <!-- TODO 芋艿：【订单管理】【售后管理】【收藏记录】-->
       <el-card header="其他明细" style="width: 100%; margin-top: 20px" shadow="never">
         <template #header>
-          <CardTitle title="设备信息" />
+          <CardTitle title="技术信息" />
         </template>
       </el-card>
       <el-card header="其他明细" style="width: 100%; margin-top: 20px" shadow="never">
         <template #header>
-          <CardTitle title="拍照风格信息" />
+          <CardTitle title="接单信息" />
         </template>
       </el-card>
       <el-card header="其他明细" style="width: 100%; margin-top: 20px" shadow="never">
@@ -86,7 +86,7 @@ const getUserData = async (id: number) => {
 const { currentRoute } = useRouter() // 路由
 const { delView } = useTagsViewStore() // 视图操作
 const route = useRoute()
-const id = Number(route.params.id)
+const id = route.params.id
 onMounted(() => {
   if (!id) {
     ElMessage.warning('参数错误，会员编号不能为空！')

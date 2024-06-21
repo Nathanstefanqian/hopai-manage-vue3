@@ -105,12 +105,10 @@ export const useRenderLayout = () => {
                   }
                 ]}
               ></ToolHeader>
-
               {tagsView.value ? (
                 <TagsView class="layout-border__top layout-border__bottom"></TagsView>
               ) : undefined}
             </div>
-
             <AppView></AppView>
           </ElScrollbar>
         </div>
@@ -235,7 +233,6 @@ export const useRenderLayout = () => {
       <>
         <div class="relative flex items-center bg-[var(--top-header-bg-color)] layout-border__bottom">
           {logo.value ? <Logo class="custom-hover !pr-15px"></Logo> : undefined}
-
           <ToolHeader class="flex-1"></ToolHeader>
         </div>
         <div class="absolute left-0 top-[var(--logo-height)] h-[calc(100%-var(--logo-height))] w-[calc(100%-2px)] flex">
@@ -288,7 +285,6 @@ export const useRenderLayout = () => {
                   style="transition: width var(--transition-time-02), left var(--transition-time-02);"
                 ></TagsView>
               ) : undefined}
-
               <AppView></AppView>
             </ElScrollbar>
           </div>

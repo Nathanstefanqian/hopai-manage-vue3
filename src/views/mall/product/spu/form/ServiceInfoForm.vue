@@ -6,22 +6,18 @@
     :rules="rules"
     label-width="120px"
   >
-    <el-form-item label="服务说明" prop="service">
-      <Editor v-model:modelValue="formData.service" />
-    </el-form-item>
+    <UploadImgs v-model:modelValue="formData.service" />
   </el-form>
   <!-- 情况二：详情 -->
-  <Descriptions
-    v-if="isDetail"
-    :data="formData"
-    :schema="allSchemas.detailSchema"
-    class="descriptionFormDescriptions"
-  >
-    <!-- 展示 HTML 内容 -->
-    <template #service="{ row }">
-      <div v-dompurify-html="row.service" style="width: 600px"></div>
-    </template>
-  </Descriptions>
+  <div v-if="isDetail">
+    <el-image
+      v-for="(item, index) in formData.service"
+      :key="index"
+      :src="item.url"
+      class="mr-10px h-60px w-60px"
+      @click="imagePreview(item.url)"
+    />
+  </div>
 </template>
 <script setup lang="ts">
 import { propTypes } from '@/utils/propTypes'
@@ -29,7 +25,9 @@ import { PropType } from 'vue'
 import { copyValueToTarget } from '@/utils'
 import { serviceSchema } from './spu.data'
 import type { Spu } from '@/api/mall/product/spu'
-import { Editor } from '@/components/Editor'
+import { isArray } from '@/utils/is'
+import { createImageViewer } from '@/components/ImageViewer'
+
 const message = useMessage() // 消息弹窗
 
 defineOptions({ name: 'ServiceInfoForm' })
@@ -49,37 +47,38 @@ const rules = reactive({
   service: [required]
 })
 const formData = ref<Spu>({
-  service: '' // 商品详情
+  service: [] // 商品详情
 })
 
-/**
- * 富文本编辑器如果输入过再清空会有残留，需再重置一次
- */
-watch(
-  () => formData.value.service,
-  (newValue) => {
-    if ('<p><br></p>' === newValue) {
-      formData.value.service = ''
-    }
-  },
-  {
-    deep: true,
-    immediate: true
+const imagePreview = (args) => {
+  const urlList = []
+  if (isArray(args)) {
+    args.forEach((item) => {
+      urlList.push(item)
+    })
+  } else {
+    urlList.push(args)
   }
-)
-
-/**
- * 将传进来的值赋值给formData
- */
+  createImageViewer({
+    urlList
+  })
+}
 watch(
   () => props.propFormData,
   (data) => {
-    if (!data) return
-    // fix：三个表单组件监听赋值必须使用 copyValueToTarget 使用 formData.value = data 会监听非常多次
-    copyValueToTarget(formData.value, data)
+    if (!data) {
+      return
+    }
+    copyValueToTarget(formData, data)
+    if (data['service'].length) {
+      formData.value.service = data.service.map((item) => {
+        return {
+          url: item
+        }
+      })
+    }
   },
   {
-    // fix: 去掉深度监听只有对象引用发生改变的时候才执行,解决改一动多的问题
     immediate: true
   }
 )
@@ -93,10 +92,10 @@ const validate = async () => {
   if (!ServiceInfoRef) return
   return await unref(ServiceInfoRef).validate((valid) => {
     if (!valid) {
-      message.warning('商品详情为完善!!')
+      message.warning('服务说明为完善!!')
       emit('update:activeName', 'service')
       // 目的截断之后的校验
-      throw new Error('商品详情为完善!!')
+      throw new Error('服务说明为完善!!')
     } else {
       // 校验通过更新数据
       Object.assign(props.propFormData, formData.value)

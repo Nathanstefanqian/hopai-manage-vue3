@@ -51,11 +51,16 @@
       <el-form-item label="用户标签" prop="tagIds">
         <MemberTagSelect v-model="queryParams.tagIds" />
       </el-form-item>
-      <!-- <el-form-item label="用户等级" prop="levelId">
-        <MemberLevelSelect v-model="queryParams.levelId" />
+      <!-- <el-form-item label="所在地分组" prop="areaId">
+        <MemberAreaSelect v-model="queryParams.areaId" />
       </el-form-item> -->
-      <el-form-item label="用户分组" prop="groupId">
-        <MemberGroupSelect v-model="queryParams.groupId" />
+      <el-form-item label="所在地" prop="areaId">
+        <el-tree-select
+          v-model="queryParams.areaId"
+          :data="areaList"
+          :props="defaultProps"
+          :render-after-expand="true"
+        />
       </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery">
@@ -88,26 +93,13 @@
       </el-table-column>
       <el-table-column align="center" label="手机号" prop="mobile" width="120px" />
       <el-table-column align="center" label="昵称" prop="nickname" width="80px" />
-      <!-- <el-table-column align="center" label="等级" prop="levelName" width="100px" /> -->
-      <el-table-column align="center" label="分组" prop="groupName" width="100px" />
-      <el-table-column
-        :show-overflow-tooltip="false"
-        align="center"
-        label="用户标签"
-        prop="tagNames"
-      >
-        <template #default="scope">
-          <el-tag v-for="(tagName, index) in scope.row.tagNames" :key="index" class="mr-5px">
-            {{ tagName }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column align="center" label="积分" prop="point" width="100px" /> -->
+      <el-table-column align="center" label="用户标签" width="150px" prop="levelName" />
       <el-table-column align="center" label="状态" prop="status" width="100px">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
+      <el-table-column align="center" label="所在地" prop="areaName" width="200px" />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
@@ -122,13 +114,7 @@
         prop="createTime"
         width="180px"
       />
-      <el-table-column
-        :show-overflow-tooltip="false"
-        align="center"
-        fixed="right"
-        label="操作"
-        width="100px"
-      >
+      <el-table-column :show-overflow-tooltip="false" align="center" fixed="right" label="操作">
         <template #default="scope">
           <div class="flex items-center justify-center">
             <el-button link type="primary" @click="openDetail(scope.row.id)">详情</el-button>
@@ -159,7 +145,6 @@
                   >
                     修改等级
                   </el-dropdown-item>
-                  <el-dropdown-item command="handleDisabled"> 禁用摄影师 </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -188,6 +173,7 @@
 <script lang="ts" setup>
 import { dateFormatter } from '@/utils/formatTime'
 import * as UserApi from '@/api/member/user'
+import * as AreaApi from '@/api/system/area'
 import * as PhotographerApi from '@/api/member/photographer'
 import { DICT_TYPE } from '@/utils/dict'
 import UserForm from './UserForm.vue'
@@ -198,6 +184,7 @@ import UserLevelUpdateForm from './UserLevelUpdateForm.vue'
 import UserPointUpdateForm from './UserPointUpdateForm.vue'
 import { CouponSendForm } from '@/views/mall/promotion/coupon/components'
 import { checkPermi } from '@/utils/permission'
+import { defaultProps } from '@/utils/tree'
 
 defineOptions({ name: 'MemberUser' })
 
@@ -216,6 +203,7 @@ const queryParams = reactive({
   tagIds: [],
   levelId: null,
   groupId: null,
+  areaId: null,
   userType: 3
 })
 const queryFormRef = ref() // 搜索的表单
@@ -299,8 +287,11 @@ const handleDisabled = async (id) => {
   const res = await PhotographerApi.disablePhotographer(id)
   console.log(res)
 }
+
+const areaList = ref('')
 /** 初始化 **/
-onMounted(() => {
-  getList()
+onMounted(async () => {
+  areaList.value = await AreaApi.getAreaTree()
+  await getList()
 })
 </script>

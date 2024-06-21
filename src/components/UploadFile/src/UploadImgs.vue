@@ -79,12 +79,13 @@ const props = defineProps({
   // updateUrl: propTypes.string.def(import.meta.env.VITE_UPLOAD_URL),
   drag: propTypes.bool.def(true), // 是否支持拖拽上传 ==> 非必传（默认为 true）
   disabled: propTypes.bool.def(false), // 是否禁用上传组件 ==> 非必传（默认为 false）
-  limit: propTypes.number.def(5), // 最大图片上传数 ==> 非必传（默认为 5张）
+  limit: propTypes.number.def(12), // 最大图片上传数 ==> 非必传（默认为 5张）
   fileSize: propTypes.number.def(30), // 图片大小限制 ==> 非必传（默认为 5M）
   fileType: propTypes.array.def(['image/jpeg', 'image/png', 'image/gif']), // 图片类型限制 ==> 非必传（默认为 ["image/jpeg", "image/png", "image/gif"]）
   height: propTypes.string.def('150px'), // 组件高度 ==> 非必传（默认为 150px）
   width: propTypes.string.def('150px'), // 组件宽度 ==> 非必传（默认为 150px）
-  borderradius: propTypes.string.def('8px') // 组件边框圆角 ==> 非必传（默认为 8px）
+  borderradius: propTypes.string.def('8px'), // 组件边框圆角 ==> 非必传（默认为 8px）
+  bucket: propTypes.string.def('product')
 })
 
 const uploadHeaders = ref({
@@ -169,7 +170,7 @@ const handleExceed = () => {
 
 // 主要调用的上传方法
 const handleUpload = async (option) => {
-  await getStsToken()
+  await getStsToken(props.bucket)
   const { name } = option.file
   await put(name, option.file)
   let res = await signatureUrl(name)

@@ -1,0 +1,1 @@
+import{al as t,__tla as r}from"./index-e69fb82c.js";let e,l,s,c=Promise.all([(()=>{try{return r}catch{}})()]).then(async()=>{l=async a=>await t.post({url:"/bpm/oa/leave/create",data:a}),s=async a=>await t.get({url:"/bpm/oa/leave/get?id="+a}),e=async a=>await t.get({url:"/bpm/oa/leave/page",params:a})});export{c as __tla,e as a,l as c,s as g};

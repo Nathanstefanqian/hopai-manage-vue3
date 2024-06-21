@@ -7,6 +7,12 @@ export const getStsCommon = async () => {
   })
 }
 
+export const getStsUserProfile = async () => {
+  return await request.get({
+    url: '/infra/file/getSts/userProfile'
+  })
+}
+
 // 用于顾客查看图片的接口
 // 传入orderId 订单编号
 export const getStsWorkDownload = async (params) => {

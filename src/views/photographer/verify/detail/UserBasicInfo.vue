@@ -4,9 +4,6 @@
       <slot name="header"></slot>
     </template>
     <el-row>
-      <el-col :span="4">
-        <ElAvatar shape="square" :size="100" :src="user.avatar || undefined" />
-      </el-col>
       <el-col :span="20">
         <el-descriptions :column="2">
           <el-descriptions-item>
@@ -25,7 +22,7 @@
             <template #label>
               <descriptions-item-label label="微信号" icon="ep:phone" />
             </template>
-            {{ user.mobile }}
+            {{ user.appPhotographerInfoBaseVO ? user.appPhotographerInfoBaseVO.wechatId : '' }}
           </el-descriptions-item>
           <el-descriptions-item label="身份证号">
             <template #label>
@@ -35,27 +32,25 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="银行卡号" icon="ep:position" />
-            </template>
-            {{ user.registerIp }}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
               <descriptions-item-label label="性别" icon="fa:mars-double" />
             </template>
-            {{ user.sex ? '男' : '女' }}
+            {{ user.sex ? '女' : '男' }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
               <descriptions-item-label label="所在地" icon="ep:location" />
             </template>
-            {{ user.areaId }}
+            {{ user.areaName }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="兼职或全职" icon="fa:mars-double" />
+              <descriptions-item-label label="类型" icon="ep:type" />
             </template>
-            {{ user.appPhotographerInfoBaseVO.orderType ? '全职' : '兼职' }}
+            {{
+              user.appPhotographerInfoBaseVO && user.appPhotographerInfoBaseVO.orderType
+                ? '全职'
+                : '兼职'
+            }}
           </el-descriptions-item>
         </el-descriptions>
       </el-col>

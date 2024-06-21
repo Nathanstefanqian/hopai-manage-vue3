@@ -73,7 +73,7 @@ export const lineOptions: EChartsOption = {
 
 export const pieOptions: EChartsOption = {
   title: {
-    text: t('analysis.userAccessSource'),
+    text: '客户投诉订单',
     left: 'center'
   },
   tooltip: {
@@ -83,26 +83,18 @@ export const pieOptions: EChartsOption = {
   legend: {
     orient: 'vertical',
     left: 'left',
-    data: [
-      t('analysis.directAccess'),
-      t('analysis.mailMarketing'),
-      t('analysis.allianceAdvertising'),
-      t('analysis.videoAdvertising'),
-      t('analysis.searchEngines')
-    ]
+    data: ['已处理', '未处理']
   },
   series: [
     {
-      name: t('analysis.userAccessSource'),
+      name: '客户投诉订单',
       type: 'pie',
-      radius: '55%',
-      center: ['50%', '60%'],
+      radius: '20%',
+      center: ['30%', '20%'],
+      width: '400px',
       data: [
-        { value: 335, name: t('analysis.directAccess') },
-        { value: 310, name: t('analysis.mailMarketing') },
-        { value: 234, name: t('analysis.allianceAdvertising') },
-        { value: 135, name: t('analysis.videoAdvertising') },
-        { value: 1548, name: t('analysis.searchEngines') }
+        { value: 335, name: '已处理' },
+        { value: 310, name: '未处理' }
       ]
     }
   ]
@@ -110,7 +102,7 @@ export const pieOptions: EChartsOption = {
 
 export const barOptions: EChartsOption = {
   title: {
-    text: t('analysis.weeklyUserActivity'),
+    text: '',
     left: 'center'
   },
   tooltip: {

@@ -7,29 +7,19 @@
     :rules="rules"
     label-width="120px"
   >
-    <!--富文本编辑器组件-->
-    <!-- <el-form-item label="商品详情" prop="description">
-      <Editor v-model:modelValue="formData.description" />
-    </el-form-item> -->
     <UploadImgs v-model:modelValue="formData.description" />
   </el-form>
   <!-- 情况二：详情 -->
-  <Descriptions
-    v-if="isDetail"
-    :data="formData"
-    :schema="allSchemas.detailSchema"
-    class="descriptionFormDescriptions"
-  >
-    <template #description="{ row }">
-      <el-image
-        v-for="(item, index) in row.description"
-        :key="index"
-        :src="item.url"
-        class="mr-10px h-60px w-60px"
-        @click="imagePreview(row.description)"
-      />
-    </template>
-  </Descriptions>
+
+  <div v-if="isDetail">
+    <el-image
+      v-for="(item, index) in formData.description"
+      :key="index"
+      :src="item.url"
+      class="mr-10px h-60px w-60px"
+      @click="imagePreview(item.url)"
+    />
+  </div>
 </template>
 <script lang="ts" setup>
 import { isArray } from '@/utils/is'
@@ -64,7 +54,7 @@ const imagePreview = (args) => {
   const urlList = []
   if (isArray(args)) {
     args.forEach((item) => {
-      urlList.push(item.url)
+      urlList.push(item)
     })
   } else {
     urlList.push(args)
@@ -74,38 +64,25 @@ const imagePreview = (args) => {
   })
 }
 
-/**
- * 富文本编辑器如果输入过再清空会有残留，需再重置一次
- */
-// watch(
-//   () => formData.value.description,
-//   (newValue) => {
-//     if ('<p><br></p>' === newValue) {
-//       formData.value.description = []
-//     }
-//   },
-//   {
-//     deep: true,
-//     immediate: true
-//   }
-// )
-// /**
-//  * 将传进来的值赋值给formData
-//  */
-// watch(
-//   () => props.propFormData,
-//   (data) => {
-//     if (!data) return
-//     // fix：三个表单组件监听赋值必须使用 copyValueToTarget 使用 formData.value = data 会监听非常多次
-//     copyValueToTarget(formData.value, data)
-//     copyValueToTarget(formData.value.description, [])
-//   },
-//   {
-//     // fix: 去掉深度监听只有对象引用发生改变的时候才执行,解决改一动多的问题
-//     immediate: true
-//   }
-// )
-
+watch(
+  () => props.propFormData,
+  (data) => {
+    if (!data) {
+      return
+    }
+    copyValueToTarget(formData, data)
+    if (data['description'].length) {
+      formData.value.description = data.description.map((item) => {
+        return {
+          url: item
+        }
+      })
+    }
+  },
+  {
+    immediate: true
+  }
+)
 /**
  * 表单校验
  */

@@ -7,8 +7,8 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="手机号" prop="mobile">
-        <el-input v-model="formData.mobile" placeholder="请输入手机号" />
+      <el-form-item label="手机号" prop="phone">
+        <el-input v-model="formData.phone" placeholder="请输入手机号" />
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-radio-group v-model="formData.status">
@@ -77,6 +77,7 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as UserApi from '@/api/member/user'
 import * as AreaApi from '@/api/system/area'
+import * as PhotographerApi from '@/api/member/photographer'
 import { defaultProps } from '@/utils/tree'
 import MemberTagSelect from '@/views/member/tag/components/MemberTagSelect.vue'
 import MemberGroupSelect from '@/views/member/group/components/MemberGroupSelect.vue'
@@ -89,19 +90,7 @@ const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
-  id: undefined,
-  mobile: undefined,
-  password: undefined,
-  status: undefined,
-  nickname: undefined,
-  avatar: undefined,
-  name: undefined,
-  sex: undefined,
-  areaId: undefined,
-  birthday: undefined,
-  mark: undefined,
-  tagIds: [],
-  groupId: undefined
+  phone: undefined
 })
 const formRules = reactive({
   mobile: [{ required: true, message: '手机号不能为空', trigger: 'blur' }],
@@ -112,15 +101,18 @@ const areaList = ref([]) // 地区列表
 
 /** 打开弹窗 */
 const open = async (type: string, id?: number) => {
+  console.log('打开弹窗')
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
   resetForm()
+  console.log(id)
   // 修改时，设置数据
   if (id) {
     formLoading.value = true
     try {
-      formData.value = await UserApi.getUser(id)
+      console.log('111', id)
+      formData.value = await PhotographerApi.getUserDetailInfo(id)
     } finally {
       formLoading.value = false
     }
@@ -161,7 +153,7 @@ const submitForm = async () => {
 const resetForm = () => {
   formData.value = {
     id: undefined,
-    mobile: undefined,
+    phone: undefined,
     password: undefined,
     status: undefined,
     nickname: undefined,

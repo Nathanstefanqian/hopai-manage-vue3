@@ -61,3 +61,8 @@ export const getUserDetailInfo = async (userId: any) => {
 export const disablePhotographer = async (userId: any) => {
   return await request.post({ url: `/member/photographer/disable/${userId}` })
 }
+
+// 摄影师设备信息
+export const getPhotographerDevice = async (userId: any) => {
+  return await request.get({ url: `/member/user-devices-pic/list?userId=` + userId })
+}

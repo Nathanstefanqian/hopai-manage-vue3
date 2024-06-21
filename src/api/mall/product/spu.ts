@@ -37,7 +37,7 @@ export interface Spu {
   keyword?: string // 关键字
   unit?: number | undefined // 单位
   picUrl?: string // 商品封面图
-  sliderPicUrls?: string[] // 商品轮播图
+  sliderPicUrls?: any // 商品轮播图
   introduction?: string // 商品简介
   deliveryTemplateId?: number | undefined // 运费模版
   brandId?: number | undefined // 商品品牌编号
@@ -45,7 +45,7 @@ export interface Spu {
   subCommissionType?: boolean // 分销类型
   skus?: Sku[] // sku数组
   description?: any // 商品详情
-  service?: string // 服务说明
+  service?: any // 服务说明
   sort?: number // 商品排序
   giveIntegral?: number // 赠送积分
   virtualSalesCount?: number // 虚拟销量
