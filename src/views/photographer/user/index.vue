@@ -64,7 +64,7 @@
       <el-table-column align="center" label="头像" prop="avatar" width="80px">
         <template #default="scope">
           <el-image
-            :src="scope.row.avatar ? scope.row.avatar : '/public/avatar.jpg'"
+            :src="scope.row.avatar ? scope.row.avatar : '/avatar.jpg'"
             class="h-10 w-10 rounded-lg"
             fit="cover"
           />

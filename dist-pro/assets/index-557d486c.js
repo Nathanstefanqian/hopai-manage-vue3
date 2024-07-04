@@ -1,0 +1,1 @@
+import{_ as r}from"./_plugin-vue_export-helper-1b428a4d.js";import{o as e,c as a,__tla as l}from"./index-c0a26e5e.js";let t,n=Promise.all([(()=>{try{return l}catch{}})()]).then(async()=>{t=r({},[["render",function(o,_){return e(),a("div",null,"index")}]])});export{n as __tla,t as default};

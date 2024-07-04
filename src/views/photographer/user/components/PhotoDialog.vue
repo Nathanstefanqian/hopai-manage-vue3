@@ -42,6 +42,7 @@
           />
         </div>
         <div class="photo-footer-btn">
+          {{ albumId }}
           <el-button text @click="settingVisible = !settingVisible">
             {{ settingVisible ? '完成' : '设置封面' }}</el-button
           >
@@ -125,6 +126,7 @@ const handleFilesChange = async (event: Event) => {
   if (!selectedFile) return
   const fileArray = Array.from(selectedFile)
   const fileUrl = ref([])
+  console.log('123')
   for (const file of fileArray) {
     const uuid = makeUUID()
     const name = `${userId}/${uuid}.jpg`

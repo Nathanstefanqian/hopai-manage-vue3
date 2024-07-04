@@ -6,7 +6,7 @@
     <el-row>
       <el-col :span="4">
         <el-image
-          :src="user.avatar ? user.avatar : '/public/avatar.jpg'"
+          :src="user.avatar ? user.avatar : '/avatar.jpg'"
           fit="contain"
           class="h-23"
           style="border-radius: 10px"
@@ -30,7 +30,7 @@
             <template #label>
               <descriptions-item-label label="性别" icon="fa:mars-double" />
             </template>
-            {{ user.sex ? '男' : '女' }}
+            {{ user.sex == 1 ? '男' : '女' }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>

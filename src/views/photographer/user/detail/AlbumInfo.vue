@@ -26,6 +26,8 @@
         </div>
       </el-scrollbar>
     </div>
+    {{ dialogVisible }}
+    {{ albumId }}
     <div class="album-footer">
       <el-pagination
         @size-change="getData"
