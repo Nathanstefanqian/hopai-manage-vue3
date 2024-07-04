@@ -6,6 +6,33 @@ export interface UserAreaVO {
   areaId: number
 }
 
+export interface BasicDataVO {
+  userId: string
+  mobile: string
+  nickname: string
+  idCard: string
+  areaName: string
+  areaId: string
+  sex: boolean
+  birthday: string
+}
+
+export interface TechDataVO {
+  introduction: string
+  littleRedBookId: string
+  douYinId: string
+  camera: string
+  lightingEquipment: string
+  fixedFocalLengthLens: string
+  zoomLens: string
+}
+
+export interface OrderDataVO {
+  areaIds: Array<string>
+  levelId: Array<string>
+  bizIds: Array<string>
+}
+
 // 查询用户地域关联列表
 export const getUserAreaPage = async (params) => {
   return await request.get({ url: `/member/user-area/page`, params })
@@ -65,4 +92,19 @@ export const disablePhotographer = async (userId: any) => {
 // 摄影师设备信息
 export const getPhotographerDevice = async (userId: any) => {
   return await request.get({ url: `/member/user-devices-pic/list?userId=` + userId })
+}
+
+// 更新基本信息
+export const updatePhotographerBasicInfo = async (data: BasicDataVO) => {
+  return await request.post({ url: '/member/photographer/updateInfo', data })
+}
+
+// 更新技术信息
+export const updatePhotographerTechInfo = async (data: TechDataVO) => {
+  return await request.post({ url: '/member/photographer/updateInfo', data })
+}
+
+// 更新接单信息
+export const updatePhotographerOrderInfo = async (data: OrderDataVO) => {
+  return await request.post({ url: '/member/photographer/updateInfo', data })
 }

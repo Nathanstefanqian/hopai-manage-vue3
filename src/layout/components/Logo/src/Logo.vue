@@ -69,6 +69,7 @@ watch(
       <img
         class="h-[calc(var(--logo-height)-10px)] w-[calc(var(--logo-height)-10px)]"
         src="@/assets/imgs/hopai.png"
+        style="border-radius: 10px"
       />
       <div
         v-if="show"

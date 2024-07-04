@@ -1,20 +1,19 @@
 import { ref } from 'vue'
 import OSS from 'ali-oss'
-import * as uploadApi from '@/api/upload'
+import * as uploadApi from '@/api/sts'
 
-export const useUpload = (id: string) => {
+export const useUpload = (bucket = 'system') => {
   const client = ref<any>(null)
-  // let client: any
   const getStsToken = async () => {
-    let res = await uploadApi.getStsUpload(id)
+    let res = await uploadApi.getStsCommon()
     client.value = new OSS({
       region: 'oss-cn-shanghai',
       accessKeyId: res.credentials.accessKeyId,
       accessKeySecret: res.credentials.accessKeySecret,
       stsToken: res.credentials.securityToken,
-      bucket: 'hopai-workspace',
+      bucket: `hopai-${bucket}`,
       refreshSTSToken: async () => {
-        res = await uploadApi.getStsUpload(id)
+        res = await uploadApi.getStsCommon()
         return {
           accessKeyId: res.credentials.accessKeyId,
           accessKeySecret: res.credentials.accessKeySecret,
@@ -23,15 +22,23 @@ export const useUpload = (id: string) => {
       }
     })
   }
+  const put = async (ObjName: any, fileUrl: any) => {
+    try {
+      return await client.value?.put(ObjName, fileUrl)
+    } catch (e) {
+      console.log(e)
+    }
+  }
   // 获取上传后的真实地址（用来返回给数据库）
   const signatrueUrl = async (ObjName: any) => {
     try {
-      return await client.value?.signatureUrl(`${ObjName}`)
+      return await client.value?.signatureUrl(ObjName)
     } catch (e) {
       console.log(e)
     }
   }
   return {
+    put,
     getStsToken,
     signatrueUrl
   }

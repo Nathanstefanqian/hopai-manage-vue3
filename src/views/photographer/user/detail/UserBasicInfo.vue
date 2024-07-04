@@ -5,16 +5,15 @@
     </template>
     <el-row>
       <el-col :span="4">
-        <ElAvatar shape="square" :size="100" :src="user.avatar || undefined" />
+        <el-image
+          :src="user.avatar ? user.avatar : '/public/avatar.jpg'"
+          fit="contain"
+          class="h-23"
+          style="border-radius: 10px"
+        />
       </el-col>
       <el-col :span="20">
         <el-descriptions :column="2">
-          <el-descriptions-item>
-            <template #label>
-              <descriptions-item-label label="用户名" icon="ep:user" />
-            </template>
-            {{ user.name || '空' }}
-          </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
               <descriptions-item-label label="昵称" icon="ep:user" />
@@ -31,7 +30,7 @@
             <template #label>
               <descriptions-item-label label="性别" icon="fa:mars-double" />
             </template>
-            <dict-tag :type="DICT_TYPE.SYSTEM_USER_SEX" :value="user.sex" />
+            {{ user.sex ? '男' : '女' }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
@@ -39,16 +38,27 @@
             </template>
             {{ user.areaName }}
           </el-descriptions-item>
+          <el-descriptions-item>
+            <template #label>
+              <descriptions-item-label label="身份证" icon="ep:postcard" />
+            </template>
+            {{ user.idCard }}
+          </el-descriptions-item>
+          <el-descriptions-item>
+            <template #label>
+              <descriptions-item-label label="生日" icon="ep:calendar" />
+            </template>
+            {{ formatDate(user.birthday, 'YYYY-MM-DD') }}
+          </el-descriptions-item>
         </el-descriptions>
       </el-col>
     </el-row>
   </el-card>
 </template>
 <script setup lang="ts">
-import { DICT_TYPE } from '@/utils/dict'
-import { formatDate } from '@/utils/formatTime'
 import * as UserApi from '@/api/member/user'
 import { DescriptionsItemLabel } from '@/components/Descriptions/index'
+import { formatDate } from '@/utils/formatTime'
 
 const { user } = defineProps<{ user: UserApi.UserVO }>()
 </script>

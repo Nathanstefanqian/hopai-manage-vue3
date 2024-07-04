@@ -115,7 +115,7 @@
           <Echart :options="lineOptions" :height="280" />
         </div>
       </div>
-      <div class="dashboard-box dashboard-box-border ml-40px"></div>
+      <div class="dashboard-box dashboard-box-border ml-80px"></div>
     </div>
   </div>
 </template>

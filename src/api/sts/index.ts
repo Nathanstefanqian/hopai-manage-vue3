@@ -30,3 +30,10 @@ export const getStsWorkSpace = async (params) => {
     params
   })
 }
+
+// 管理员级的sts接口
+export const getSts = async () => {
+  return await request.get({
+    url: '/infra/file/getSts/common'
+  })
+}

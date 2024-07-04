@@ -1,5 +1,11 @@
 <template>
-  <el-select v-model="tagIds" placeholder="请选择用户标签" clearable multiple class="!w-240px">
+  <el-select
+    v-model="tagIds"
+    placeholder="请选择用户等级"
+    clearable
+    :multiple="multiple"
+    class="!w-240px"
+  >
     <el-option v-for="tag in tags" :key="tag.id" :label="tag.name" :value="tag.id" />
   </el-select>
   <el-button
@@ -19,8 +25,8 @@
 
 <script lang="ts" setup>
 import * as TagApi from '@/api/member/tag'
+import * as LevelApi from '@/api/member/level'
 import TagForm from '@/views/member/tag/TagForm.vue'
-
 defineOptions({ name: 'MemberTagSelect' })
 
 const props = defineProps({
@@ -33,6 +39,10 @@ const props = defineProps({
   showAdd: {
     type: Boolean,
     default: false
+  },
+  multiple: {
+    type: Boolean,
+    default: true
   }
 })
 const emit = defineEmits(['update:modelValue'])
@@ -52,7 +62,7 @@ const tagIds = computed({
 const tags = ref<TagApi.TagVO[]>([])
 
 const getList = async () => {
-  tags.value = await TagApi.getSimpleTagList()
+  tags.value = await LevelApi.getSimpleLevelList()
 }
 
 /** 添加用户标签表单弹框 */

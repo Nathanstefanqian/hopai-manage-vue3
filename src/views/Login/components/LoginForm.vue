@@ -12,7 +12,12 @@
     <el-row style="margin-right: -10px; margin-left: -10px">
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item>
-          <img alt="" class="mx-auto h-100px w-100px" src="@/assets/imgs/hopai.png" />
+          <img
+            alt=""
+            class="mx-auto h-100px w-100px"
+            style="border-radius: 20px"
+            src="@/assets/imgs/hopai.png"
+          />
         </el-form-item>
         <el-form-item>
           <LoginFormTitle class="mx-auto" />

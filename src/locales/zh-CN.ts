@@ -110,7 +110,7 @@ export default {
     username: '用户名',
     password: '密码',
     code: '验证码',
-    login: '快点进来吧',
+    login: '登录',
     relogin: '重新登录',
     otherLogin: '其他登录方式',
     register: '注册',

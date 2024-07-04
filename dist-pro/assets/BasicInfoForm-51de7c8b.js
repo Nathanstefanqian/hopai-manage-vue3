@@ -1,1 +1,0 @@
-import{_ as t,__tla as a}from"./BasicInfoForm.vue_vue_type_script_setup_true_lang-1c04d0cf.js";import{__tla as _}from"./index-e69fb82c.js";import{__tla as r}from"./formRules-830e366d.js";let l=Promise.all([(()=>{try{return a}catch{}})(),(()=>{try{return _}catch{}})(),(()=>{try{return r}catch{}})()]).then(async()=>{});export{l as __tla,t as default};

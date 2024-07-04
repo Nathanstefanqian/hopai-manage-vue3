@@ -20,13 +20,13 @@
           </el-descriptions-item>
           <el-descriptions-item label="微信号">
             <template #label>
-              <descriptions-item-label label="微信号" icon="ep:phone" />
+              <descriptions-item-label label="微信号" icon="ep:postcard" />
             </template>
-            {{ user.appPhotographerInfoBaseVO ? user.appPhotographerInfoBaseVO.wechatId : '' }}
+            {{ user.appPhotographerInfoBaseVO ? user.appPhotographerInfoBaseVO.wechatId : '无' }}
           </el-descriptions-item>
           <el-descriptions-item label="身份证号">
             <template #label>
-              <descriptions-item-label label="身份证号" icon="ep:phone" />
+              <descriptions-item-label label="身份证号" icon="ep:postcard" />
             </template>
             {{ user.mobile }}
           </el-descriptions-item>
@@ -44,7 +44,7 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="类型" icon="ep:type" />
+              <descriptions-item-label label="类型" icon="svg-icon:member_level" />
             </template>
             {{
               user.appPhotographerInfoBaseVO && user.appPhotographerInfoBaseVO.orderType
@@ -58,8 +58,6 @@
   </el-card>
 </template>
 <script setup lang="ts">
-import { DICT_TYPE } from '@/utils/dict'
-import { formatDate } from '@/utils/formatTime'
 import * as UserApi from '@/api/member/user'
 import { DescriptionsItemLabel } from '@/components/Descriptions/index'
 

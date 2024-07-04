@@ -27,9 +27,6 @@
       <el-form-item label="头像" prop="avatar">
         <UploadImg v-model="formData.avatar" :limit="1" :is-show-tip="false" />
       </el-form-item>
-      <el-form-item label="真实名字" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入真实名字" />
-      </el-form-item>
       <el-form-item label="用户性别" prop="sex">
         <el-radio-group v-model="formData.sex">
           <el-radio
@@ -41,14 +38,19 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="身份证" prop="idCard">
+        <el-input v-model="formData.idCard" placeholder="请输入身份证" />
+      </el-form-item>
       <el-form-item label="出生日期" prop="birthday">
         <el-date-picker
           v-model="formData.birthday"
-          type="date"
+          type="datetime"
+          placeholder="Select date and time"
+          format="YYYY/MM/DD"
           value-format="x"
-          placeholder="选择出生日期"
         />
       </el-form-item>
+
       <el-form-item label="所在地" prop="areaId">
         <el-tree-select
           v-model="formData.areaId"
@@ -56,15 +58,6 @@
           :props="defaultProps"
           :render-after-expand="true"
         />
-      </el-form-item>
-      <el-form-item label="用户标签" prop="tagIds">
-        <MemberTagSelect v-model="formData.tagIds" show-add />
-      </el-form-item>
-      <el-form-item label="用户分组" prop="groupId">
-        <MemberGroupSelect v-model="formData.groupId" />
-      </el-form-item>
-      <el-form-item label="会员备注" prop="mark">
-        <el-input type="textarea" v-model="formData.mark" placeholder="请输入会员备注" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -78,8 +71,9 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as UserApi from '@/api/member/user'
 import * as AreaApi from '@/api/system/area'
 import { defaultProps } from '@/utils/tree'
-import MemberTagSelect from '@/views/member/tag/components/MemberTagSelect.vue'
-import MemberGroupSelect from '@/views/member/group/components/MemberGroupSelect.vue'
+
+const props = defineProps<{ userInfo: UserApi.UserVO }>() // 用户信息
+const user = ref<UserApi.UserVO>({ ...props.userInfo })
 
 const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
@@ -87,51 +81,49 @@ const message = useMessage() // 消息弹窗
 const dialogVisible = ref(false) // 弹窗的是否展示
 const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
-const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
-  id: undefined,
-  mobile: undefined,
-  password: undefined,
-  status: undefined,
-  nickname: undefined,
-  avatar: undefined,
-  name: undefined,
-  sex: undefined,
-  areaId: undefined,
-  birthday: undefined,
-  mark: undefined,
-  tagIds: [],
-  groupId: undefined
+  mobile: user.value.mobile,
+  status: user.value.status,
+  nickname: user.value.nickname,
+  avatar: user.value.avatar,
+  sex: user.value.sex,
+  areaId: user.value.areaId,
+  birthday: user.value.birthday,
+  idCard: user.value.idCard
 })
 const formRules = reactive({
-  mobile: [{ required: true, message: '手机号不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }]
+  mobile: [
+    { required: true, message: '手机号不能为空', trigger: 'blur' },
+    { pattern: /^1[345789]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
+  ],
+  status: [{ required: true, message: '订单不能为空', trigger: 'blur' }],
+  nickname: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+  avatar: [{ required: true, message: '头像不能为空', trigger: 'blur' }],
+  sex: [{ required: true, message: '性别不能为空', trigger: 'blur' }],
+  areaId: [{ required: true, message: '所在地不能为空', trigger: 'blur' }],
+  birthday: [{ required: true, message: '生日不能为空', trigger: 'blur' }],
+  idCard: [
+    { required: true, message: '身份证号码不能为空', trigger: 'blur' },
+    { pattern: /^\d{17}[\dXx]$/, message: '请输入正确的身份证号码', trigger: 'blur' }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const areaList = ref([]) // 地区列表
 
+const route = useRoute()
+const userId = route.params.id
+
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (id: number) => {
   dialogVisible.value = true
-  dialogTitle.value = t('action.' + type)
-  formType.value = type
-  resetForm()
-  // 修改时，设置数据
-  if (id) {
-    formLoading.value = true
-    try {
-      formData.value = await UserApi.getUser(id)
-    } finally {
-      formLoading.value = false
-    }
-  }
+  dialogTitle.value = '基本信息'
   // 获得地区列表
   areaList.value = await AreaApi.getAreaTree()
 }
-defineExpose({ open }) // 提供 open 方法，用于打开弹窗
+defineExpose({ open })
 
 /** 提交表单 */
-const emit = defineEmits(['success']) // 定义 success 事件，用于操作成功后的回调
+const emit = defineEmits(['success'])
 const submitForm = async () => {
   // 校验表单
   if (!formRef) return
@@ -140,15 +132,10 @@ const submitForm = async () => {
   // 提交请求
   formLoading.value = true
   try {
-    const data = formData.value as unknown as UserApi.UserVO
-    if (formType.value === 'create') {
-      // 说明：目前暂时没有新增操作。如果自己业务需要，可以进行扩展
-      // await UserApi.createUser(data)
-      message.success(t('common.createSuccess'))
-    } else {
-      await UserApi.updateUser(data)
-      message.success(t('common.updateSuccess'))
-    }
+    const data = formData.value
+    console.log('发送', data)
+    await UserApi.updateUserBasicInfo({ ...data, id: userId })
+    message.success(t('common.updateSuccess'))
     dialogVisible.value = false
     // 发送操作成功的事件
     emit('success')
@@ -160,19 +147,14 @@ const submitForm = async () => {
 /** 重置表单 */
 const resetForm = () => {
   formData.value = {
-    id: undefined,
-    mobile: undefined,
-    password: undefined,
-    status: undefined,
-    nickname: undefined,
-    avatar: undefined,
-    name: undefined,
-    sex: undefined,
-    areaId: undefined,
-    birthday: undefined,
-    mark: undefined,
-    tagIds: [],
-    groupId: undefined
+    mobile: '',
+    status: 0,
+    nickname: '',
+    avatar: '',
+    sex: 0,
+    areaId: 0,
+    birthday: 0,
+    idCard: 0
   }
   formRef.value?.resetFields()
 }
