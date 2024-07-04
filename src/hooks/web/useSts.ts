@@ -35,6 +35,7 @@ export const useUpload = (bucket = 'system') => {
       return await client.value?.signatureUrl(ObjName)
     } catch (e) {
       console.log(e)
+      return ''
     }
   }
   return {

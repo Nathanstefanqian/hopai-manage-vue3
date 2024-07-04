@@ -1,1 +1,0 @@
-import{al as e,__tla as r}from"./index-c0a26e5e.js";let t,l,m=Promise.all([(()=>{try{return r}catch{}})()]).then(async()=>{l=a=>e.get({url:"/mp/material/page",params:a}),t=a=>e.delete({url:"/mp/material/delete-permanent?id="+a})});export{m as __tla,t as d,l as g};

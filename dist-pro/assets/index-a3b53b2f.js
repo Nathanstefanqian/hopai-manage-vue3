@@ -1,1 +1,0 @@
-import{al as t,__tla as e}from"./index-c0a26e5e.js";let a,l=Promise.all([(()=>{try{return e}catch{}})()]).then(async()=>{a=async r=>await t.get({url:"/trade/brokerage-record/page",params:r})});export{l as __tla,a as g};

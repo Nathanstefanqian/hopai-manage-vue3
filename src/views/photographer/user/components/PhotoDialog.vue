@@ -132,9 +132,12 @@ const handleFilesChange = async (event: Event) => {
     const name = `${userId}/${uuid}.jpg`
     await put(name, file)
     let url = await signatrueUrl(name)
-    let index = url.indexOf('?')
-    url = url.substring(0, index)
-    fileUrl.value.push(url)
+    if (url) {
+      console.log(url)
+      let index = url.indexOf('?')
+      url = url.substring(0, index)
+      fileUrl.value.push(url)
+    }
   }
   await AlbumApi.createPhoto({
     albumId: props.albumId,
@@ -167,10 +170,8 @@ const getPhotoData = async () => {
 }
 
 onMounted(() => {
-  if (dialogVisible.value) {
-    getPhotoData()
-    getStsToken()
-  }
+  getPhotoData()
+  getStsToken()
 })
 </script>
 

@@ -1,1 +1,0 @@
-import{al as t,__tla as l}from"./index-c0a26e5e.js";let r,s,e,n=Promise.all([(()=>{try{return l}catch{}})()]).then(async()=>{s=async a=>await t.post({url:"/pay/transfer/create",data:a}),r=async a=>await t.get({url:"/pay/transfer/page",params:a}),e=async a=>await t.get({url:"/pay/transfer/get?id="+a})});export{n as __tla,r as a,s as c,e as g};
