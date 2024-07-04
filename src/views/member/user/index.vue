@@ -74,11 +74,19 @@
       <el-table-column align="center" label="用户编号" prop="id" width="120px" />
       <el-table-column align="center" label="头像" prop="avatar" width="80px">
         <template #default="scope">
-          <img :src="scope.row.avatar" style="width: 40px" />
+          <el-image
+            :src="scope.row.avatar ? scope.row.avatar : '/avatar.jpg'"
+            class="h-10 w-10 rounded-lg"
+            fit="cover"
+          />
         </template>
       </el-table-column>
       <el-table-column align="center" label="手机号" prop="mobile" width="120px" />
-      <el-table-column align="center" label="昵称" prop="nickname" width="80px" />
+      <el-table-column align="center" label="昵称" prop="nickname" width="120px">
+        <template #default="scope">
+          {{ scope.row.nickname || '和拍用户' }}
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="状态" prop="status" width="100px">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
@@ -89,61 +97,17 @@
         align="center"
         label="登录时间"
         prop="loginDate"
-        width="180px"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
         label="注册时间"
         prop="createTime"
-        width="180px"
       />
       <el-table-column :show-overflow-tooltip="false" align="center" fixed="right" label="操作">
         <template #default="scope">
           <div class="flex items-center justify-center">
             <el-button link type="primary" @click="openDetail(scope.row.id)">详情</el-button>
-            <el-dropdown
-              v-hasPermi="[
-                'member:user:update',
-                'member:user:update-level',
-                'member:user:update-point',
-                'member:user:update-balance'
-              ]"
-              @command="(command) => handleCommand(command, scope.row)"
-            >
-              <el-button link type="primary">
-                <Icon icon="ep:d-arrow-right" />
-                更多
-              </el-button>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item
-                    v-if="checkPermi(['member:user:update'])"
-                    command="handleUpdate"
-                  >
-                    编辑
-                  </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="checkPermi(['member:user:update-level'])"
-                    command="handleUpdateLevel"
-                  >
-                    修改等级
-                  </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="checkPermi(['member:user:update-point'])"
-                    command="handleUpdatePoint"
-                  >
-                    修改积分
-                  </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="checkPermi(['member:user:update-balance'])"
-                    command="handleUpdateBlance"
-                  >
-                    修改余额(WIP)
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
           </div>
         </template>
       </el-table-column>
@@ -159,25 +123,12 @@
 
   <!-- 表单弹窗：添加/修改 -->
   <UserForm ref="formRef" @success="getList" />
-  <!-- 修改用户等级弹窗 -->
-  <UserLevelUpdateForm ref="updateLevelFormRef" @success="getList" />
-  <!-- 修改用户积分弹窗 -->
-  <UserPointUpdateForm ref="updatePointFormRef" @success="getList" />
-  <!-- 发送优惠券弹窗 -->
-  <CouponSendForm ref="couponSendFormRef" />
 </template>
 <script lang="ts" setup>
 import { dateFormatter } from '@/utils/formatTime'
 import * as UserApi from '@/api/member/user'
 import { DICT_TYPE } from '@/utils/dict'
 import UserForm from './UserForm.vue'
-import MemberTagSelect from '@/views/member/tag/components/MemberTagSelect.vue'
-import MemberLevelSelect from '@/views/member/level/components/MemberLevelSelect.vue'
-import MemberGroupSelect from '@/views/member/group/components/MemberGroupSelect.vue'
-import UserLevelUpdateForm from './UserLevelUpdateForm.vue'
-import UserPointUpdateForm from './UserPointUpdateForm.vue'
-import { CouponSendForm } from '@/views/mall/promotion/coupon/components'
-import { checkPermi } from '@/utils/permission'
 
 defineOptions({ name: 'MemberUser' })
 
@@ -242,36 +193,6 @@ const openForm = (type: string, id?: number) => {
 /** 表格选中事件 */
 const handleSelectionChange = (rows: UserApi.UserVO[]) => {
   selectedIds.value = rows.map((row) => row.id)
-}
-
-/** 发送优惠券 */
-const couponSendFormRef = ref()
-const openCoupon = () => {
-  if (selectedIds.value.length === 0) {
-    message.warning('请选择要发送优惠券的用户')
-    return
-  }
-  couponSendFormRef.value.open(selectedIds.value)
-}
-
-/** 操作分发 */
-const handleCommand = (command: string, row: UserApi.UserVO) => {
-  switch (command) {
-    case 'handleUpdate':
-      openForm('update', row.id)
-      break
-    case 'handleUpdateLevel':
-      updateLevelFormRef.value.open(row.id)
-      break
-    case 'handleUpdatePoint':
-      updatePointFormRef.value.open(row.id)
-      break
-    case 'handleUpdateBlance':
-      // todo @jason：增加一个【修改余额】
-      break
-    default:
-      break
-  }
 }
 
 /** 初始化 **/

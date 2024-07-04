@@ -26,8 +26,6 @@
         </div>
       </el-scrollbar>
     </div>
-    {{ dialogVisible }}
-    {{ albumId }}
     <div class="album-footer">
       <el-pagination
         @size-change="getData"
@@ -82,7 +80,7 @@ const handleClickAlbum = (id: number, title: string) => {
   albumTitle.value = title
   setTimeout(() => {
     dialogVisible.value = true
-  }, 200)
+  }, 300)
 }
 const handleDeleteAlbum = async (id: number) => {
   ElMessageBox.confirm('确认删除吗?', '警告').then(async () => {

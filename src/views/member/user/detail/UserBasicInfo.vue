@@ -11,12 +11,6 @@
         <el-descriptions :column="2">
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="用户名" icon="ep:user" />
-            </template>
-            {{ user.name || '空' }}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
               <descriptions-item-label label="昵称" icon="ep:user" />
             </template>
             {{ user.nickname }}
@@ -45,12 +39,7 @@
             </template>
             {{ user.registerIp }}
           </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
-              <descriptions-item-label label="生日" icon="fa:birthday-cake" />
-            </template>
-            {{ user.birthday ? formatDate(user.birthday) : '空' }}
-          </el-descriptions-item>
+
           <el-descriptions-item>
             <template #label>
               <descriptions-item-label label="注册时间" icon="ep:calendar" />
@@ -69,7 +58,6 @@
   </el-card>
 </template>
 <script setup lang="ts">
-import { DICT_TYPE } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
 import * as UserApi from '@/api/member/user'
 import { DescriptionsItemLabel } from '@/components/Descriptions/index'
