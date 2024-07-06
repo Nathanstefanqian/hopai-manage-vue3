@@ -1,71 +1,35 @@
 <template>
-  <doc-alert title="支付宝、微信退款接入" url="https://doc.iocoder.cn/pay/refund-demo/" />
-
-  <!-- 搜索工作栏 -->
   <ContentWrap>
+    <!-- 搜索工作栏 -->
     <el-form
       class="-mb-15px"
       :model="queryParams"
       ref="queryFormRef"
       :inline="true"
-      label-width="120px"
+      label-width="68px"
     >
-      <el-form-item label="应用编号" prop="appId">
-        <el-select
-          v-model="queryParams.appId"
-          clearable
-          placeholder="请选择应用信息"
-          class="!w-240px"
-        >
-          <el-option v-for="item in appList" :key="item.id" :label="item.name" :value="item.id" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="退款渠道" prop="channelCode">
-        <el-select
-          v-model="queryParams.channelCode"
-          placeholder="请选择退款渠道"
-          clearable
-          class="!w-240px"
-        >
-          <el-option
-            v-for="dict in getStrDictOptions(DICT_TYPE.PAY_CHANNEL_CODE)"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="商户支付单号" prop="merchantOrderId">
+      <el-form-item label="订单id" prop="orderId">
         <el-input
-          v-model="queryParams.merchantOrderId"
-          placeholder="请输入商户支付单号"
+          v-model="queryParams.orderId"
+          placeholder="请输入订单id"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="商户退款单号" prop="merchantRefundId">
+      <el-form-item label="订单总金额" prop="orderAmt">
         <el-input
-          v-model="queryParams.merchantRefundId"
-          placeholder="请输入商户退款单号"
+          v-model="queryParams.orderAmt"
+          placeholder="请输入订单总金额"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="渠道支付单号" prop="channelOrderNo">
+      <el-form-item label="退款金额" prop="refundAmt">
         <el-input
-          v-model="queryParams.channelOrderNo"
-          placeholder="请输入渠道支付单号"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="渠道退款单号" prop="channelRefundNo">
-        <el-input
-          v-model="queryParams.channelRefundNo"
-          placeholder="请输入渠道退款单号"
+          v-model="queryParams.refundAmt"
+          placeholder="请输入退款金额"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
@@ -78,13 +42,26 @@
           clearable
           class="!w-240px"
         >
-          <el-option
-            v-for="dict in getIntDictOptions(DICT_TYPE.PAY_REFUND_STATUS)"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
+          <el-option label="请选择字典生成" value="" />
         </el-select>
+      </el-form-item>
+      <el-form-item label="退款原因" prop="cancellationReason">
+        <el-input
+          v-model="queryParams.cancellationReason"
+          placeholder="请输入退款原因"
+          clearable
+          @keyup.enter="handleQuery"
+          class="!w-240px"
+        />
+      </el-form-item>
+      <el-form-item label="支付退款单id" prop="payRefundId">
+        <el-input
+          v-model="queryParams.payRefundId"
+          placeholder="请输入支付退款单id"
+          clearable
+          @keyup.enter="handleQuery"
+          class="!w-240px"
+        />
       </el-form-item>
       <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
@@ -98,14 +75,17 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"> <Icon icon="ep:search" class="mr-5px" /> 搜索 </el-button>
-        <el-button @click="resetQuery"> <Icon icon="ep:refresh" class="mr-5px" /> 重置 </el-button>
+        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button type="primary" @click="openForm('create')" v-hasPermi="['order:refund:create']">
+          <Icon icon="ep:plus" class="mr-5px" /> 新增
+        </el-button>
         <el-button
           type="success"
           plain
           @click="handleExport"
           :loading="exportLoading"
-          v-hasPermi="['system:tenant:export']"
+          v-hasPermi="['order:refund:export']"
         >
           <Icon icon="ep:download" class="mr-5px" /> 导出
         </el-button>
@@ -115,79 +95,38 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" />
+    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
+      <el-table-column label="主键ID" align="center" prop="id" width="150px" />
+      <el-table-column label="订单id" align="center" prop="orderId" width="150px" />
+      <el-table-column label="订单总金额" align="center" prop="orderAmt" width="150px" />
+      <el-table-column label="退款金额" align="center" prop="refundAmt" width="150px" />
+      <el-table-column label="退款状态" align="center" prop="status" width="150px" />
+      <el-table-column label="退款原因" align="center" prop="cancellationReason" width="150px" />
+      <el-table-column label="支付退款单id" align="center" prop="payRefundId" width="150px" />
       <el-table-column
         label="创建时间"
         align="center"
         prop="createTime"
-        width="180"
         :formatter="dateFormatter"
+        width="150px"
       />
-      <el-table-column label="支付金额" align="center" prop="payPrice" width="100">
-        <template #default="scope">
-          ￥{{ parseFloat(scope.row.payPrice / 100).toFixed(2) }}
-        </template>
-      </el-table-column>
-      <el-table-column label="退款金额" align="center" prop="refundPrice" width="100">
-        <template #default="scope">
-          ￥{{ parseFloat(scope.row.refundPrice / 100).toFixed(2) }}
-        </template>
-      </el-table-column>
-      <el-table-column label="退款订单号" align="left" width="300">
-        <template #default="scope">
-          <p class="order-font">
-            <el-tag size="small">商户</el-tag> {{ scope.row.merchantRefundId }}
-          </p>
-          <p class="order-font">
-            <el-tag size="small" type="warning">退款</el-tag> {{ scope.row.no }}
-          </p>
-          <p class="order-font" v-if="scope.row.channelRefundNo">
-            <el-tag size="small" type="success">渠道</el-tag> {{ scope.row.channelRefundNo }}
-          </p>
-        </template>
-      </el-table-column>
-      <el-table-column label="支付订单号" align="left" width="300">
-        <template #default="scope">
-          <p class="order-font">
-            <el-tag size="small">商户</el-tag> {{ scope.row.merchantOrderId }}
-          </p>
-          <p class="order-font">
-            <el-tag size="small" type="success">渠道</el-tag> {{ scope.row.channelOrderNo }}
-          </p>
-        </template>
-      </el-table-column>
-      <el-table-column label="退款状态" align="center" prop="status">
-        <template #default="scope">
-          <dict-tag :type="DICT_TYPE.PAY_REFUND_STATUS" :value="scope.row.status" />
-        </template>
-      </el-table-column>
-      <el-table-column label="退款渠道" align="center" width="140">
-        <template #default="scope">
-          <dict-tag :type="DICT_TYPE.PAY_CHANNEL_CODE" :value="scope.row.channelCode" />
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="成功时间"
-        align="center"
-        prop="successTime"
-        width="180"
-        :formatter="dateFormatter"
-      />
-      <el-table-column label="支付应用" align="center" prop="successTime" width="100">
-        <template #default="scope">
-          <span>{{ scope.row.appName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" fixed="right">
+      <el-table-column label="操作" align="center" width="150px">
         <template #default="scope">
           <el-button
-            type="primary"
             link
-            @click="openDetail(scope.row.id)"
-            v-hasPermi="['pay:order:query']"
+            type="primary"
+            @click="openForm('update', scope.row.id)"
+            v-hasPermi="['order:refund:update']"
           >
-            详情
+            编辑
+          </el-button>
+          <el-button
+            link
+            type="danger"
+            @click="handleDelete(scope.row.id)"
+            v-hasPermi="['order:refund:delete']"
+          >
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -201,49 +140,37 @@
     />
   </ContentWrap>
 
-  <!-- 表单弹窗：预览 -->
-  <RefundDetail ref="detailRef" @success="getList" />
+  <!-- 表单弹窗：添加/修改 -->
+  <RefundForm ref="formRef" @success="getList" />
 </template>
-<script lang="ts" setup>
-import { DICT_TYPE, getIntDictOptions, getStrDictOptions } from '@/utils/dict'
-import { dateFormatter } from '@/utils/formatTime'
-import * as RefundApi from '@/api/pay/refund'
-import * as AppApi from '@/api/pay/app'
-import RefundDetail from './RefundDetail.vue'
-import download from '@/utils/download'
 
-defineOptions({ name: 'PayRefund' })
+<script setup lang="ts">
+import { dateFormatter } from '@/utils/formatTime'
+import download from '@/utils/download'
+import * as RefundApi from '@/api/pay/refund'
+import RefundForm from './RefundForm.vue'
+
+defineOptions({ name: 'OrderRefund' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 
-const loading = ref(false) // 列表遮罩层
+const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
 const list = ref([]) // 列表的数据
 const queryParams = reactive({
   pageNo: 1,
   pageSize: 10,
-  merchantId: undefined,
-  appId: undefined,
-  channelCode: undefined,
-  merchantOrderId: undefined,
-  merchantRefundId: undefined,
-  status: undefined,
-  payPrice: undefined,
-  refundPrice: undefined,
-  channelOrderNo: undefined,
-  channelRefundNo: undefined,
-  createTime: [],
-  successTime: []
+  orderId: null,
+  orderAmt: null,
+  refundAmt: null,
+  status: null,
+  cancellationReason: null,
+  payRefundId: null,
+  createTime: []
 })
 const queryFormRef = ref() // 搜索的表单
-const exportLoading = ref(false) // 导出等待
-const appList = ref([]) // 支付应用列表集合
-
-/** 搜索按钮操作 */
-const handleQuery = () => {
-  queryParams.pageNo = 1
-  getList()
-}
+const exportLoading = ref(false) // 导出的加载中
 
 /** 查询列表 */
 const getList = async () => {
@@ -257,10 +184,35 @@ const getList = async () => {
   }
 }
 
+/** 搜索按钮操作 */
+const handleQuery = () => {
+  queryParams.pageNo = 1
+  getList()
+}
+
 /** 重置按钮操作 */
 const resetQuery = () => {
-  queryFormRef.value?.resetFields()
+  queryFormRef.value.resetFields()
   handleQuery()
+}
+
+/** 添加/修改操作 */
+const formRef = ref()
+const openForm = (type: string, id?: number) => {
+  formRef.value.open(type, id)
+}
+
+/** 删除按钮操作 */
+const handleDelete = async (id: number) => {
+  try {
+    // 删除的二次确认
+    await message.delConfirm()
+    // 发起删除
+    await RefundApi.deleteRefund(id)
+    message.success(t('common.delSuccess'))
+    // 刷新列表
+    await getList()
+  } catch {}
 }
 
 /** 导出按钮操作 */
@@ -271,28 +223,15 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await RefundApi.exportRefund(queryParams)
-    download.excel(data, '支付订单.xls')
+    download.excel(data, '售后维权.xls')
   } catch {
   } finally {
     exportLoading.value = false
   }
 }
 
-/** 预览详情 */
-const detailRef = ref()
-const openDetail = (id: number) => {
-  detailRef.value.open(id)
-}
-
 /** 初始化 **/
-onMounted(async () => {
-  await getList()
-  appList.value = await AppApi.getAppList()
+onMounted(() => {
+  getList()
 })
 </script>
-<style>
-.order-font {
-  padding: 2px 0;
-  font-size: 12px;
-}
-</style>

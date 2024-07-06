@@ -501,24 +501,6 @@ const remainingRouter: AppRouteRecordRaw[] = [
     ]
   },
   {
-    path: '/pay',
-    component: Layout,
-    name: 'pay',
-    meta: { hidden: true },
-    children: [
-      {
-        path: 'cashier',
-        name: 'PayCashier',
-        meta: {
-          title: '收银台',
-          noCache: true,
-          hidden: true
-        },
-        component: () => import('@/views/pay/cashier/index.vue')
-      }
-    ]
-  },
-  {
     path: '/diy',
     name: 'DiyCenter',
     meta: { hidden: true },
@@ -561,6 +543,34 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true
         },
         component: () => import('@/views/crm/customer/detail/index.vue')
+      }
+    ]
+  },
+  {
+    path: '/payment',
+    component: Layout,
+    name: 'payment',
+    meta: { hidden: true, title: '订单中心' },
+    children: [
+      {
+        path: 'order',
+        name: 'PayOrder',
+        meta: {
+          title: '订单管理',
+          noCache: true,
+          hidden: true
+        },
+        component: () => import('@/views/pay/order/index.vue')
+      },
+      {
+        path: 'refund',
+        name: 'PayRefund',
+        meta: {
+          title: '退款管理',
+          noCache: true,
+          hidden: true
+        },
+        component: () => import('@/views/pay/refund/index.vue')
       }
     ]
   }

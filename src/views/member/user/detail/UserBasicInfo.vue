@@ -39,7 +39,6 @@
             </template>
             {{ user.registerIp }}
           </el-descriptions-item>
-
           <el-descriptions-item>
             <template #label>
               <descriptions-item-label label="注册时间" icon="ep:calendar" />
@@ -51,6 +50,12 @@
               <descriptions-item-label label="最后登录时间" icon="ep:calendar" />
             </template>
             {{ user.loginDate ? formatDate(user.loginDate) : '空' }}
+          </el-descriptions-item>
+          <el-descriptions-item>
+            <template #label>
+              <descriptions-item-label label="状态" icon="ep:calendar" />
+            </template>
+            {{ user.status ? '开启' : '关闭' }}
           </el-descriptions-item>
         </el-descriptions>
       </el-col>

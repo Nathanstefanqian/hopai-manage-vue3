@@ -2,115 +2,40 @@ import request from '@/config/axios'
 
 export interface RefundVO {
   id: number
-  merchantId: number
-  appId: number
-  channelId: number
-  channelCode: string
-  orderId: string
-  tradeNo: string
-  merchantOrderId: string
-  merchantRefundNo: string
-  notifyUrl: string
-  notifyStatus: number
-  status: number
-  type: number
-  payAmount: number
-  refundAmount: number
-  reason: string
-  userIp: string
-  channelOrderNo: string
-  channelRefundNo: string
-  channelErrorCode: string
-  channelErrorMsg: string
-  channelExtras: string
-  expireTime: Date
-  successTime: Date
-  notifyTime: Date
-  createTime: Date
+  orderId: number
+  orderAmt: string
+  refundAmt: string
+  status: string
+  cancellationReason: string
+  payRefundId: number
 }
 
-export interface RefundPageReqVO extends PageParam {
-  merchantId?: number
-  appId?: number
-  channelId?: number
-  channelCode?: string
-  orderId?: string
-  tradeNo?: string
-  merchantOrderId?: string
-  merchantRefundNo?: string
-  notifyUrl?: string
-  notifyStatus?: number
-  status?: number
-  type?: number
-  payAmount?: number
-  refundAmount?: number
-  reason?: string
-  userIp?: string
-  channelOrderNo?: string
-  channelRefundNo?: string
-  channelErrorCode?: string
-  channelErrorMsg?: string
-  channelExtras?: string
-  expireTime?: Date[]
-  successTime?: Date[]
-  notifyTime?: Date[]
-  createTime?: Date[]
+// 查询售后维权列表
+export const getRefundPage = async (params) => {
+  return await request.get({ url: `/pay/refund/page`, params })
 }
 
-export interface PayRefundExportReqVO {
-  merchantId?: number
-  appId?: number
-  channelId?: number
-  channelCode?: string
-  orderId?: string
-  tradeNo?: string
-  merchantOrderId?: string
-  merchantRefundNo?: string
-  notifyUrl?: string
-  notifyStatus?: number
-  status?: number
-  type?: number
-  payAmount?: number
-  refundAmount?: number
-  reason?: string
-  userIp?: string
-  channelOrderNo?: string
-  channelRefundNo?: string
-  channelErrorCode?: string
-  channelErrorMsg?: string
-  channelExtras?: string
-  expireTime?: Date[]
-  successTime?: Date[]
-  notifyTime?: Date[]
-  createTime?: Date[]
+// 查询售后维权详情
+export const getRefund = async (id: number) => {
+  return await request.get({ url: `/pay/refund/get?id=` + id })
 }
 
-// 查询列表退款订单
-export const getRefundPage = (params: RefundPageReqVO) => {
-  return request.get({ url: '/pay/refund/page', params })
+// 新增售后维权
+export const createRefund = async (data: RefundVO) => {
+  return await request.post({ url: `/pay/refund/create`, data })
 }
 
-// 查询详情退款订单
-export const getRefund = (id: number) => {
-  return request.get({ url: '/pay/refund/get?id=' + id })
+// 修改售后维权
+export const updateRefund = async (data: RefundVO) => {
+  return await request.put({ url: `/pay/refund/update`, data })
 }
 
-// 新增退款订单
-export const createRefund = (data: RefundVO) => {
-  return request.post({ url: '/pay/refund/create', data })
+// 删除售后维权
+export const deleteRefund = async (id: number) => {
+  return await request.delete({ url: `/pay/refund/delete?id=` + id })
 }
 
-// 修改退款订单
-export const updateRefund = (data: RefundVO) => {
-  return request.put({ url: '/pay/refund/update', data })
-}
-
-// 删除退款订单
-export const deleteRefund = (id: number) => {
-  return request.delete({ url: '/pay/refund/delete?id=' + id })
-}
-
-// 导出退款订单
-export const exportRefund = (params: PayRefundExportReqVO) => {
-  return request.download({ url: '/pay/refund/export-excel', params })
+// 导出售后维权 Excel
+export const exportRefund = async (params) => {
+  return await request.download({ url: `/pay/refund/export-excel`, params })
 }

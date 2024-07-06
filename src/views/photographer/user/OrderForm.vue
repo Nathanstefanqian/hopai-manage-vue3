@@ -37,8 +37,8 @@
               <el-checkbox
                 v-for="(item, index) in spuList"
                 :key="index"
-                :value="item.categoryId"
-                :label="item.categoryId"
+                :value="item.id"
+                :label="item.id"
                 >{{ item.name }}</el-checkbox
               >
             </el-checkbox-group>
@@ -150,7 +150,7 @@ const resetForm = () => {
   formData.value = {
     areaIds: [],
     levelId: '',
-    bizIds: []
+    categoryIds: []
   }
 }
 
@@ -163,7 +163,7 @@ defineExpose({ open })
 onMounted(async () => {
   areaList.value = await AreaApi.getAreaTree()
   const res = await SpuApi.getSpuPage({ pageNo: 1, pageSize: 50 })
-  spuList.value = res.list.map((item) => ({ categoryId: item.categoryId, name: item.name })) // todo
+  spuList.value = res.list.map((item) => ({ id: item.categoryId, name: item.name })) // todo
 })
 </script>
 

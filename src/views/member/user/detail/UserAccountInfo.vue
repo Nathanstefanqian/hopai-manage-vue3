@@ -2,12 +2,6 @@
   <el-descriptions :column="2">
     <el-descriptions-item>
       <template #label>
-        <descriptions-item-label label=" 等级 " icon="svg-icon:member_level" />
-      </template>
-      {{ user.levelName || '无' }}
-    </el-descriptions-item>
-    <el-descriptions-item>
-      <template #label>
         <descriptions-item-label label="生日" icon="svg-icon:member_level" />
       </template>
       {{ user.birthday ? formatDate(user.birthday) : '空' }}

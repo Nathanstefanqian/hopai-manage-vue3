@@ -60,16 +60,27 @@
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
+        width="200px"
       />
-      <el-table-column label="唯一标识符" align="center" prop="id" width="200px" />
-      <el-table-column label="标题" align="center" prop="title" width="200px" />
+      <el-table-column label="唯一标识符" align="center" prop="id" />
+      <el-table-column label="标题" align="center" prop="title" />
+      <el-table-column label="图片" align="center" prop="imageUrl">
+        <template #default="scope">
+          <el-image
+            :src="scope.row.imageUrl"
+            :preview-src-list="previewList"
+            class="h-10 w-10 rounded-lg"
+            fit="cover"
+            @click="handlePreview(scope.row.imageUrl)"
+          />
+        </template>
+      </el-table-column>
       <el-table-column label="图片URL" align="center" prop="imageUrl" width="200px" />
-      <el-table-column label="描述" align="center" prop="description" />
-      <el-table-column label="活动链接URL" align="center" width="200px">
+      <!-- <el-table-column label="活动链接URL" align="center" width="200px">
         <template #default="scope">
           <a :href="scope.row.linkUrl" target="_blank">{{ scope.row.linkUrl }}</a>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="显示顺序" align="center" prop="sort" width="200px" />
       <el-table-column label="操作" align="center" width="200px">
         <template #default="scope">
@@ -119,6 +130,7 @@ const { t } = useI18n() // 国际化
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
 const list = ref([]) // 列表的数据
+const previewList = ref([])
 const queryParams = reactive({
   pageNo: 1,
   pageSize: 10,
@@ -145,6 +157,11 @@ const getList = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const handlePreview = (url: string) => {
+  previewList.value = []
+  previewList.value.push(url)
 }
 
 /** 搜索按钮操作 */
