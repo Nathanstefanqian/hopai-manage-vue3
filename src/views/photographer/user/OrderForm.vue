@@ -92,7 +92,6 @@ const handleUpdate = async () => {
   }
 }
 const handleCancel = () => {
-  resetForm()
   dialogVisible.value = false
 }
 

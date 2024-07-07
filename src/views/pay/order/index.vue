@@ -101,7 +101,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="300px">
         <template #default="scope">
-          <el-button link type="primary">详情</el-button>
+          <el-button link type="primary" @click="openDetail(scope.row.id)">详情</el-button>
           <el-button
             link
             type="primary"
@@ -109,14 +109,6 @@
             v-hasPermi="['pay:order:update']"
           >
             编辑
-          </el-button>
-          <el-button
-            link
-            type="danger"
-            @click="handleDelete(scope.row.id)"
-            v-hasPermi="['pay:order:delete']"
-          >
-            删除
           </el-button>
         </template>
       </el-table-column>
@@ -143,9 +135,6 @@ import { getStatus, orderStatusDict, getSpuDict } from '@/utils/status'
 import { defaultProps } from '@/utils/tree'
 
 defineOptions({ name: 'Order' })
-
-const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -234,17 +223,10 @@ const openForm = (type: string, id?: number) => {
   formRef.value.open(type, id)
 }
 
-/** 删除按钮操作 */
-const handleDelete = async (id: number) => {
-  try {
-    // 删除的二次确认
-    await message.delConfirm()
-    // 发起删除
-    await OrderApi.deleteOrder(id)
-    message.success(t('common.delSuccess'))
-    // 刷新列表
-    await getList()
-  } catch {}
+// 打开详情
+const { push } = useRouter()
+const openDetail = (id: number) => {
+  push({ name: 'PayOrderDetail', params: { id } })
 }
 
 /** 初始化 **/

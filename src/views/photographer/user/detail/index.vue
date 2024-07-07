@@ -98,7 +98,7 @@ import OrderInfo from './OrderInfo.vue'
 import { CardTitle } from '@/components/Card/index'
 import { ElMessage } from 'element-plus'
 
-defineOptions({ name: 'MemberDetail' })
+defineOptions({ name: 'PhotographerUserDetail' })
 
 const loading = ref(true) // 加载中
 const user = ref<UserApi.UserVO | null>(null)
@@ -134,7 +134,6 @@ const openForm = (type: string) => {
 const getUserData = async (id: string | string[]) => {
   loading.value = true
   try {
-    console.log('出发了')
     user.value = await PhotographerApi.getUserDetailInfo(id)
   } finally {
     loading.value = false

@@ -563,6 +563,16 @@ const remainingRouter: AppRouteRecordRaw[] = [
         component: () => import('@/views/pay/order/index.vue')
       },
       {
+        path: 'order/detail/:id',
+        name: 'PayOrderDetail',
+        meta: {
+          title: '订单详情',
+          noCache: true,
+          hidden: true
+        },
+        component: () => import('@/views/pay/order/detail/index.vue')
+      },
+      {
         path: 'refund',
         name: 'PayRefund',
         meta: {

@@ -36,7 +36,7 @@ export const getOrderPage = async (params) => {
 }
 
 // 查询用户订单详情
-export const getOrder = async (id: number) => {
+export const getOrder = async (id: string | string[]) => {
   return await request.get({ url: `/pay/order/get?id=` + id })
 }
 
