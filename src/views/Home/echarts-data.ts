@@ -71,31 +71,56 @@ export const lineOptions: EChartsOption = {
   ]
 }
 
-export const pieOptions: EChartsOption = {
-  title: {
-    text: '客户投诉订单',
-    left: 'center'
-  },
-  tooltip: {
-    trigger: 'item',
-    formatter: '{a} <br/>{b} : {c} ({d}%)'
-  },
-  legend: {
-    orient: 'vertical',
-    left: 'left',
-    data: ['已处理', '未处理']
+export const circleOptions: EChartsOption = {
+  radar: {
+    // shape: 'circle',
+    indicator: [
+      { name: 'Sales', max: 6500 },
+      { name: 'Administration', max: 16000 },
+      { name: 'Information Technology', max: 30000 },
+      { name: 'Customer Support', max: 38000 },
+      { name: 'Development', max: 52000 },
+      { name: 'Marketing', max: 25000 }
+    ]
   },
   series: [
     {
-      name: '客户投诉订单',
-      type: 'pie',
-      radius: '20%',
-      center: ['30%', '20%'],
-      width: '400px',
+      name: 'Budget vs spending',
+      type: 'radar',
       data: [
-        { value: 335, name: '已处理' },
-        { value: 310, name: '未处理' }
+        {
+          value: [4200, 3000, 20000, 35000, 50000, 18000],
+          name: 'Allocated Budget'
+        },
+        {
+          value: [5000, 14000, 28000, 26000, 42000, 21000],
+          name: 'Actual Spending'
+        }
       ]
+    }
+  ]
+}
+
+export const pieOptions: EChartsOption = {
+  series: [
+    {
+      name: 'Access From',
+      type: 'pie',
+      radius: '50%',
+      data: [
+        { value: 230, name: '已解决' },
+        { value: 735, name: '自动退款中' },
+        { value: 580, name: '人工审核中' },
+        { value: 484, name: '未解决' },
+        { value: 300, name: '协商中' }
+      ],
+      emphasis: {
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      }
     }
   ]
 }
@@ -138,6 +163,9 @@ export const barOptions: EChartsOption = {
     {
       name: t('analysis.activeQuantity'),
       data: [13253, 34235, 26321, 12340, 24643, 1322, 1324],
+      itemStyle: {
+        color: '#ba2636'
+      },
       type: 'bar'
     }
   ]
