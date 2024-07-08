@@ -27,18 +27,10 @@
       <el-form-item label="头像" prop="avatar">
         <UploadImg v-model="formData.avatar" :limit="1" :is-show-tip="false" />
       </el-form-item>
-      <el-form-item label="真实名字" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入真实名字" />
-      </el-form-item>
       <el-form-item label="用户性别" prop="sex">
         <el-radio-group v-model="formData.sex">
-          <el-radio
-            v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_USER_SEX)"
-            :key="dict.value"
-            :label="dict.value"
-          >
-            {{ dict.label }}
-          </el-radio>
+          <el-radio label="0">男</el-radio>
+          <el-radio label="1">女</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="出生日期" prop="birthday">
@@ -47,6 +39,22 @@
           type="date"
           value-format="x"
           placeholder="选择出生日期"
+        />
+      </el-form-item>
+      <el-form-item label="宝宝生日" prop="birthday">
+        <el-date-picker
+          v-model="formData.birthday"
+          type="date"
+          value-format="x"
+          placeholder="选择宝宝生日"
+        />
+      </el-form-item>
+      <el-form-item label="结婚纪念日" prop="birthday">
+        <el-date-picker
+          v-model="formData.birthday"
+          type="date"
+          value-format="x"
+          placeholder="选择结婚纪念日"
         />
       </el-form-item>
       <el-form-item label="所在地" prop="areaId">
@@ -84,21 +92,23 @@ const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
   id: undefined,
   mobile: undefined,
-  password: undefined,
   status: undefined,
   nickname: undefined,
   avatar: undefined,
-  name: undefined,
   sex: undefined,
   areaId: undefined,
   birthday: undefined,
-  mark: undefined,
-  tagIds: [],
-  groupId: undefined
+  mark: undefined
 })
 const formRules = reactive({
   mobile: [{ required: true, message: '手机号不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }]
+  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }],
+  nickname: [{ required: true, message: '昵称不能为空', trigger: 'blur' }],
+  avatar: [{ required: true, message: '头像不能为空', trigger: 'blur' }],
+  sex: [{ required: true, message: '性别不能为空', trigger: 'blur' }],
+  areaId: [{ required: true, message: '地区不能为空', trigger: 'blur' }],
+  birthday: [{ required: true, message: '生日不能为空', trigger: 'blur' }],
+  mark: [{ required: true, message: '备注不能为空', trigger: 'blur' }]
 })
 const formRef = ref() // 表单 Ref
 const areaList = ref([]) // 地区列表
@@ -134,14 +144,8 @@ const submitForm = async () => {
   formLoading.value = true
   try {
     const data = formData.value as unknown as UserApi.UserVO
-    if (formType.value === 'create') {
-      // 说明：目前暂时没有新增操作。如果自己业务需要，可以进行扩展
-      // await UserApi.createUser(data)
-      message.success(t('common.createSuccess'))
-    } else {
-      await UserApi.updateUser(data)
-      message.success(t('common.updateSuccess'))
-    }
+    await UserApi.updateUser(data)
+    message.success(t('common.updateSuccess'))
     dialogVisible.value = false
     // 发送操作成功的事件
     emit('success')
@@ -155,17 +159,13 @@ const resetForm = () => {
   formData.value = {
     id: undefined,
     mobile: undefined,
-    password: undefined,
     status: undefined,
     nickname: undefined,
     avatar: undefined,
-    name: undefined,
     sex: undefined,
     areaId: undefined,
     birthday: undefined,
-    mark: undefined,
-    tagIds: [],
-    groupId: undefined
+    mark: undefined
   }
   formRef.value?.resetFields()
 }

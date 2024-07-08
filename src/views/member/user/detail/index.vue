@@ -23,6 +23,18 @@
         </el-card>
       </el-col>
     </el-row>
+    <el-row :gutter="10" class="mt-5">
+      <!-- 左上角：基本信息 -->
+      <el-col :span="24" class="detail-info-item">
+        <LoginInfo :user="user">
+          <template #header>
+            <div class="card-header">
+              <CardTitle title="登录与注册信息" />
+            </div>
+          </template>
+        </LoginInfo>
+      </el-col>
+    </el-row>
   </div>
 
   <!-- 表单弹窗：添加/修改 -->
@@ -34,6 +46,7 @@ import { useTagsViewStore } from '@/store/modules/tagsView'
 import UserForm from '@/views/member/user/UserForm.vue'
 import UserAccountInfo from './UserAccountInfo.vue'
 import UserBasicInfo from './UserBasicInfo.vue'
+import LoginInfo from './LoginInfo.vue'
 
 import { CardTitle } from '@/components/Card/index'
 import { ElMessage } from 'element-plus'

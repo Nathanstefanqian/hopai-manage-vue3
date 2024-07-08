@@ -99,17 +99,15 @@
           <el-tag> {{ getStatus(scope.row.orderStatus) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="300px">
+      <el-table-column
+        :show-overflow-tooltip="false"
+        align="center"
+        fixed="right"
+        label="操作"
+        width="100"
+      >
         <template #default="scope">
           <el-button link type="primary" @click="openDetail(scope.row.id)">详情</el-button>
-          <el-button
-            link
-            type="primary"
-            @click="openForm('update', scope.row.id)"
-            v-hasPermi="['pay:order:update']"
-          >
-            编辑
-          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -215,12 +213,6 @@ const handleQuery = () => {
 const resetQuery = () => {
   queryFormRef.value.resetFields()
   handleQuery()
-}
-
-/** 添加/修改操作 */
-const formRef = ref()
-const openForm = (type: string, id?: number) => {
-  formRef.value.open(type, id)
 }
 
 // 打开详情

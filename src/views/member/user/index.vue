@@ -26,28 +26,6 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <!-- <el-form-item label="注册时间" prop="createTime">
-        <el-date-picker
-          v-model="queryParams.createTime"
-          :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
-          class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
-          type="daterange"
-          value-format="YYYY-MM-DD HH:mm:ss"
-        />
-      </el-form-item>
-      <el-form-item label="登录时间" prop="loginDate">
-        <el-date-picker
-          v-model="queryParams.loginDate"
-          :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
-          class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
-          type="daterange"
-          value-format="YYYY-MM-DD HH:mm:ss"
-        />
-      </el-form-item> -->
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
@@ -150,8 +128,6 @@ const queryParams = reactive({
   userType: 1
 })
 const queryFormRef = ref() // 搜索的表单
-const updateLevelFormRef = ref() // 修改会员等级表单
-const updatePointFormRef = ref() // 修改会员积分表单
 const selectedIds = ref<number[]>([]) // 表格的选中 ID 数组
 
 /** 查询列表 */
@@ -182,12 +158,6 @@ const resetQuery = () => {
 const { push } = useRouter()
 const openDetail = (id: number) => {
   push({ name: 'MemberUserDetail', params: { id } })
-}
-
-/** 添加/修改操作 */
-const formRef = ref()
-const openForm = (type: string, id?: number) => {
-  formRef.value.open(type, id)
 }
 
 /** 表格选中事件 */

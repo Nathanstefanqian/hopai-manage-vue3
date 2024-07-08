@@ -4,46 +4,31 @@
       <slot name="header"></slot>
     </template>
     <el-row>
-      <el-col :span="4">
-        <ElAvatar shape="square" :size="100" :src="user.avatar || undefined" />
-      </el-col>
       <el-col :span="20">
         <el-descriptions :column="2">
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="昵称" icon="ep:user" />
+              <descriptions-item-label label="注册 IP" icon="ep:position" />
             </template>
-            {{ user.nickname }}
-          </el-descriptions-item>
-          <el-descriptions-item label="手机号">
-            <template #label>
-              <descriptions-item-label label="手机号" icon="ep:phone" />
-            </template>
-            {{ user.mobile }}
+            {{ user.registerIp }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="性别" icon="fa:mars-double" />
+              <descriptions-item-label label="注册时间" icon="ep:calendar" />
             </template>
-            {{ user.sex ? '女' : '男' }}
+            {{ user.createTime ? formatDate(user.createTime, 'YYYY-MM-DD') : '空' }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="所在地" icon="ep:location" />
+              <descriptions-item-label label="登录 IP" icon="ep:position" />
             </template>
-            {{ user.areaName }}
+            {{ user.loginIp }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="状态" icon="ep:calendar" />
+              <descriptions-item-label label="最后登录时间" icon="ep:calendar" />
             </template>
-            <el-tag> {{ user.status ? '开启' : '关闭' }}</el-tag>
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
-              <descriptions-item-label label="备注" icon="ep:calendar" />
-            </template>
-            {{ user.mark }}
+            {{ user.loginDate ? formatDate(user.loginDate, 'YYYY-MM-DD') : '空' }}
           </el-descriptions-item>
         </el-descriptions>
       </el-col>
