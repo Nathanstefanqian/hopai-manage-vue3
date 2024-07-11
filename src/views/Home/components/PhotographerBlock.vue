@@ -10,6 +10,18 @@
           <el-image :src="item.url" class="w-20" />
         </div>
       </div>
+      <div class="photographer-box-change mt-5">
+        <div class="inc" v-if="index % 2">
+          <el-image src="/increase.svg" />
+          <span class="ml-2 c-#00B692">8.5%</span>
+          <span class="ml-4 c-#606060">Up from yesterday</span>
+        </div>
+        <div class="dec" v-else>
+          <el-image src="/decline.svg" />
+          <span class="ml-2 c-#F93C65">8.5%</span>
+          <span class="ml-4 c-#606060">Down from yesterday</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -43,6 +55,7 @@ const boxConfig = [
 .photographer {
   display: flex;
   justify-content: space-between;
+  min-width: 1250px;
 
   &-box {
     width: 22.5%;
@@ -73,6 +86,11 @@ const boxConfig = [
           color: #202224;
         }
       }
+    }
+
+    &-change {
+      display: flex;
+      align-items: center;
     }
   }
 }

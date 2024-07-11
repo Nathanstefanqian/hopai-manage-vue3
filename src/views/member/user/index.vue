@@ -98,15 +98,11 @@
       @pagination="getList"
     />
   </ContentWrap>
-
-  <!-- 表单弹窗：添加/修改 -->
-  <UserForm ref="formRef" @success="getList" />
 </template>
 <script lang="ts" setup>
 import { dateFormatter } from '@/utils/formatTime'
 import * as UserApi from '@/api/member/user'
 import { DICT_TYPE } from '@/utils/dict'
-import UserForm from './UserForm.vue'
 
 defineOptions({ name: 'MemberUser' })
 
@@ -156,7 +152,7 @@ const resetQuery = () => {
 
 /** 打开会员详情 */
 const { push } = useRouter()
-const openDetail = (id: number) => {
+const openDetail = (id: any) => {
   push({ name: 'MemberUserDetail', params: { id } })
 }
 

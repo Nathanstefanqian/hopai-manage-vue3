@@ -73,7 +73,7 @@ watch(updateFlagPhoto, () => {
   getData()
 })
 
-const albumList = ref([])
+const albumList = ref<any>([])
 
 const handleClickAlbum = (id: number, title: string) => {
   albumId.value = id

@@ -93,7 +93,7 @@ onMounted(async () => {
   }
 
   .img-zoom {
-    transition: transform 0.3s;
+    transition: transform 0.6s;
 
     &:hover {
       transform: scale(1.2);

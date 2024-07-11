@@ -72,39 +72,48 @@ export const lineOptions: EChartsOption = {
 }
 
 export const circleOptions: EChartsOption = {
+  tooltip: {
+    trigger: 'item',
+    formatter: function (params) {
+      const indicators = ['活跃用户', '新用户', '沉默用户', '回流用户']
+      return `${indicators}: ${params.value}`
+    }
+  },
   radar: {
-    // shape: 'circle',
     indicator: [
-      { name: 'Sales', max: 6500 },
-      { name: 'Administration', max: 16000 },
-      { name: 'Information Technology', max: 30000 },
-      { name: 'Customer Support', max: 38000 },
-      { name: 'Development', max: 52000 },
-      { name: 'Marketing', max: 25000 }
+      { name: '活跃用户', max: 6500 },
+      { name: '新用户', max: 16000 },
+      { name: '沉默用户', max: 30000 },
+      { name: '回流用户', max: 38000 }
     ]
   },
   series: [
     {
-      name: 'Budget vs spending',
+      name: '用户分析',
       type: 'radar',
       data: [
         {
-          value: [4200, 3000, 20000, 35000, 50000, 18000],
-          name: 'Allocated Budget'
-        },
-        {
-          value: [5000, 14000, 28000, 26000, 42000, 21000],
-          name: 'Actual Spending'
+          value: [5000, 14000, 28000, 26000],
+          name: '用户数量'
         }
-      ]
+      ],
+      emphasis: {
+        lineStyle: {
+          width: 4
+        }
+      }
     }
   ]
 }
 
 export const pieOptions: EChartsOption = {
+  tooltip: {
+    trigger: 'item',
+    formatter: '{a} <br/>{b}: {c} ({d}%)'
+  },
   series: [
     {
-      name: 'Access From',
+      name: '订单',
       type: 'pie',
       radius: '50%',
       data: [

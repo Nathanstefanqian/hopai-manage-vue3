@@ -93,13 +93,7 @@
         prop="createTime"
         width="180px"
       />
-      <el-table-column
-        :show-overflow-tooltip="false"
-        align="center"
-        fixed="right"
-        label="操作"
-        width="100"
-      >
+      <el-table-column :show-overflow-tooltip="false" align="center" fixed="right" label="操作">
         <template #default="scope">
           <div class="flex items-center justify-center">
             <el-button link type="primary" @click="openDetail(scope.row.id)">详情</el-button>

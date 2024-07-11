@@ -145,14 +145,6 @@ const handleAddAreaId = () => {
   }
 }
 
-const resetForm = () => {
-  formData.value = {
-    areaIds: [],
-    levelId: '',
-    categoryIds: []
-  }
-}
-
 const open = async () => {
   dialogVisible.value = true
   dialogTitle.value = '接单信息'

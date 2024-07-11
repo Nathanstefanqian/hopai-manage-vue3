@@ -29,8 +29,13 @@
       </el-form-item>
       <el-form-item label="用户性别" prop="sex">
         <el-radio-group v-model="formData.sex">
-          <el-radio label="0">男</el-radio>
-          <el-radio label="1">女</el-radio>
+          <el-radio
+            v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_USER_SEX)"
+            :key="dict.value"
+            :label="dict.value"
+          >
+            {{ dict.label }}
+          </el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="出生日期" prop="birthday">
@@ -41,17 +46,17 @@
           placeholder="选择出生日期"
         />
       </el-form-item>
-      <el-form-item label="宝宝生日" prop="birthday">
+      <el-form-item label="宝宝生日" prop="babyBirthday">
         <el-date-picker
-          v-model="formData.birthday"
+          v-model="formData.babyBirthday"
           type="date"
           value-format="x"
           placeholder="选择宝宝生日"
         />
       </el-form-item>
-      <el-form-item label="结婚纪念日" prop="birthday">
+      <el-form-item label="结婚纪念日" prop="weddingAnniversary">
         <el-date-picker
-          v-model="formData.birthday"
+          v-model="formData.weddingAnniversary"
           type="date"
           value-format="x"
           placeholder="选择结婚纪念日"
@@ -81,24 +86,29 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as UserApi from '@/api/member/user'
 import * as AreaApi from '@/api/system/area'
 import { defaultProps } from '@/utils/tree'
+const props = defineProps<{ userInfo: UserApi.UserVO }>()
 
+const user = ref<UserApi.UserVO>({ ...props.userInfo })
 const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
-const dialogTitle = ref('') // 弹窗的标题
+const dialogTitle = ref('编辑') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
-const formType = ref('') // 表单的类型：create - 新增；update - 修改
+const route = useRoute()
+const id = route.params.id
 const formData = ref({
-  id: undefined,
-  mobile: undefined,
-  status: undefined,
-  nickname: undefined,
-  avatar: undefined,
-  sex: undefined,
-  areaId: undefined,
-  birthday: undefined,
-  mark: undefined
+  id,
+  mobile: props.userInfo.mobile,
+  status: props.userInfo.status,
+  nickname: props.userInfo.nickname,
+  avatar: props.userInfo.avatar,
+  sex: props.userInfo.sex,
+  areaId: props.userInfo.areaId,
+  birthday: props.userInfo.birthday,
+  babyBirthday: props.userInfo.babyBirthday,
+  weddingAnniversary: props.userInfo.weddingAnniversary,
+  mark: props.userInfo.mark
 })
 const formRules = reactive({
   mobile: [{ required: true, message: '手机号不能为空', trigger: 'blur' }],
@@ -108,6 +118,8 @@ const formRules = reactive({
   sex: [{ required: true, message: '性别不能为空', trigger: 'blur' }],
   areaId: [{ required: true, message: '地区不能为空', trigger: 'blur' }],
   birthday: [{ required: true, message: '生日不能为空', trigger: 'blur' }],
+  babyBirthday: [{ required: true, message: '宝宝生日不能为空', trigger: 'blur' }],
+  weddingAnniversary: [{ required: true, message: '结婚纪念日不能为空', trigger: 'blur' }],
   mark: [{ required: true, message: '备注不能为空', trigger: 'blur' }]
 })
 const formRef = ref() // 表单 Ref
@@ -116,18 +128,7 @@ const areaList = ref([]) // 地区列表
 /** 打开弹窗 */
 const open = async (type: string, id?: number) => {
   dialogVisible.value = true
-  dialogTitle.value = t('action.' + type)
-  formType.value = type
-  resetForm()
-  // 修改时，设置数据
-  if (id) {
-    formLoading.value = true
-    try {
-      formData.value = await UserApi.getUser(id)
-    } finally {
-      formLoading.value = false
-    }
-  }
+
   // 获得地区列表
   areaList.value = await AreaApi.getAreaTree()
 }
@@ -144,6 +145,7 @@ const submitForm = async () => {
   formLoading.value = true
   try {
     const data = formData.value as unknown as UserApi.UserVO
+    console.log(data.id)
     await UserApi.updateUser(data)
     message.success(t('common.updateSuccess'))
     dialogVisible.value = false
@@ -152,21 +154,5 @@ const submitForm = async () => {
   } finally {
     formLoading.value = false
   }
-}
-
-/** 重置表单 */
-const resetForm = () => {
-  formData.value = {
-    id: undefined,
-    mobile: undefined,
-    status: undefined,
-    nickname: undefined,
-    avatar: undefined,
-    sex: undefined,
-    areaId: undefined,
-    birthday: undefined,
-    mark: undefined
-  }
-  formRef.value?.resetFields()
 }
 </script>

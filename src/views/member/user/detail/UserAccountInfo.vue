@@ -10,13 +10,13 @@
       <template #label>
         <descriptions-item-label label="结婚纪念日" icon="svg-icon:member_level" />
       </template>
-      {{ user.birthday ? formatDate(user.birthday, 'YYYY-MM-DD') : '空' }}
+      {{ user.birthday ? formatDate(user.weddingAnniversary, 'YYYY-MM-DD') : '空' }}
     </el-descriptions-item>
     <el-descriptions-item>
       <template #label>
         <descriptions-item-label label="宝宝的生日" icon="svg-icon:member_level" />
       </template>
-      {{ user.birthday ? formatDate(user.birthday, 'YYYY-MM-DD') : '空' }}
+      {{ user.birthday ? formatDate(user.babyBirthday, 'YYYY-MM-DD') : '空' }}
     </el-descriptions-item>
   </el-descriptions>
 </template>

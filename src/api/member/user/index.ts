@@ -23,6 +23,8 @@ export interface UserVO {
   id: number
   avatar: string | undefined
   birthday: number | undefined
+  babyBirthday: number | undefined
+  weddingAnniversary: number | undefined
   createTime: number | undefined
   areaIds: Array<string>
   loginDate: number | undefined
@@ -122,17 +124,17 @@ export const updateUserOrderInfo = async (data: OrderVO) => {
 
 // 更新基础信息
 export const updateUserBasicInfo = async (data: BasicVO) => {
-  return await request.put({ url: '/member/user/update', data })
+  return await request.put({ url: '/member/photographer/updateInfo', data })
 }
 
 // 更新技术信息
 export const updateUserTechInfo = async (data: TechVO) => {
-  return await request.put({ url: '/member/user/update', data })
+  return await request.put({ url: '/member/photographer/updateInfo', data })
 }
 
 // 更新等级和状态信息
 export const updateUserLnSInfo = async (data: LnSVO) => {
-  return await request.put({ url: '/member/user/update', data })
+  return await request.put({ url: '/member/photographer/updateInfo', data })
 }
 interface LnSVO {
   levelId: any

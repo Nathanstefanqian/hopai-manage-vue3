@@ -25,7 +25,7 @@
             <template #label>
               <descriptions-item-label label="性别" icon="fa:mars-double" />
             </template>
-            {{ user.sex ? '女' : '男' }}
+            {{ user.sex == 1 ? '男' : '女' }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
@@ -37,7 +37,7 @@
             <template #label>
               <descriptions-item-label label="状态" icon="ep:calendar" />
             </template>
-            <el-tag> {{ user.status ? '开启' : '关闭' }}</el-tag>
+            <el-tag> {{ user.status ? '关闭' : '开启' }}</el-tag>
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>

@@ -23,14 +23,14 @@
 
 <script setup lang="ts">
 import { Echart } from '@/components/Echart/index'
-import { pieOptions, circleOptions } from '../echarts-data'
+import { pieOptions, circleOptions, wordOptions } from '../echarts-data'
 import Carousel from './Carousel.vue'
 </script>
 
 <style lang="scss" scoped>
 .card {
   display: flex;
-  width: 100%;
+  min-width: 1250px;
   justify-content: space-between;
 
   .box {

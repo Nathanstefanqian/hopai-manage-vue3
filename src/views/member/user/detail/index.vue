@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading">
+  <div v-loading="loading" v-if="user">
     <el-row :gutter="10">
       <!-- 左上角：基本信息 -->
       <el-col :span="14" class="detail-info-item">
@@ -38,7 +38,9 @@
   </div>
 
   <!-- 表单弹窗：添加/修改 -->
-  <UserForm ref="formRef" @success="getUserData(id)" />
+  <template v-if="user">
+    <UserForm ref="formRef" :userInfo="user" @success="getUserData(id)" />
+  </template>
 </template>
 <script setup lang="ts">
 import * as UserApi from '@/api/member/user'
@@ -54,7 +56,7 @@ import { ElMessage } from 'element-plus'
 defineOptions({ name: 'MemberDetail' })
 
 const loading = ref(true) // 加载中
-const user = ref<UserApi.UserVO>({} as UserApi.UserVO)
+const user = ref<UserApi.UserVO | null>(null)
 
 /** 添加/修改操作 */
 const formRef = ref()
@@ -63,7 +65,7 @@ const openForm = (type: string) => {
 }
 
 /** 获得用户 */
-const getUserData = async (id: number) => {
+const getUserData = async (id: string | string[]) => {
   loading.value = true
   try {
     user.value = await UserApi.getUser(id)
@@ -76,7 +78,7 @@ const getUserData = async (id: number) => {
 const { currentRoute } = useRouter() // 路由
 const { delView } = useTagsViewStore() // 视图操作
 const route = useRoute()
-const id = Number(route.params.id)
+const id = route.params.id
 onMounted(() => {
   if (!id) {
     ElMessage.warning('参数错误，会员编号不能为空！')

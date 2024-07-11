@@ -20,6 +20,32 @@ export interface DictDataType {
   cssClass: string
 }
 
+export const getSexDict = () => {
+  return [
+    {
+      label: '男',
+      value: 0
+    },
+    {
+      label: '女',
+      value: 1
+    }
+  ]
+}
+
+export const getStatusDict = () => {
+  return [
+    {
+      label: '开启',
+      value: 1
+    },
+    {
+      label: '禁用',
+      value: 0
+    }
+  ]
+}
+
 export const getDictOptions = (dictType: string) => {
   return dictStore.getDictByType(dictType) || []
 }

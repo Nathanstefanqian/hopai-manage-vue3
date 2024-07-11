@@ -143,19 +143,4 @@ const submitForm = async () => {
     formLoading.value = false
   }
 }
-
-/** 重置表单 */
-const resetForm = () => {
-  formData.value = {
-    mobile: '',
-    status: 0,
-    nickname: '',
-    avatar: '',
-    sex: 0,
-    areaId: 0,
-    birthday: 0,
-    idCard: 0
-  }
-  formRef.value?.resetFields()
-}
 </script>

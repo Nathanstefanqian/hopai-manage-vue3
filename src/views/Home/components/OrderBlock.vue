@@ -1,7 +1,7 @@
 <template>
-  <div class="photographer">
-    <div class="photographer-box" v-for="(item, index) in boxConfig" :key="index">
-      <div class="photographer-box-info">
+  <div class="order">
+    <div class="order-box" v-for="(item, index) in boxConfig" :key="index">
+      <div class="order-box-info">
         <div class="desc">
           <span class="title">{{ item.name }}</span>
           <CountTo
@@ -13,6 +13,18 @@
         </div>
         <div class="icon">
           <el-image :src="item.url" class="w-20" />
+        </div>
+      </div>
+      <div class="order-box-change mt-5">
+        <div class="inc" v-if="index % 2">
+          <el-image src="/increase.svg" />
+          <span class="ml-2 c-#00B692">8.5%</span>
+          <span class="ml-4 c-#606060">Up from yesterday</span>
+        </div>
+        <div class="dec" v-else>
+          <el-image src="/decline.svg" />
+          <span class="ml-2 c-#F93C65">8.5%</span>
+          <span class="ml-4 c-#606060">Down from yesterday</span>
         </div>
       </div>
     </div>
@@ -45,9 +57,10 @@ const boxConfig = [
 </script>
 
 <style lang="scss" scoped>
-.photographer {
+.order {
   display: flex;
   justify-content: space-between;
+  min-width: 1250px;
 
   &-box {
     width: 22.5%;
@@ -78,6 +91,11 @@ const boxConfig = [
           color: #202224;
         }
       }
+    }
+
+    &-change {
+      display: flex;
+      align-items: center;
     }
   }
 }
