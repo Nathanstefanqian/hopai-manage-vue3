@@ -108,3 +108,23 @@ export const updatePhotographerTechInfo = async (data: TechDataVO) => {
 export const updatePhotographerOrderInfo = async (data: OrderDataVO) => {
   return await request.post({ url: '/member/photographer/updateInfo', data })
 }
+
+// 获得开户信息接口
+export const getPhotographerBankPage = async (data: any) => {
+  return await request.post({ url: '/member/photographer/bankReviewPage', data })
+}
+
+// 获得开户详情信息接口
+export const getPhotographerBankDetail = async (params: any) => {
+  return await request.get({ url: '/member/photographer/bankReviewInfo', params })
+}
+
+// 获得外挂接口
+export const getFraud = async (id: number) => {
+  return await request.get({ url: '/member/wechat-login/get?id=' + id })
+}
+
+// 更新外挂功能
+export const updateFraud = async (data: any) => {
+  return await request.put({ url: '/member/wechat-login/update', data })
+}

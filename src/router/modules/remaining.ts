@@ -459,6 +459,16 @@ const remainingRouter: AppRouteRecordRaw[] = [
     meta: { hidden: true },
     children: [
       {
+        path: 'fraud',
+        name: 'PhotographerFraud',
+        meta: {
+          title: '摄影师外挂',
+          noCache: true,
+          hidden: true
+        },
+        component: () => import('@/views/photographer/fraud/index.vue')
+      },
+      {
         path: 'user',
         name: 'PhotographerUser',
         meta: {
@@ -497,6 +507,26 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true
         },
         component: () => import('@/views/photographer/verify/detail/index.vue')
+      },
+      {
+        path: 'bank',
+        name: 'PhotographerUserBank',
+        meta: {
+          title: '摄影师开户',
+          noCache: true,
+          hidden: true
+        },
+        component: () => import('@/views/photographer/bank/index.vue')
+      },
+      {
+        path: 'bank/detail/:id',
+        name: 'PhotographerUserBankDetail',
+        meta: {
+          title: '摄影师开户详情',
+          noCache: true,
+          hidden: true
+        },
+        component: () => import('@/views/photographer/bank/detail/index.vue')
       }
     ]
   },
@@ -581,6 +611,16 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true
         },
         component: () => import('@/views/pay/refund/index.vue')
+      },
+      {
+        path: 'refund/detail/:id',
+        name: 'PayRefundDetail',
+        meta: {
+          title: '退款详情',
+          noCache: true,
+          hidden: true
+        },
+        component: () => import('@/views/pay/refund/detail/index.vue')
       }
     ]
   }

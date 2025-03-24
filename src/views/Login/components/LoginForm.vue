@@ -54,23 +54,15 @@
             @keyup.enter="getCode()"
           />
         </el-form-item>
+        <!-- <el-checkbox v-model="loginData.loginForm.rememberMe">
+          {{ t('login.remember') }}
+        </el-checkbox> -->
       </el-col>
       <el-col
         :span="24"
         style="padding-right: 10px; padding-left: 10px; margin-top: -20px; margin-bottom: -20px"
       >
-        <el-form-item>
-          <el-row justify="space-between" style="width: 100%">
-            <el-col :span="6">
-              <el-checkbox v-model="loginData.loginForm.rememberMe">
-                {{ t('login.remember') }}
-              </el-checkbox>
-            </el-col>
-            <el-col :offset="6" :span="12">
-              <el-link style="float: right" type="primary">{{ t('login.forgetPassword') }}</el-link>
-            </el-col>
-          </el-row>
-        </el-form-item>
+        <el-form-item />
       </el-col>
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item>
@@ -89,33 +81,6 @@
         mode="pop"
         @success="handleLogin"
       />
-      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item>
-          <el-row :gutter="5" justify="space-between" style="width: 100%">
-            <el-col :span="8">
-              <XButton
-                :title="t('login.btnMobile')"
-                class="w-[100%]"
-                @click="setLoginState(LoginStateEnum.MOBILE)"
-              />
-            </el-col>
-            <el-col :span="8">
-              <!-- <XButton
-                :title="t('login.btnQRCode')"
-                class="w-[100%]"
-                @click="setLoginState(LoginStateEnum.QR_CODE)"
-              /> -->
-            </el-col>
-            <el-col :span="8">
-              <XButton
-                :title="t('login.btnRegister')"
-                class="w-[100%]"
-                @click="setLoginState(LoginStateEnum.REGISTER)"
-              />
-            </el-col>
-          </el-row>
-        </el-form-item>
-      </el-col>
       <!-- <el-divider content-position="center">{{ t('login.otherLogin') }}</el-divider>
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item>

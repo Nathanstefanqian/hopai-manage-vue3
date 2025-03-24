@@ -39,16 +39,34 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label=" 镜头信息 " icon="svg-icon:member_level" />
+              <descriptions-item-label label="变焦镜头信息 " icon="svg-icon:member_level" />
             </template>
             {{ user.appPhotographerInfoBaseVO ? user.appPhotographerInfoBaseVO.zoomLens : '' }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label=" 相机照片 " icon="svg-icon:member_level" />
+              <descriptions-item-label label="定焦镜头信息 " icon="svg-icon:member_level" />
+            </template>
+            {{
+              user.appPhotographerInfoBaseVO
+                ? user.appPhotographerInfoBaseVO.fixedFocalLengthLens
+                : ''
+            }}
+          </el-descriptions-item>
+          <el-descriptions-item>
+            <template #label>
+              <descriptions-item-label label=" 设备照片 " icon="svg-icon:member_level" />
             </template>
             <div class="description-item-content">
-              <el-image :src="device" class="h-100 w-100 rounded-lg" fit="cover" />
+              <el-image
+                :src="item"
+                class="mr-10 h-50 w-50 rounded-lg"
+                fit="cover"
+                :key="index"
+                :preview-src-list="device"
+                :initial-index="index"
+                v-for="(item, index) in device"
+              />
             </div>
           </el-descriptions-item>
         </el-descriptions>
@@ -66,6 +84,12 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
+              <descriptions-item-label label=" 审核不通过理由 " icon="svg-icon:member_level" />
+            </template>
+            <el-input placeholder="如果通过则不需要填写" class="!w-100" v-model="reviewMark" />
+          </el-descriptions-item>
+          <el-descriptions-item>
+            <template #label>
               <descriptions-item-label label=" 审核操作 " icon="svg-icon:member_level" />
             </template>
             <el-button text type="primary" @click="verify(3)">审核通过</el-button>
@@ -80,7 +104,6 @@
 import * as UserApi from '@/api/member/user'
 import * as PhotographerApi from '@/api/member/photographer'
 import { useTagsViewStore } from '@/store/modules/tagsView'
-import { useUpload } from '@/hooks/web/useSts'
 import UserAccountInfo from './UserAccountInfo.vue'
 import UserBasicInfo from './UserBasicInfo.vue'
 import MemberTagSelect from '@/views/member/tag/components/MemberTagSelect.vue'
@@ -89,13 +112,11 @@ import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 
 defineOptions({ name: 'MemberDetail' })
-const { getStsToken, signatrueUrl } = useUpload('user-profile')
 
 const loading = ref(true) // 加载中
 const user = ref<UserApi.UserVO>({} as UserApi.UserVO)
 const device = ref(null)
 const levelId = ref()
-
 const message = useMessage() // 消息弹窗
 const { push } = useRouter()
 
@@ -105,10 +126,9 @@ const getUserData = async (id: number) => {
   try {
     user.value = await PhotographerApi.getUserDetailInfo(id)
     const res = await PhotographerApi.getPhotographerDevice(id)
-    let index = res[0].picUrl.lastIndexOf('.com/')
-    const Picurl = res[0].picUrl.substring(index + 5)
-    await getStsToken()
-    device.value = await signatrueUrl(Picurl)
+    device.value = res.map((item) => {
+      return (item = item.picUrl)
+    })
   } finally {
     loading.value = false
   }
@@ -119,6 +139,7 @@ const { currentRoute } = useRouter() // 路由
 const { delView } = useTagsViewStore() // 视图操作
 const route = useRoute()
 const id = route.params.id
+const reviewMark = ref('')
 
 // 审核操作
 const verify = async (status: number) => {
@@ -134,8 +155,13 @@ const verify = async (status: number) => {
         return
       }
       await UserApi.updateUserLevelId({ levelId: levelId.value, id })
+    } else {
+      if (!reviewMark.value) {
+        message.error('请填写不通过的原因')
+        return
+      }
     }
-    const res = await PhotographerApi.verify(data)
+    const res = await PhotographerApi.verify({ ...data, reviewMark: reviewMark.value })
     if (res) {
       message.success('变更成功！')
       push('/photographer/verify')
@@ -154,7 +180,6 @@ onMounted(() => {
 <style scoped lang="css">
 .description-item-content {
   display: flex;
-  flex-direction: column;
   margin-top: 20px;
 }
 

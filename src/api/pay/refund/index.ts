@@ -10,11 +10,6 @@ export interface RefundVO {
   payRefundId: number
 }
 
-// 查询售后维权列表
-export const getRefundPage = async (params) => {
-  return await request.get({ url: `/pay/refund/page`, params })
-}
-
 // 查询售后维权详情
 export const getRefund = async (id: number) => {
   return await request.get({ url: `/pay/refund/get?id=` + id })
@@ -38,4 +33,14 @@ export const deleteRefund = async (id: number) => {
 // 导出售后维权 Excel
 export const exportRefund = async (params) => {
   return await request.download({ url: `/pay/refund/export-excel`, params })
+}
+
+// 退款分页
+export const getRefundPage = async (data: any) => {
+  return await request.post({ url: `/pay/refund/page`, data })
+}
+
+// 确认退款
+export const confirmRefund = async (data: any) => {
+  return await request.post({ url: '/pay/refund/confirmRefund', data })
 }

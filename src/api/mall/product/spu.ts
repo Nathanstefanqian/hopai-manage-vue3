@@ -31,6 +31,10 @@ export interface GiveCouponTemplate {
 }
 
 export interface Spu {
+  shootingTime: number
+  rawCount: number
+  deliveryTime: number
+  retouchedImageCount: number
   id?: number
   name?: string // 商品名称
   categoryId?: number | undefined // 商品分类

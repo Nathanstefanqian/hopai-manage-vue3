@@ -8,11 +8,6 @@
     max-height="500"
     size="small"
   >
-    <el-table-column align="center" fixed="left" label="图片" min-width="100">
-      <template #default="{ row }">
-        <UploadImg v-model="row.picUrl" height="80px" width="100%" />
-      </template>
-    </el-table-column>
     <template v-if="formData!.specType && !isBatch">
       <!--  根据商品属性动态添加 -->
       <el-table-column
@@ -29,21 +24,16 @@
         </template>
       </el-table-column>
     </template>
-    <el-table-column align="center" label="商品条码" min-width="168">
-      <template #default="{ row }">
-        <el-input v-model="row.barCode" class="w-100%" />
-      </template>
-    </el-table-column>
     <el-table-column align="center" label="销售价(元)" min-width="168">
       <template #default="{ row }">
-        <el-input-number v-model="row.price" :min="0" :precision="2" :step="0.1" class="w-100%" />
+        <el-input-number v-model="row.price" :min="0.1" :precision="2" :step="0.1" class="w-100%" />
       </template>
     </el-table-column>
     <el-table-column align="center" label="市场价(元)" min-width="168">
       <template #default="{ row }">
         <el-input-number
           v-model="row.marketPrice"
-          :min="0"
+          :min="0.1"
           :precision="2"
           :step="0.1"
           class="w-100%"
@@ -54,7 +44,7 @@
       <template #default="{ row }">
         <el-input-number
           v-model="row.costPrice"
-          :min="0"
+          :min="0.1"
           :precision="2"
           :step="0.1"
           class="w-100%"
@@ -63,17 +53,7 @@
     </el-table-column>
     <el-table-column align="center" label="库存" min-width="168">
       <template #default="{ row }">
-        <el-input-number v-model="row.stock" :min="0" class="w-100%" />
-      </template>
-    </el-table-column>
-    <el-table-column align="center" label="重量(kg)" min-width="168">
-      <template #default="{ row }">
-        <el-input-number v-model="row.weight" :min="0" :precision="2" :step="0.1" class="w-100%" />
-      </template>
-    </el-table-column>
-    <el-table-column align="center" label="体积(m^3)" min-width="168">
-      <template #default="{ row }">
-        <el-input-number v-model="row.volume" :min="0" :precision="2" :step="0.1" class="w-100%" />
+        <el-input-number v-model="row.stock" :min="30000" class="w-100%" />
       </template>
     </el-table-column>
     <template v-if="formData!.subCommissionType">
@@ -122,11 +102,6 @@
     @selection-change="handleSelectionChange"
   >
     <el-table-column v-if="isComponent" type="selection" width="45" />
-    <el-table-column align="center" label="图片" min-width="80">
-      <template #default="{ row }">
-        <el-image :src="row.picUrl" class="h-60px w-60px" @click="imagePreview(row.picUrl)" />
-      </template>
-    </el-table-column>
     <template v-if="formData!.specType && !isBatch">
       <!--  根据商品属性动态添加 -->
       <el-table-column
@@ -143,11 +118,6 @@
         </template>
       </el-table-column>
     </template>
-    <el-table-column align="center" label="商品条码" min-width="100">
-      <template #default="{ row }">
-        {{ row.barCode }}
-      </template>
-    </el-table-column>
     <el-table-column align="center" label="销售价(元)" min-width="80">
       <template #default="{ row }">
         {{ row.price }}
@@ -166,16 +136,6 @@
     <el-table-column align="center" label="库存" min-width="80">
       <template #default="{ row }">
         {{ row.stock }}
-      </template>
-    </el-table-column>
-    <el-table-column align="center" label="重量(kg)" min-width="80">
-      <template #default="{ row }">
-        {{ row.weight }}
-      </template>
-    </el-table-column>
-    <el-table-column align="center" label="体积(m^3)" min-width="80">
-      <template #default="{ row }">
-        {{ row.volume }}
       </template>
     </el-table-column>
     <template v-if="formData!.subCommissionType">
@@ -287,12 +247,12 @@ const props = defineProps({
 const formData: Ref<Spu | undefined> = ref<Spu>() // 表单数据
 const skuList = ref<Sku[]>([
   {
-    price: 0, // 商品价格
-    marketPrice: 0, // 市场价
-    costPrice: 0, // 成本价
+    price: 0.1, // 商品价格
+    marketPrice: 0.1, // 市场价
+    costPrice: 0.1, // 成本价
     barCode: '', // 商品条码
     picUrl: '', // 图片地址
-    stock: 0, // 库存
+    stock: 1, // 库存
     weight: 0, // 商品重量
     volume: 0, // 商品体积
     firstBrokeragePrice: 0, // 一级分销的佣金
@@ -412,7 +372,7 @@ const generateTableData = (propertyList: any[]) => {
       costPrice: 0,
       barCode: '',
       picUrl: '',
-      stock: 0,
+      stock: 1,
       weight: 0,
       volume: 0,
       firstBrokeragePrice: 0,
@@ -488,7 +448,7 @@ watch(
           costPrice: 0,
           barCode: '',
           picUrl: '',
-          stock: 0,
+          stock: 1,
           weight: 0,
           volume: 0,
           firstBrokeragePrice: 0,

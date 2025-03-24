@@ -1,5 +1,19 @@
 import request from '@/config/axios'
 
+export interface appPhotographerOpenSubAppReqVO {
+  bankCardNumber: string
+  bankCode: string
+  idCard: string
+  idCardAddress: string
+  idCardBackUrl: string
+  idCardEndDate: string
+  idCardFrontUrl: string
+  idCardName: string
+  idCardStartDate: string
+  regionCode: string | null
+  userId: string
+}
+
 export interface appPhotographerInfoBaseVO {
   littleRedBookId: string
   wechatId: string
@@ -15,6 +29,7 @@ export interface appPhotographerInfoBaseVO {
   id: string
 }
 export interface UserVO {
+  appPhotographerOpenSubAppReqVO: appPhotographerOpenSubAppReqVO
   appPhotographerInfoBaseVO: appPhotographerInfoBaseVO
   avgRate: number
   totalOrderAmount: number

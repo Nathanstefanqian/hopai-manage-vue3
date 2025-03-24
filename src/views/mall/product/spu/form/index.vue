@@ -17,14 +17,14 @@
           :propFormData="formData"
         />
       </el-tab-pane>
-      <el-tab-pane label="其他设置" name="otherSettings">
+      <!-- <el-tab-pane label="其他设置" name="otherSettings">
         <OtherSettingsForm
           ref="otherSettingsRef"
           v-model:activeName="activeName"
           :is-detail="isDetail"
           :propFormData="formData"
         />
-      </el-tab-pane>
+      </el-tab-pane> -->
       <el-tab-pane label="服务说明" name="ServiceInfo">
         <ServiceInfoForm
           ref="ServiceInfoRef"

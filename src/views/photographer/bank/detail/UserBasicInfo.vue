@@ -32,7 +32,7 @@
             <template #label>
               <descriptions-item-label label="性别" icon="fa:mars-double" />
             </template>
-            {{ user.sex == 1 ? '男' : '女' }}
+            {{ user.sex ? '女' : '男' }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>

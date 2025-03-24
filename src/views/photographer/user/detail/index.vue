@@ -50,6 +50,17 @@
       <el-card header="其他明细" style="width: 100%; margin-top: 20px" shadow="never">
         <template #header>
           <div class="card-header">
+            <CardTitle title="开户信息" />
+            <el-button type="primary" size="small" text @click="openForm('UpdateOrder')">
+              编辑
+            </el-button>
+          </div>
+        </template>
+        <AccountInfo :user="user" />
+      </el-card>
+      <el-card header="其他明细" style="width: 100%; margin-top: 20px" shadow="never">
+        <template #header>
+          <div class="card-header">
             <CardTitle title="评价信息" />
           </div>
         </template>
@@ -85,6 +96,7 @@
 import * as UserApi from '@/api/member/user'
 import * as PhotographerApi from '@/api/member/photographer'
 import { useTagsViewStore } from '@/store/modules/tagsView'
+import AccountInfo from './AccountInfo.vue'
 import UserForm from '../UserForm.vue'
 import TechForm from '../TechForm.vue'
 import OrderForm from '../OrderForm.vue'

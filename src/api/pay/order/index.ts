@@ -31,8 +31,8 @@ export interface OrderVO {
 }
 
 // 查询用户订单列表
-export const getOrderPage = async (params) => {
-  return await request.get({ url: `/pay/order/page`, params })
+export const getOrderPage = async (data) => {
+  return await request.post({ url: `/pay/order/page`, data })
 }
 
 // 查询用户订单详情

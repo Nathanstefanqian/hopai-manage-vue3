@@ -44,7 +44,27 @@
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="商品简介" prop="introduction">
+        <el-form-item label="精修图数" prop="retouchedImageCount">
+          <el-input-number v-model="formData.retouchedImageCount" :min="0" class="w-100%" />
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="底图数" prop="rawCount">
+          <el-input-number v-model="formData.rawCount" :min="0" class="w-100%" />
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="交付时间" prop="deliveryTime">
+          <el-input-number v-model="formData.deliveryTime" :min="0" class="w-100%" />
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="拍摄时间" prop="shootingTime">
+          <el-input-number v-model="formData.shootingTime" :min="0" class="w-100%" />
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="商品简介" prop="introduc">
           <el-input
             v-model="formData.introduction"
             :rows="3"
@@ -63,7 +83,7 @@
           <UploadImgs v-model:modelValue="formData.sliderPicUrls" />
         </el-form-item>
       </el-col>
-      <el-col :span="12">
+      <!-- <el-col :span="12">
         <el-form-item label="运费模板" prop="deliveryTemplateId">
           <el-select v-model="formData.deliveryTemplateId" placeholder="请选择">
             <el-option
@@ -74,7 +94,7 @@
             />
           </el-select>
         </el-form-item>
-      </el-col>
+      </el-col> -->
       <el-col :span="12">
         <el-form-item label="品牌" prop="brandId">
           <el-select v-model="formData.brandId" placeholder="请选择">
@@ -95,14 +115,15 @@
           </el-radio-group>
         </el-form-item>
       </el-col>
-      <el-col :span="12">
+      <!-- <el-col :span="12">
         <el-form-item label="分销类型" props="subCommissionType">
           <el-radio-group v-model="formData.subCommissionType" @change="changeSubCommissionType">
             <el-radio :label="false">默认设置</el-radio>
             <el-radio :label="true" class="radio">单独设置</el-radio>
           </el-radio-group>
         </el-form-item>
-      </el-col>
+      </el-col> -->
+      -->
       <!-- 多规格添加-->
       <el-col :span="24">
         <el-form-item v-if="!formData.specType">
@@ -255,6 +276,10 @@ const generateSkus = (propertyList) => {
   skuListRef.value.generateTableData(propertyList)
 }
 const formData = reactive<Spu>({
+  shootingTime: 0,
+  rawCount: 0,
+  deliveryTime: 0,
+  retouchedImageCount: 0,
   name: '', // 商品名称
   categoryId: null, // 商品分类
   keyword: '', // 关键字
@@ -271,6 +296,10 @@ const formData = reactive<Spu>({
 })
 
 const rules = reactive({
+  shootingTime: [required],
+  deliveryTime: [required],
+  retouchedImageCount: [required],
+  rawCount: [required],
   name: [required],
   categoryId: [required],
   keyword: [required],

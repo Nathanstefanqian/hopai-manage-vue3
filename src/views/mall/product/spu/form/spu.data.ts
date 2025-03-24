@@ -22,6 +22,22 @@ export const basicInfoSchema = reactive<CrudSchema[]>([
     field: 'brandId'
   },
   {
+    label: '精修图数',
+    field: 'retouchedImageCount'
+  },
+  {
+    label: '底图数',
+    field: 'rawCount'
+  },
+  {
+    label: '交付时间(天)',
+    field: 'deliveryTime'
+  },
+  {
+    label: '拍摄时间(小时)',
+    field: 'shootingTime'
+  },
+  {
     label: '商品封面图',
     field: 'picUrl'
   },
@@ -29,10 +45,7 @@ export const basicInfoSchema = reactive<CrudSchema[]>([
     label: '商品轮播图',
     field: 'sliderPicUrls'
   },
-  {
-    label: '商品视频',
-    field: 'videoUrl'
-  },
+
   {
     label: '单位',
     field: 'unit',
@@ -41,14 +54,6 @@ export const basicInfoSchema = reactive<CrudSchema[]>([
   {
     label: '规格类型',
     field: 'specType'
-  },
-  {
-    label: '分销类型',
-    field: 'subCommissionType'
-  },
-  {
-    label: '物流模版',
-    field: 'deliveryTemplateId'
   },
   {
     label: '商品属性列表',

@@ -66,13 +66,7 @@
       <el-table-column label="标题" align="center" prop="title" />
       <el-table-column label="图片" align="center" prop="imageUrl">
         <template #default="scope">
-          <el-image
-            :src="scope.row.imageUrl"
-            :preview-src-list="previewList"
-            class="h-10 w-10 rounded-lg"
-            fit="cover"
-            @click="handlePreview(scope.row.imageUrl)"
-          />
+          <el-image :src="scope.row.imageUrl" class="h-10 w-10 rounded-lg" fit="cover" />
         </template>
       </el-table-column>
       <el-table-column label="图片URL" align="center" prop="imageUrl" width="200px" />

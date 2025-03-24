@@ -31,23 +31,6 @@
           </el-col>
         </el-row>
       </el-col>
-      <el-col :span="24">
-        <el-form-item label="商品推荐">
-          <el-checkbox-group v-model="checkboxGroup" @change="onChangeGroup">
-            <el-checkbox v-for="(item, index) in recommendOptions" :key="index" :label="item.value">
-              {{ item.name }}
-            </el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-      </el-col>
-      <el-col :span="24">
-        <el-form-item label="活动优先级">
-          <ActivityOrdersSort
-            v-model:activity-orders="formData.activityOrders"
-            :promotion-types="promotionTypes"
-          />
-        </el-form-item>
-      </el-col>
     </el-row>
   </el-form>
 

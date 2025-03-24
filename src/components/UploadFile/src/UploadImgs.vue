@@ -52,6 +52,7 @@ import { ElNotification } from 'element-plus'
 
 import { propTypes } from '@/utils/propTypes'
 import { getAccessToken, getTenantId } from '@/utils/auth'
+import { makeUUID } from '@/utils/tool'
 import { useUpload } from '@/hooks/web/useUpload'
 
 defineOptions({ name: 'UploadImgs' })
@@ -171,11 +172,17 @@ const handleExceed = () => {
 // 主要调用的上传方法
 const handleUpload = async (option) => {
   await getStsToken(props.bucket)
-  const { name } = option.file
+  const name = `${makeUUID()}.jpg`
   await put(name, option.file)
   let res = await signatureUrl(name)
   res = res.substring(0, res.indexOf('?'))
-  fileList.value[fileList.value.length - 1].url = res
+  // 根据唯一标识符（例如 uid）在 fileList 中找到文件
+  const fileIndex = fileList.value.findIndex((file) => file.uid === option.file.uid)
+  if (fileIndex !== -1) {
+    fileList.value[fileIndex].url = res
+  } else {
+    console.error('在 fileList 中未找到文件')
+  }
   emit('update:modelValue', fileList.value)
   message.success('上传成功')
 }
