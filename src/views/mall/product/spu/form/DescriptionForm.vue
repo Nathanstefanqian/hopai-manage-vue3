@@ -8,6 +8,7 @@
     label-width="120px"
   >
     <UploadImgs v-model:modelValue="formData.description" />
+    <button @click="handleClick"></button>
   </el-form>
   <!-- 情况二：详情 -->
 
@@ -50,6 +51,10 @@ const rules = reactive({
   description: [required]
 })
 
+const handleClick = () => {
+  console.log('打印', formData.description)
+}
+
 const imagePreview = (args) => {
   const urlList = []
   if (isArray(args)) {
@@ -91,6 +96,7 @@ const validate = async () => {
   // 校验表单
   if (!descriptionFormRef) return
   return await unref(descriptionFormRef).validate((valid) => {
+    console.log('此时的详情', formData)
     if (!valid) {
       message.warning('商品详情为完善!!')
       emit('update:activeName', 'description')

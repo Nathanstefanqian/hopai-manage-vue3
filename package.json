@@ -146,5 +146,10 @@
   "engines": {
     "node": ">= 16.0.0",
     "pnpm": ">=8.6.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@swc/core": "1.6.0"
+    }
   }
 }
