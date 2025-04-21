@@ -134,7 +134,7 @@ export const pieOptions: EChartsOption = {
   ]
 }
 
-export const barOptions: EChartsOption = {
+export const barOptions = ref<EChartsOption>({
   title: {
     text: '',
     left: 'center'
@@ -152,33 +152,26 @@ export const barOptions: EChartsOption = {
   },
   xAxis: {
     type: 'category',
-    data: [
-      t('analysis.monday'),
-      t('analysis.tuesday'),
-      t('analysis.wednesday'),
-      t('analysis.thursday'),
-      t('analysis.friday'),
-      t('analysis.saturday'),
-      t('analysis.sunday')
-    ],
+    data: [],
     axisTick: {
       alignWithLabel: true
     }
   },
   yAxis: {
-    type: 'value'
+    type: 'value',
+    name: '摄影师数量'
   },
   series: [
     {
-      name: t('analysis.activeQuantity'),
-      data: [13253, 34235, 26321, 12340, 24643, 1322, 1324],
+      name: '摄影师人数',
+      data: [],
       itemStyle: {
         color: '#ba2636'
       },
       type: 'bar'
     }
   ]
-}
+})
 
 export const radarOption: EChartsOption = {
   legend: {

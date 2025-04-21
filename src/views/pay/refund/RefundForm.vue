@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <Dialog :title="dialogTitle" v-model="dialogVisible">
     <el-form
       ref="formRef"
@@ -118,11 +118,4 @@ const resetForm = () => {
   }
   formRef.value?.resetFields()
 }
-</script> -->
-<template>
-  <div> 123</div>
-</template>
-
-<script setup lang="ts"></script>
-
-<style scoped></style>
+</script>

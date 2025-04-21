@@ -40,7 +40,13 @@ export const getRefundPage = async (data: any) => {
   return await request.post({ url: `/pay/refund/page`, data })
 }
 
+export interface ConfirmRefundReq {
+  id: any
+  refundAmt: number
+  remark: string
+}
+
 // 确认退款
-export const confirmRefund = async (data: any) => {
+export const confirmRefund = async (data: ConfirmRefundReq) => {
   return await request.post({ url: '/pay/refund/confirmRefund', data })
 }

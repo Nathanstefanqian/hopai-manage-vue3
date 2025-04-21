@@ -82,23 +82,25 @@
   <ContentWrap>
     <el-table v-loading="loading" :data="computedList" :stripe="true" :show-overflow-tooltip="true">
       <el-table-column label="订单ID" align="center" prop="id" width="200px" />
-      <el-table-column label="客户名称" align="center" prop="memberName" width="150px" />
-      <el-table-column label="客户电话" align="center" prop="memberPhone" width="150px" />
-      <el-table-column label="约拍类型" align="center" prop="spuDescribe" width="150px" />
-      <el-table-column label="摄影师名称" align="center" prop="photographerName" width="150px" />
-      <el-table-column label="摄影师电话" align="center" prop="photographerPhone" width="150px" />
-      <el-table-column label="预约日期" align="center" prop="appointmentDate" width="200px" />
-      <el-table-column label="预约时间" align="center" prop="appointmentTimeRange" width="200px" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="200px" />
-      <el-table-column label="拍摄金额" align="center" prop="orderAmt" width="150px">
-        <template #default="scope"> {{ scope.row.orderAmt / 100 }} 元 </template>
-      </el-table-column>
-      <el-table-column label="拍摄地点" align="center" prop="location" width="350px" />
       <el-table-column label="订单状态" align="center" prop="orderStatus" width="150px">
         <template #default="scope">
           <el-tag> {{ getStatus(scope.row.orderStatus) }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="客户名称" align="center" prop="memberName" width="150px" />
+      <el-table-column label="客户电话" align="center" prop="memberPhone" width="150px" />
+      <el-table-column label="约拍类型" align="center" prop="spuDescribe" width="150px" />
+      <el-table-column label="拍摄金额" align="center" prop="orderAmt" width="150px">
+        <template #default="scope"> {{ scope.row.orderAmt / 100 }} 元 </template>
+      </el-table-column>
+      <el-table-column label="摄影师名称" align="center" prop="photographerName" width="150px" />
+      <el-table-column label="摄影师电话" align="center" prop="photographerPhone" width="150px" />
+      <el-table-column label="预约日期" align="center" prop="appointmentDate" width="200px" />
+      <el-table-column label="预约时间" align="center" prop="appointmentTimeRange" width="200px" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="200px" />
+
+      <el-table-column label="拍摄地点" align="center" prop="location" width="350px" />
+
       <el-table-column
         :show-overflow-tooltip="false"
         align="center"
@@ -217,7 +219,7 @@ const resetQuery = () => {
 
 // 打开详情
 const { push } = useRouter()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   push({ name: 'PayOrderDetail', params: { id } })
 }
 

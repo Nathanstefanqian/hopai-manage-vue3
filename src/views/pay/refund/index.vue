@@ -27,15 +27,12 @@
         />
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <el-input-number
-          v-model="queryParams.status"
-          class="!w-200px"
-          :min="0"
-          :max="4"
-          clearable
-          placeholder="状态"
-          @keyup.enter="handleQuery"
-        />
+        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
+          <el-option label="已创建" value="created" />
+          <el-option label="处理中" value="processing" />
+          <el-option label="成功" value="succeeded" />
+          <el-option label="失败" value="failed" />
+        </el-select>
       </el-form-item>
       <el-form-item label="订单号" prop="orderId">
         <el-input
@@ -88,8 +85,8 @@
     >
       <el-table-column type="selection" width="55" />
       <el-table-column align="center" label="订单编号" prop="orderId" width="180px" />
-      <el-table-column align="center" label="会员昵称" prop="mnickname" width="80px" />
-      <el-table-column align="center" label="摄影师昵称" prop="pnickname" width="100px" />
+      <el-table-column align="center" label="会员昵称" prop="mnickname" width="100px" />
+      <el-table-column align="center" label="摄影师昵称" prop="pnickname" width="200px" />
       <el-table-column align="center" label="摄影师手机号" prop="pmobile" width="120px" />
       <el-table-column align="center" label="拍摄金额" prop="orderAmt" width="120px">
         <template #default="scope">
@@ -109,7 +106,9 @@
       <el-table-column align="center" label="退款原因" prop="reason" width="180px" />
       <el-table-column align="center" label="状态" prop="status" width="120px">
         <template #default="scope">
-          <span>{{ getStatusText(scope.row.status) }}</span>
+          <el-tag :type="getStatusType(scope.row.status)">
+            {{ getStatusText(scope.row.status) }}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="创建时间" prop="createTime" width="180px">
@@ -122,20 +121,14 @@
           <span>{{ scope.row.writeoffTime ? formatDate(scope.row.writeoffTime) : '未核销' }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" fixed="right" width="180px">
+      <el-table-column align="center" label="操作" fixed="right" width="200px">
         <template #default="scope">
           <div class="flex items-center justify-center">
-            <el-button
-              link
-              type="primary"
-              @click="openDetail(scope.row.orderId, scope.row.createTime)"
-              >详情</el-button
+            <el-button link type="primary" @click="openDetail(scope.row.orderId)"
+              >退款详情</el-button
             >
-            <el-button
-              link
-              type="primary"
-              @click="openDetail(scope.row.orderId, scope.row.createTime)"
-              >确认退款</el-button
+            <el-button link type="primary" @click="openOrderDetail(scope.row.orderId)"
+              >订单详情</el-button
             >
           </div>
         </template>
@@ -149,6 +142,31 @@
       @pagination="getList"
     />
   </ContentWrap>
+  <!-- 退款弹窗 -->
+  <el-dialog v-model="refundDialogVisible" title="确认退款" width="500px" destroy-on-close>
+    <el-form ref="refundFormRef" :model="refundForm" :rules="refundRules" label-width="100px">
+      <el-form-item label="订单编号" prop="id">
+        <el-input v-model="refundForm.id" disabled />
+      </el-form-item>
+      <el-form-item label="退款金额" prop="refundAmt">
+        <el-input-number v-model="refundForm.refundAmt" :precision="2" :step="0.01" :min="0" />
+      </el-form-item>
+      <el-form-item label="退款备注" prop="remark">
+        <el-input
+          v-model="refundForm.remark"
+          type="textarea"
+          :maxlength="100"
+          :rows="10"
+          show-word-limit
+          placeholder="请输入退款备注"
+        />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button @click="refundDialogVisible = false">取消</el-button>
+      <el-button type="primary" @click="submitRefund">确定</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -196,13 +214,29 @@ const formatAmount = (amount: number) => {
   return (amount / 100).toFixed(2)
 }
 
+/** 获取状态标签类型 */
+const getStatusType = (status: string) => {
+  switch (status) {
+    case 'succeeded':
+      return 'success'
+    case 'failed':
+      return 'danger'
+    case 'created':
+      return 'primary'
+    case 'processing':
+      return 'warning'
+    default:
+      return 'info'
+  }
+}
+
 /** 获取状态文本 */
-const getStatusText = (status: number) => {
-  const statusMap: { [key: number]: string } = {
-    0: '已创建',
-    1: '处理中',
-    2: '成功',
-    3: '失败'
+const getStatusText = (status: string) => {
+  const statusMap: { [key: string]: string } = {
+    created: '已创建',
+    processing: '处理中',
+    succeeded: '成功',
+    failed: '失败'
   }
   return statusMap[status] || '未知状态'
 }
@@ -221,8 +255,12 @@ const resetQuery = () => {
 
 /** 打开订单详情 */
 const { push } = useRouter()
-const openDetail = (id: string, createTime: any) => {
+const openDetail = (id: string) => {
   push({ name: 'PayRefundDetail', params: { id } })
+}
+
+const openOrderDetail = (id: string) => {
+  push({ name: 'PayOrderDetail', params: { id } })
 }
 
 /** 表格选中事件 */

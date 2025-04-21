@@ -63,6 +63,16 @@
         </TimeInfo>
       </el-col>
     </el-row>
+    <el-row :gutter="10" class="mt-5">
+      <el-col class="detail-info-item">
+        <RefundOperation :order="order" @success="getData(id)" />
+        <template #header>
+          <div class="card-header">
+            <CardTitle title="退款操作" />
+          </div>
+        </template>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script setup lang="ts">
@@ -74,6 +84,7 @@ import PhotographerBasicInfo from './PhotographerBasicInfo.vue'
 import MemberInfo from './MemberInfo.vue'
 import PayInfo from './PayInfo.vue'
 import TimeInfo from './TimeInfo.vue'
+import RefundOperation from '../components/RefundOperation.vue'
 
 defineOptions({ name: 'PayOrderDetail' })
 const loading = ref(false)

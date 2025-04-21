@@ -6,6 +6,7 @@ export interface OrderVO {
   memberName: string
   memberPhone: string
   spuId: number
+  status: any
   spuCategoryId: number
   spuDescribe: string
   skuId: number
@@ -15,6 +16,7 @@ export interface OrderVO {
   photographerPhone: string
   appointmentStartTime: Date
   appointmentEndTime: Date
+  allocationFinishedTime: Date
   orderStatus: byte
   orderAmt: number
   actualAmt: number

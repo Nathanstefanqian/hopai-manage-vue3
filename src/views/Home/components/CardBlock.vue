@@ -22,9 +22,44 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { Echart } from '@/components/Echart/index'
-import { pieOptions, circleOptions, wordOptions } from '../echarts-data'
+import { pieOptions } from '../echarts-data'
 import Carousel from './Carousel.vue'
+import { getAnalysis } from '@/api/dashboard/index'
+import type { EChartsOption } from 'echarts'
+
+const circleOptions = ref<EChartsOption>({
+  tooltip: {
+    trigger: 'item',
+    formatter: '{b}: {c} ({d}%)'
+  },
+  series: [
+    {
+      name: '用户分析',
+      type: 'pie',
+      radius: '50%',
+      data: [],
+      emphasis: {
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      }
+    }
+  ]
+})
+
+onMounted(async () => {
+  const res = await getAnalysis()
+  circleOptions.value.series[0].data = [
+    { value: res.activeUsers, name: '活跃用户' },
+    { value: res.newUsers, name: '新用户' },
+    { value: res.returningUsers, name: '回流用户' },
+    { value: res.silentUsers, name: '沉默用户' }
+  ]
+})
 </script>
 
 <style lang="scss" scoped>

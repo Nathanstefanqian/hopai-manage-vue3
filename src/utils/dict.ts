@@ -173,6 +173,12 @@ export enum DICT_TYPE {
   PAY_NOTIFY_TYPE = 'pay_notify_type', // 商户支付回调状态
   PAY_TRANSFER_STATUS = 'pay_transfer_status', // 转账订单状态
   PAY_TRANSFER_TYPE = 'pay_transfer_type', // 转账订单状态
+  INVOICE_TYPE = 'invoice_type', // 发票类型：1-个人，2-企业
+  INVOICE_STATUS = 'invoice_status', // 发票状态
+
+  // ========== 发票类型 ==========
+  INVOICE_TYPE_PERSONAL = 1, // 个人
+  INVOICE_TYPE_ENTERPRISE = 2, // 企业
 
   // ========== MP 模块 ==========
   MP_AUTO_REPLY_REQUEST_MATCH = 'mp_auto_reply_request_match', // 自动回复请求匹配类型

@@ -5,9 +5,10 @@
         <div class="desc">
           <span class="title">{{ item.name }}</span>
           <CountTo
-            class="text-30px c-#ba2636"
+            class="text-30px"
+            :class="item.color"
             :start-val="0"
-            :end-val="item.num"
+            :end-val="getNumber(item.key)"
             :duration="2600"
           />
         </div>
@@ -16,15 +17,12 @@
         </div>
       </div>
       <div class="order-box-change mt-5">
-        <div class="inc" v-if="index % 2">
+        <div class="inc">
           <el-image src="/increase.svg" />
-          <span class="ml-2 c-#00B692">8.5%</span>
-          <span class="ml-4 c-#606060">Up from yesterday</span>
-        </div>
-        <div class="dec" v-else>
-          <el-image src="/decline.svg" />
-          <span class="ml-2 c-#F93C65">8.5%</span>
-          <span class="ml-4 c-#606060">Down from yesterday</span>
+          <span class="ml-2" :class="getDiff(item.key) > 0 ? 'c-#00B692' : 'c-#F93C65'">{{
+            getDiff(item.key) > 0 ? '+' + getDiff(item.key) : getDiff(item.key)
+          }}</span>
+          <span class="ml-4 c-#606060">较昨日增加</span>
         </div>
       </div>
     </div>
@@ -32,28 +30,54 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { getNum } from '@/api/dashboard'
+
+const todayData = ref<any>({})
+const yesterdayData = ref<any>({})
+
 const boxConfig = [
   {
     name: '总订单数',
-    num: '129',
+    key: 'totalOrders',
+    color: 'c-#ba2636',
     url: '/order-red.svg'
   },
   {
     name: '进行中',
-    num: '47',
+    key: 'inProgressOrders',
+    color: 'c-#00b69b',
     url: '/order-green.svg'
   },
   {
     name: '待支付',
-    num: '58',
+    key: 'toPayOrders',
+    color: 'c-#5088ff',
     url: '/order-blue.svg'
   },
   {
     name: '异常订单',
-    num: '8',
+    key: 'exceptionOrders',
+    color: 'c-#848484',
     url: '/order-grey.svg'
   }
 ]
+
+const getNumber = (key: string) => {
+  return todayData.value?.todayOrderNum?.[key] || 0
+}
+
+const getDiff = (key: string) => {
+  const today = todayData.value?.todayOrderNum?.[key] || 0
+  const yesterday = yesterdayData.value?.yesterdayOrderNum?.[key] || 0
+  return today - yesterday
+}
+
+onMounted(async () => {
+  const res = await getNum()
+  todayData.value = res
+  yesterdayData.value = res
+})
 </script>
 
 <style lang="scss" scoped>

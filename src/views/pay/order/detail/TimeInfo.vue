@@ -31,6 +31,16 @@
         </el-descriptions-item>
         <el-descriptions-item>
           <template #label>
+            <descriptions-item-label label="分账完成时间" icon="svg-icon:member_level" />
+          </template>
+          {{
+            order.allocationFinishedTime == null
+              ? '分账尚未完成'
+              : formatDate(order.allocationFinishedTime)
+          }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
             <descriptions-item-label label="完成时间" icon="svg-icon:member_level" />
           </template>
           {{ order.successTime == null ? '订单尚未完成' : formatDate(order.successTime) }}

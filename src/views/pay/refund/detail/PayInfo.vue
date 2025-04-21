@@ -3,6 +3,7 @@
     <template #header>
       <slot name="header"></slot>
     </template>
+
     <div class="">
       <el-descriptions :column="2">
         <el-descriptions-item>
@@ -17,7 +18,6 @@
           </template>
           {{ order.refundAmt == null ? '暂无' : order.refundAmt / 100 + '元' }}
         </el-descriptions-item>
-
         <el-descriptions-item>
           <template #label>
             <descriptions-item-label label="约拍金额" icon="svg-icon:member_level" />
@@ -37,7 +37,12 @@
 
 <script setup lang="ts">
 import { OrderVO } from '@/api/pay/order'
-defineProps<{ order: OrderVO }>()
+import RefundOperation from '@/views/pay/refund/components/RefundOperation.vue'
+
+const props = defineProps<{ order: OrderVO }>()
+const emit = defineEmits<{
+  refresh: []
+}>()
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

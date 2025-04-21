@@ -63,6 +63,28 @@
         </TimeInfo>
       </el-col>
     </el-row>
+    <el-row :gutter="10" class="mt-5" v-if="showOriginalPhotos">
+      <el-col class="detail-info-item">
+        <OriginalPhotoInfo :order="order">
+          <template #header>
+            <div class="card-header">
+              <CardTitle title="原图信息" />
+            </div>
+          </template>
+        </OriginalPhotoInfo>
+      </el-col>
+    </el-row>
+    <el-row :gutter="10" class="mt-5" v-if="showTruingPhotos">
+      <el-col class="detail-info-item">
+        <TruingPhotoInfo :order="order">
+          <template #header>
+            <div class="card-header">
+              <CardTitle title="精修图信息" />
+            </div>
+          </template>
+        </TruingPhotoInfo>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script setup lang="ts">
@@ -70,10 +92,13 @@ import * as OrderApi from '@/api/pay/order'
 import { OrderVO } from '@/api/pay/order'
 import { CardTitle } from '@/components/Card/index'
 import OrderBasicInfo from './OrderBasicInfo.vue'
+import { getOriginPhotos, getTruingPhotos } from '@/api/pay/album'
 import PhotographerBasicInfo from './PhotographerBasicInfo.vue'
 import MemberInfo from './MemberInfo.vue'
 import PayInfo from './PayInfo.vue'
 import TimeInfo from './TimeInfo.vue'
+import OriginalPhotoInfo from './OriginalPhotoInfo.vue'
+import TruingPhotoInfo from './TruingPhotoInfo.vue'
 
 defineOptions({ name: 'PayOrderDetail' })
 const loading = ref(false)
@@ -81,6 +106,44 @@ const route = useRoute()
 const id = route.params.id
 const order = ref<OrderVO>()
 const router = useRouter()
+
+const showOriginalPhotosRef = ref(false)
+const showTruingPhotosRef = ref(false)
+
+const showOriginalPhotos = computed(() => {
+  if (!order.value) return false
+  if ([10, 20, 30, 11].includes(order.value.orderStatus)) {
+    return showOriginalPhotosRef.value
+  }
+  return order.value.orderStatus >= 5
+})
+
+const showTruingPhotos = computed(() => {
+  if (!order.value) return false
+  if ([10, 20, 30, 11].includes(order.value.orderStatus)) {
+    return showTruingPhotosRef.value
+  }
+  return order.value.orderStatus >= 6
+})
+
+const getPhotosFromAPI = async (type: 'original' | 'truing') => {
+  if (!order.value) return
+  const status = order.value.orderStatus
+  if (![10, 20, 30, 11].includes(status)) return
+
+  try {
+    if (type === 'original') {
+      const photos = await getOriginPhotos(order.value.id)
+      return photos && photos.length > 0
+    } else {
+      const photos = await getTruingPhotos(order.value.id)
+      return photos && photos.length > 0
+    }
+  } catch (error) {
+    console.error(`Failed to get ${type} photos:`, error)
+    return false
+  }
+}
 
 const openDetail = (id: any, type: number) => {
   try {
@@ -104,6 +167,16 @@ const getData = async (id: string | string[]) => {
 }
 onMounted(async () => {
   await getData(id)
+
+  // 对于特殊状态，预加载图片数据来决定是否显示
+  if (order.value && [10, 20, 30, 11].includes(order.value.orderStatus)) {
+    const [hasOriginal, hasTruing] = await Promise.all([
+      getPhotosFromAPI('original'),
+      getPhotosFromAPI('truing')
+    ])
+    showOriginalPhotosRef.value = hasOriginal
+    showTruingPhotosRef.value = hasTruing
+  }
 })
 </script>
 <style scoped lang="scss">

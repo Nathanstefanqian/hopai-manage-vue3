@@ -32,6 +32,7 @@ const { t } = useI18n()
  canTo: true               设置为true即使hidden为true，也依然可以进行路由跳转(默认 false)
  }
  **/
+
 const remainingRouter: AppRouteRecordRaw[] = [
   {
     path: '/redirect',
@@ -499,6 +500,16 @@ const remainingRouter: AppRouteRecordRaw[] = [
         component: () => import('@/views/photographer/verify/index.vue')
       },
       {
+        path: 'bill',
+        name: 'PhotographerUserBill',
+        meta: {
+          title: '分账单管理',
+          noCache: true,
+          hidden: true
+        },
+        component: () => import('@/views/photographer/bill/index.vue')
+      },
+      {
         path: 'verify/detail/:id',
         name: 'PhotographerUserVerifyDetail',
         meta: {
@@ -621,6 +632,25 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true
         },
         component: () => import('@/views/pay/refund/detail/index.vue')
+      },
+      {
+        path: 'invoice',
+        component: () => import('@/views/pay/invoice/index.vue'),
+        name: 'PayInvoice',
+        meta: {
+          title: t('发票管理'),
+          noCache: true
+        }
+      },
+      {
+        path: 'invoice/detail/:id',
+        component: () => import('@/views/pay/invoice/detail/index.vue'),
+        name: 'PayInvoiceDetail',
+        meta: {
+          title: t('发票详情'),
+          noCache: true,
+          hidden: true
+        }
       }
     ]
   }
