@@ -25,7 +25,13 @@
         <el-input v-model="formData.nickname" placeholder="请输入用户昵称" />
       </el-form-item>
       <el-form-item label="头像" prop="avatar">
-        <UploadImg v-model="formData.avatar" :limit="1" :is-show-tip="false" />
+        <UploadImg
+          v-model="formData.avatar"
+          :limit="1"
+          :is-show-tip="false"
+          :bucket="bucket"
+          :disabled="true"
+        />
       </el-form-item>
       <el-form-item label="用户性别" prop="sex">
         <el-radio-group v-model="formData.sex">
@@ -97,6 +103,7 @@ const dialogTitle = ref('编辑') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const route = useRoute()
 const id = route.params.id
+const bucket = ref('user-portrait') // 上传的 bucket
 const formData = ref({
   id,
   mobile: props.userInfo.mobile,

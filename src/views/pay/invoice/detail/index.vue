@@ -19,8 +19,8 @@
               invoice.invoiceType === 1
                 ? '个人'
                 : invoice.invoiceType === 2
-                ? '企业'
-                : '增值税专用发票'
+                  ? '企业'
+                  : '增值税专用发票'
             }}</el-descriptions-item>
             <el-descriptions-item label="发票抬头">{{
               invoice.invoiceTitle || '无'
@@ -35,8 +35,8 @@
               invoice.invoiceStatus === 0
                 ? '开票中'
                 : invoice.invoiceStatus === 1
-                ? '已开票'
-                : '已作废'
+                  ? '已开票'
+                  : '已作废'
             }}</el-descriptions-item>
             <el-descriptions-item label="电子邮箱">{{
               invoice.email || '无'

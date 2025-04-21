@@ -65,16 +65,16 @@
               scope.row.invoiceStatus === 0
                 ? 'danger'
                 : scope.row.invoiceStatus === 1
-                ? 'success'
-                : 'info'
+                  ? 'success'
+                  : 'info'
             "
           >
             {{
               scope.row.invoiceStatus === 0
                 ? '开票中'
                 : scope.row.invoiceStatus === 1
-                ? '已开票'
-                : '已作废'
+                  ? '已开票'
+                  : '已作废'
             }}
           </el-tag>
         </template>

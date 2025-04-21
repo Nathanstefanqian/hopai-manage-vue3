@@ -25,7 +25,7 @@
         <el-input v-model="formData.nickname" placeholder="请输入用户昵称" />
       </el-form-item>
       <el-form-item label="头像" prop="avatar">
-        <UploadImg v-model="formData.avatar" :limit="1" :is-show-tip="false" />
+        <UploadImg v-model="formData.avatar" :bucket="bucket" :limit="1" :is-show-tip="false" />
       </el-form-item>
       <el-form-item label="用户性别" prop="sex">
         <el-radio-group v-model="formData.sex">
@@ -112,6 +112,7 @@ const areaList = ref([]) // 地区列表
 
 const route = useRoute()
 const userId = route.params.id
+const bucket = ref('user-portrait') // 上传的 bucket
 
 /** 打开弹窗 */
 const open = async (id: number) => {

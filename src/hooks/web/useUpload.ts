@@ -5,6 +5,9 @@ import OSS from 'ali-oss'
 export const useUpload = () => {
   const client = ref<any>(null)
   const getStsToken = async (bucket: string, common: boolean = true) => {
+    // user-portrait
+    // profile
+    // product
     const b = `hopai-${bucket}`
     let res
     if (common) {

@@ -51,9 +51,6 @@
         <template #header>
           <div class="card-header">
             <CardTitle title="开户信息" />
-            <el-button type="primary" size="small" text @click="openForm('UpdateOrder')">
-              编辑
-            </el-button>
           </div>
         </template>
         <AccountInfo :user="user" />
