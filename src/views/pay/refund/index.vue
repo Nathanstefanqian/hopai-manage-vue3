@@ -29,7 +29,7 @@
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
           <el-option label="已创建" value="created" />
-          <el-option label="处理中" value="processing" />
+          <el-option label="处理中" value="pending" />
           <el-option label="成功" value="succeeded" />
           <el-option label="失败" value="failed" />
         </el-select>
@@ -85,7 +85,7 @@
     >
       <el-table-column type="selection" width="55" />
       <el-table-column align="center" label="订单编号" prop="orderId" width="180px" />
-      <el-table-column align="center" label="会员昵称" prop="mnickname" width="100px" />
+      <el-table-column align="center" label="顾客昵称" prop="mnickname" width="100px" />
       <el-table-column align="center" label="摄影师昵称" prop="pnickname" width="200px" />
       <el-table-column align="center" label="摄影师手机号" prop="pmobile" width="120px" />
       <el-table-column align="center" label="拍摄金额" prop="orderAmt" width="120px">
@@ -236,7 +236,8 @@ const getStatusText = (status: string) => {
     created: '已创建',
     processing: '处理中',
     succeeded: '成功',
-    failed: '失败'
+    failed: '失败',
+    pending: '处理中'
   }
   return statusMap[status] || '未知状态'
 }

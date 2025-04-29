@@ -1,5 +1,5 @@
 <template>
-  <el-button @click="openRefundDialog" :disabled="props.order.status !== 30">
+  <el-button @click="openRefundDialog" :disabled="props.order.orderStatus !== 20">
     {{ getRefundButtonText }}
   </el-button>
   <el-dialog
@@ -19,7 +19,7 @@
           :precision="2"
           :step="0.01"
           style="width: 100%"
-          :max="(props.order?.orderAmt || 0) / 100"
+          :max="form.refundAmt"
         />
       </el-form-item>
       <el-form-item label="退款备注" prop="remark">
@@ -41,8 +41,8 @@ import * as RefundApi from '@/api/pay/refund'
 
 // 退款状态文案
 const REFUND_STATUS_TEXT = {
-  20: '已退款',
-  30: '退款中'
+  20: '处理退款',
+  30: '已退款'
 }
 
 const props = defineProps<{ order: OrderVO }>()
@@ -65,7 +65,7 @@ const formRules = {
 }
 
 const getRefundButtonText = computed(() => {
-  return REFUND_STATUS_TEXT[props.order.status] || '已退款'
+  return REFUND_STATUS_TEXT[props.order.orderStatus] || '已退款'
 })
 
 const openRefundDialog = () => {
@@ -83,7 +83,7 @@ const handleSubmit = async () => {
     await formRef.value.validate()
     await RefundApi.confirmRefund({
       id: form.value.id,
-      refundAmt: form.value.refundAmt,
+      refundAmt: form.value.refundAmt * 100,
       remark: form.value.remark
     })
     ElMessage.success('退款确认成功')

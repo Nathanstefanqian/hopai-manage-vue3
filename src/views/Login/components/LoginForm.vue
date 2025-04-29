@@ -143,18 +143,11 @@ const loginData = reactive({
   loginForm: {
     tenantName: '和拍源码',
     username: 'admin',
-    password: 'admin123',
+    password: '',
     captchaVerification: '',
     rememberMe: false
   }
 })
-
-// const socialList = [
-//   { icon: 'ant-design:wechat-filled', type: 30 },
-//   { icon: 'ant-design:dingtalk-circle-filled', type: 20 },
-//   { icon: 'ant-design:github-filled', type: 0 },
-//   { icon: 'ant-design:alipay-circle-filled', type: 0 }
-// ]
 
 // 获取验证码
 const getCode = async () => {
