@@ -37,11 +37,11 @@ const remainingRouter: AppRouteRecordRaw[] = [
   {
     path: '/redirect',
     component: Layout,
-    name: 'Redirect',
+    name: 'RedirectParent',
     children: [
       {
         path: '/redirect/:path(.*)',
-        name: 'Redirect',
+        name: 'RedirectChild',
         component: () => import('@/views/Redirect/Redirect.vue'),
         meta: {}
       }

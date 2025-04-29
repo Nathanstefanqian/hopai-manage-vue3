@@ -85,7 +85,7 @@ const props = defineProps({
   showDelete: propTypes.bool.def(true),
   // 是否显示按钮文字
   showBtnText: propTypes.bool.def(true),
-  bucket: propTypes.string.def('product')
+  bucket: propTypes.string
 })
 const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
@@ -113,8 +113,14 @@ const editImg = () => {
 
 // 上传组件
 const handleUpload = async (option) => {
-  const { bucket } = props
-  await getStsToken(bucket)
+  console.log(props.bucket, '123')
+  let bucketName = ''
+  if (!props.bucket) {
+    bucketName = 'product'
+  } else {
+    bucketName = props.bucket
+  }
+  await getStsToken(bucketName)
   const { name } = option.file
   await put(name, option.file)
   let res = await signatureUrl(name)

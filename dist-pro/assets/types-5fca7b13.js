@@ -1,1 +1,1 @@
-var e=(e=>(e.Event="event",e.Text="text",e.Voice="voice",e.Image="image",e.Video="video",e.Link="link",e.Location="location",e.Music="music",e.News="news",e))(e||{});export{e as M};
+var o=(i=>(i.Event="event",i.Text="text",i.Voice="voice",i.Image="image",i.Video="video",i.Link="link",i.Location="location",i.Music="music",i.News="news",i))(o||{});export{o as M};

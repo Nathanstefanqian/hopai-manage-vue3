@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { useUpload } from '@/hooks/web/useSts'
 import { makeUUID } from '@/utils/tool'
-const { getStsToken, put, signatrueUrl } = useUpload('user-portrait')
+const { getStsToken, put, signatrueUrl } = useUpload('user-profile')
 const message = useMessage() // 消息弹窗
 
 const props = defineProps<{ modelValue: Array<String>; userId: String | String[] }>()

@@ -58,8 +58,8 @@ const updateChartData = async () => {
       option.value === 0
         ? res.map((item) => item.region)
         : option.value === 1
-        ? res.map((item) => (item.gender === '男' ? '男' : '女'))
-        : res.map((item) => item.level)
+          ? res.map((item) => (item.gender === '男' ? '男' : '女'))
+          : res.map((item) => item.level)
     const counts = res.map((item) => item.count)
     barOptions.value.xAxis.data = xData
     barOptions.value.series[0].data = counts
