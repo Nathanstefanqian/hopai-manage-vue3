@@ -71,7 +71,7 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="手机号" prop="mobile" width="120px" />
-      <el-table-column align="center" label="昵称" prop="nickname" width="80px" />
+      <el-table-column align="center" label="昵称" prop="nickname" width="120px" />
       <el-table-column align="center" label="用户等级" width="150px" prop="levelName" />
       <el-table-column align="center" label="状态" prop="status" width="100px">
         <template #default="scope">

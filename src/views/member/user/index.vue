@@ -60,7 +60,7 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="手机号" prop="mobile" width="120px" />
-      <el-table-column align="center" label="昵称" prop="nickname" width="120px">
+      <el-table-column align="center" label="昵称" prop="nickname" width="180px">
         <template #default="scope">
           {{ scope.row.nickname || '和拍用户' }}
         </template>

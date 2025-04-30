@@ -118,16 +118,16 @@ const formData = ref({
   mark: props.userInfo.mark
 })
 const formRules = reactive({
-  mobile: [{ required: true, message: '手机号不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }],
-  nickname: [{ required: true, message: '昵称不能为空', trigger: 'blur' }],
-  avatar: [{ required: true, message: '头像不能为空', trigger: 'blur' }],
-  sex: [{ required: true, message: '性别不能为空', trigger: 'blur' }],
-  areaId: [{ required: true, message: '地区不能为空', trigger: 'blur' }],
-  birthday: [{ required: true, message: '生日不能为空', trigger: 'blur' }],
-  babyBirthday: [{ required: true, message: '宝宝生日不能为空', trigger: 'blur' }],
-  weddingAnniversary: [{ required: true, message: '结婚纪念日不能为空', trigger: 'blur' }],
-  mark: [{ required: true, message: '备注不能为空', trigger: 'blur' }]
+  mobile: [],
+  status: [],
+  nickname: [],
+  avatar: [],
+  sex: [],
+  areaId: [],
+  birthday: [],
+  babyBirthday: [],
+  weddingAnniversary: [],
+  mark: []
 })
 const formRef = ref() // 表单 Ref
 const areaList = ref([]) // 地区列表

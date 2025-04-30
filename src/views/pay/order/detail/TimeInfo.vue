@@ -43,7 +43,7 @@
           <template #label>
             <descriptions-item-label label="完成时间" icon="svg-icon:member_level" />
           </template>
-          {{ order.successTime == null ? '订单尚未完成' : formatDate(order.successTime) }}
+          {{ order.finishTime == null ? '订单尚未完成' : formatDate(order.finishTime) }}
         </el-descriptions-item>
       </el-descriptions>
     </div>

@@ -187,6 +187,9 @@ service.interceptors.response.use(
         // hard coding：忽略这个提示，直接登出
         console.log(msg)
       } else {
+        if(msg === '用户无权限获取图片') {
+          return
+        }
         ElNotification.error({ title: msg })
       }
       return Promise.reject('error')

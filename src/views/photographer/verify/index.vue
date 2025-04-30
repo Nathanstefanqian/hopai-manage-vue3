@@ -22,7 +22,7 @@
           v-model="queryParams.mobile"
           class="!w-240px"
           clearable
-          placeholder="请输入手机号"
+          placeholder="请输入微信绑定手机号"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -49,7 +49,7 @@
     >
       <el-table-column type="selection" width="55" />
       <el-table-column align="center" label="用户编号" prop="userId" width="180px" />
-      <el-table-column align="center" label="手机号" prop="phone" width="120px" />
+      <el-table-column align="center" label="顾客联系手机号" prop="phone" width="150px" />
       <el-table-column align="center" label="姓名" prop="nickname" width="80px" />
       <el-table-column align="center" label="接单形式" prop="orderType" width="100px">
         <template #default="scope">

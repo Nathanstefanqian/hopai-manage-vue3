@@ -12,11 +12,17 @@
             </template>
             {{ user.nickname }}
           </el-descriptions-item>
-          <el-descriptions-item label="手机号">
+          <el-descriptions-item label="微信绑定手机号">
             <template #label>
-              <descriptions-item-label label="手机号" icon="ep:phone" />
+              <descriptions-item-label label="微信绑定手机号" icon="ep:phone" />
             </template>
             {{ user.mobile }}
+          </el-descriptions-item>
+          <el-descriptions-item label="顾客联系手机号">
+            <template #label>
+              <descriptions-item-label label="顾客联系手机号" icon="ep:phone" />
+            </template>
+            {{ user.phone }}
           </el-descriptions-item>
           <el-descriptions-item label="微信号">
             <template #label>

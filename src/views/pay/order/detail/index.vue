@@ -139,7 +139,7 @@ const getPhotosFromAPI = async (type: 'original' | 'truing') => {
       const photos = await getTruingPhotos(order.value.id)
       return photos && photos.length > 0
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Failed to get ${type} photos:`, error)
     return false
   }

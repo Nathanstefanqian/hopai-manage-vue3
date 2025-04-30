@@ -43,6 +43,7 @@
           v-model="queryParams.orderStatus"
           placeholder="请选择订单状态"
           clearable
+          multiple
           class="!w-240px"
         >
           <el-option
@@ -156,7 +157,7 @@ const queryParams = reactive({
   photographerPhone: null,
   appointmentStartTime: [],
   appointmentEndTime: [],
-  orderStatus: null,
+  orderStatus: [],
   orderAmt: null,
   actualAmt: null,
   location: null,
