@@ -125,7 +125,7 @@ const getList = async () => {
     pageSize: queryParams.pageSize, 
     registerStatus: 2,
     nickname: queryParams.nickname,
-    phone: queryParams.mobile
+    mobile: queryParams.mobile
   } // 1. 会员 2. 管理员 3. 摄影师
   loading.value = true
   try {
