@@ -128,3 +128,4 @@ export const getFraud = async (id: number) => {
 export const updateFraud = async (data: any) => {
   return await request.put({ url: '/member/wechat-login/update', data })
 }
+

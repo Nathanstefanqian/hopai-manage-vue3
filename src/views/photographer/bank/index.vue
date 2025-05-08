@@ -21,7 +21,7 @@
         <el-input-number
           v-model="queryParams.registerStatus"
           class="!w-100px"
-          :min="4"
+          :min="2"
           :max="5"
           clearable
           placeholder="4"

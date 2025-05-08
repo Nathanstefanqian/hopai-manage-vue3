@@ -106,6 +106,7 @@ const queryParams = reactive({
   pageSize: 10,
   nickname: null,
   mobile: null,
+  phone: null,
   loginDate: [],
   createTime: [],
   tagIds: [],
@@ -119,7 +120,13 @@ const selectedIds = ref<number[]>([]) // 表格的选中 ID 数组
 
 /** 查询列表 */
 const getList = async () => {
-  const params = { pageNo: queryParams.pageNo, pageSize: queryParams.pageSize, registerStatus: 2 } // 1. 会员 2. 管理员 3. 摄影师
+  const params = { 
+    pageNo: queryParams.pageNo, 
+    pageSize: queryParams.pageSize, 
+    registerStatus: 2,
+    nickname: queryParams.nickname,
+    phone: queryParams.mobile
+  } // 1. 会员 2. 管理员 3. 摄影师
   loading.value = true
   try {
     const data = await PhotographerApi.getUserVerify(params)
