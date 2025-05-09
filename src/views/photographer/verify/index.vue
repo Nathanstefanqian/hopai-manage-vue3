@@ -26,6 +26,18 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="审核状态" prop="registerStatus">
+        <el-select
+          v-model="queryParams.registerStatus"
+          class="!w-240px"
+          clearable
+          placeholder="请选择审核状态"
+          @change="handleQuery"
+        >
+          <el-option label="待审核" :value="2" />
+          <el-option label="已审核" :value="3" />
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
@@ -59,6 +71,13 @@
       <el-table-column align="center" label="设备信息" prop="camera" width="100px" />
       <el-table-column align="center" label="所在地" prop="areaName" />
       <el-table-column align="center" label="注册时间" prop="createTime" />
+      <el-table-column align="center" label="审核状态" prop="registerStatus">
+        <template #default="scope">
+          <el-tag :type="scope.row.registerStatus === 2 ? 'warning' : 'success'">
+            {{ scope.row.registerStatus === 2 ? '待审核' : '已审核' }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column :show-overflow-tooltip="false" align="center" fixed="right" label="操作">
         <template #default="scope">
           <div class="flex items-center justify-center">
@@ -92,7 +111,6 @@ import UserForm from './UserForm.vue'
 import UserLevelUpdateForm from './UserLevelUpdateForm.vue'
 import { CouponSendForm } from '@/views/mall/promotion/coupon/components'
 import { formatDate } from '@/utils/formatTime'
-import { format } from 'path'
 
 defineOptions({ name: 'MemberUser' })
 
@@ -111,7 +129,8 @@ const queryParams = reactive({
   createTime: [],
   tagIds: [],
   levelId: null,
-  groupId: null
+  groupId: null,
+  registerStatus: 2
 })
 const queryFormRef = ref() // 搜索的表单
 const updateLevelFormRef = ref() // 修改会员等级表单
@@ -123,8 +142,8 @@ const getList = async () => {
   const params = { 
     pageNo: queryParams.pageNo, 
     pageSize: queryParams.pageSize, 
-    registerStatus: 2,
     nickname: queryParams.nickname,
+    registerStatus: queryParams.registerStatus,
     phone: queryParams.mobile
   } // 1. 会员 2. 管理员 3. 摄影师
   loading.value = true

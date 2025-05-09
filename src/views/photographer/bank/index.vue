@@ -22,7 +22,7 @@
           v-model="queryParams.registerStatus"
           class="!w-100px"
           :min="2"
-          :max="5"
+          :max="6"
           clearable
           placeholder="4"
           @keyup.enter="handleQuery"
