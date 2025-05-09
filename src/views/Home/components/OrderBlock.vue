@@ -18,11 +18,11 @@
       </div>
       <div class="order-box-change mt-5">
         <div class="inc">
-          <el-image src="/increase.svg" />
-          <span class="ml-2" :class="getDiff(item.key) > 0 ? 'c-#00B692' : 'c-#F93C65'">{{
-            getDiff(item.key) > 0 ? '+' + getDiff(item.key) : getDiff(item.key)
+          <el-image :src="getDiff(item.key) >= 0 ? '/increase.svg' : '/decline.svg'" />
+          <span class="ml-2" :class="getDiff(item.key) >= 0 ? 'c-#00B692' : 'c-#F93C65'">{{
+            getDiff(item.key) >= 0 ? '+' + getDiff(item.key) : getDiff(item.key)
           }}</span>
-          <span class="ml-4 c-#606060">较昨日增加</span>
+          <span class="ml-4 c-#606060">较昨日{{getDiff(item.key) >= 0 ? '增加' : '减少'}}</span>
         </div>
       </div>
     </div>
